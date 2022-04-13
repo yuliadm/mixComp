@@ -4,7 +4,8 @@ The **mixComp** package provides a number of methods for estimating the complexi
 The considered approaches can be loosely grouped into three categories:
 <ul>
   <li> methods built upon the determinants of the Hankel matrix of moments of the mixing distribution; </li>
-  <li> methods based on penalized minimum distance between the unknown probability density and a consistent estimator thereof. The distances considered in this survey are the Hellinger and the ![image](https://user-images.githubusercontent.com/103601311/163273321-09051e2f-f2bb-43aa-a0a0-ff5df53d68fd.png)-distances; </li>
+  <li> methods based on penalized minimum distance between the unknown probability density and a consistent estimator thereof. The distances considered in this survey are the Hellinger and the ![image](https://user-images.githubusercontent.com/103601311/163273674-9e3e7213-a90e-49f9-920d-f4d45419886d.png)
+-distances; </li>
   <li> likelihood ratio test (LRT) - based techniques. </li>
 </ul>
 While not the primary goal, most methods simultaneously estimate the component weights and parameters. In this document, we give a brief overview of the methodology, and demonstrate the package's functionality in both real world examples and synthetically generated data. Moreover, we show how the package can be used on virtually any parametric mixture as long as functions generating random variates and evaluating the density are provided for the component distribution.
