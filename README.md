@@ -29,6 +29,6 @@ For illustrative purposes several datasets have been included in the package:
 
 
 Please cite this software as:
----
+???
 
 For a BibTeX entry, use the output from citation(package = "mixComp").
