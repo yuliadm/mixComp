@@ -30,6 +30,6 @@ For illustrative purposes several datasets have been included in the package:
 
 Please cite this software as:
 
-Chan, C., (2022). sweater: Speedy Word Embedding Association Test and Extras Using R. Journal of Open Source Software, 7(72), 4036, https://doi.org/10.21105/joss.04036
+...
 
-For a BibTeX entry, use the output from citation(package = "sweater").
+For a BibTeX entry, use the output from citation(package = "mixComp").
