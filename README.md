@@ -56,10 +56,13 @@ To describe the estimation problem, we start with some formal notation.  A distr
 where <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649973785.jpg"> is the mixture complexity, 
 <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649973708.jpg"> are the component weights and the density <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649973751.jpg"> is the <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649975606.jpg">th component of the mixture. As the scope of **mixComp** is limited to mixtures where the family of the component distributions is known, we replace <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649973751.jpg"> by a parametric density <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649976027.jpg"> indexed by the (possibly multivariate, say <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649976201.jpg">-dimensional) parameter <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649976173.jpg"> in the parameter space <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649922033.jpg">.
 
-Given some complexity $j$, the two relevant parameter spaces can therefore be defined as
-$$\Theta_j = \{\theta_1 \dots \theta_j: \theta_i \in \Theta \subseteq \mathbb{R}^d, \text{ for } i = 1,\dots,j\}$$
+Given some complexity <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649975639.jpg">, the two relevant parameter spaces can therefore be defined as
+
+<img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649976536.jpg">
+
 and
-$$W_j = \{w_1, \dots, w_j: \sum_{i=1}^j w_i = 1, w_i \geq 0, \text{ for } i = 1,\dots,j\}.$$
+
+<img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649976599.jpg">
 
 Throughout this document, it is assumed that the family of the component densities $\{g(x; \theta):\theta \in \Theta\}$ is known, but the component parameters $\mathbf{\theta}  = (\theta_1, \dots, \theta_p) \in \Theta_p$, the component weights $\textbf{w} = (w_1, \dots, w_p) \in W_p$ and the mixture complexity $p \in \mathbb{N}$ are unknown, with $p$ being the parameter of interest. Assume now that $F$ is a finite mixture distribution with density $$f(x) = \sum_{i=1}^p w_i g(x; \theta_i)$$ and $\textbf{X} = \{X_1, \dots, X_n\}$ is an i.i.d. sample of size $n$ from $F$. The **mixComp** package aims to estimate the smallest such $p$ on the basis of $\textbf{X}$, either on its own or by simultaneously estimating the weights $w_i$ and the component parameters $\theta_i$, $i \in 1, \dots, p$.
 
