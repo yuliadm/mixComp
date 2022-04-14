@@ -4,7 +4,7 @@ The **mixComp** package provides a number of methods for estimating the complexi
 The considered approaches can be loosely grouped into three categories:
 <ul>
   <li> methods built upon the determinants of the Hankel matrix of moments of the mixing distribution; </li>
-  <li> methods based on penalized minimum distance between the unknown probability density and a consistent estimator thereof. The distances considered in this survey are the Hellinger and the ![image](<img src="http://www.sciweavers.org/tex2img.php?eq=L_2&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0" align="center" border="0" alt="L_2" width="21" height="18" />)
+  <li> methods based on penalized minimum distance between the unknown probability density and a consistent estimator thereof. The distances considered in this survey are the Hellinger and the <img src="http://www.sciweavers.org/tex2img.php?eq=L_2&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0" align="center" border="0" alt="L_2" width="21" height="18" />
 -distances; </li>
   <li> likelihood ratio test (LRT) - based techniques. </li>
 </ul>
