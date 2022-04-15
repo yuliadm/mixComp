@@ -496,20 +496,23 @@ The preceding notation was held as broad as possible, since different distance m
 
 #### 1. `L2.disc`
 
-`L2.disc` employs the squared $L_2$ distance as the distance measure $D$ and is only to be used for *discrete* mixtures since the nonparametric estimate $\tilde{f}_n$ is defined as the empirical probability mass function. In this setting, the "best" estimate 
-$$(\hat{\mathbf{w}}^j, \hat{\mathbf{\theta}}^j) \in W_j \times \Theta_j$$
-for a given $j$ corresponds to
-$$(\hat{\mathbf{w}}^j, \hat{\mathbf{\theta}}^j) = \arg\min_{(\mathbf{w}, \mathbf{\theta})} L_2^2(f_{j, \mathbf{w}, \mathbf{\theta}}, \hat{f_n}) 
-= \arg\min_{(\mathbf{w}, \mathbf{\theta})} \left\{ \sum_{x=0}^{\infty} f_{j, \mathbf{w}, \mathbf{\theta}}^2(x) - \frac{2}{n} \sum_{i=1}^{n}f_{j, \mathbf{w}, \mathbf{\theta}}(X_i)\right\}.$$
+`L2.disc` employs the squared <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649973841.jpg"> distance as the distance measure <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650028687.jpg"> and is only to be used for *discrete* mixtures since the nonparametric estimate <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650030450.jpg"> is defined as the empirical probability mass function. In this setting, the "best" estimate 
 
-As the squared $L_2$ distance might involve an infinite sum (for distributions with infinite support), the user has the option to determine the cut-off value using the `n.inf` argument, which is set to 1000 by default. The parameters $(\hat{\mathbf{w}}^{j+1}, \hat{\mathbf{\theta}}^{j+1})$ are obtained analogously. Once both parameter sets have been determined, the difference in their respective squared $L_2$ distances to $\tilde{f}_n$ is compared to a `threshold` (equaling $t(j,n)$ defined above. The threshold function can be entered directly or one of the predefined thresholds, called `LIC` or `SBC` and given respectively by
-$$\frac{0.6}{n} \ln\left(\frac{j+1}{j}\right) \quad\quad \text{ and} \quad\quad \frac{0.6 \ln(n)}{n} \ln\left(\frac{j+1}{j}\right)$$
+<img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650028366.jpg">
 
-can be used. Note that, if a customized function is to be used, its arguments have to be named `j` and `n`. If the difference in squared distances is smaller than the selected threshold, the algorithm terminates and the true order is estimated as $j$, otherwise $j$ is increased by $1$ and the procedure starts over. The reader is invited to consult [@l2] for further details.
+for a given <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649975639.jpg"> corresponds to
+
+<img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650032377.jpg">
+
+As the squared <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649973841.jpg"> distance might involve an infinite sum (for distributions with infinite support), the user has the option to determine the cut-off value using the `n.inf` argument, which is set to 1000 by default. The parameters <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650032650.jpg"> are obtained analogously. Once both parameter sets have been determined, the difference in their respective squared <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649973841.jpg"> distances to <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650030450.jpg"> is compared to a `threshold` (equaling <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650030894.jpg"> defined above. The threshold function can be entered directly or one of the predefined thresholds, called `LIC` or `SBC` and given respectively by
+
+<img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650032536.jpg">
+
+can be used. Note that, if a customized function is to be used, its arguments have to be named `j` and `n`. If the difference in squared distances is smaller than the selected threshold, the algorithm terminates and the true order is estimated as <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649975639.jpg">, otherwise <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649975639.jpg"> is increased by 1 and the procedure starts over. The reader is invited to consult [@l2] for further details.
 
 #### 2. `hellinger.disc`
 
-This second function presents an alternative estimation procedure for *discrete* mixtures, working much the same as `L2.disc`, however, using a different measure of distance and different thresholds. As the name suggests, it is based on the square of the Hellinger distance, causing the "best" estimate $(\hat{\mathbf{w}}^j, \hat{\mathbf{\theta}}^j) \in W_j \times \Theta_j$ for a given $j$ to equal
+This second function presents an alternative estimation procedure for *discrete* mixtures, working much the same as `L2.disc`, however, using a different measure of distance and different thresholds. As the name suggests, it is based on the square of the Hellinger distance, causing the "best" estimate $(\hat{\mathbf{w}}^j, \hat{\mathbf{\theta}}^j) \in W_j \times \Theta_j$ for a given <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649975639.jpg"> to equal
 
 $$(\hat{\mathbf{w}}^j, \hat{\mathbf{\theta}}^j) = \arg\min_{(\mathbf{w}, \mathbf{\theta})} H^2(f_{j, \mathbf{w}, \mathbf{\theta}}, \hat{f_n}) 
 = \arg\max_{(\mathbf{w}, \mathbf{\theta})} \sum_{x=0}^{X_{(n)}} \sqrt{f_{j, \mathbf{w}, \mathbf{\theta}}(x) \tilde{f}_n(x)},$$
