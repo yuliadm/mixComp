@@ -243,24 +243,18 @@ Making use of this fact, the first approach to estimating the order of a mixture
 
 <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650018549.jpg">
 
-with $l(n)$ being a positive function converging to $0$ as $n\to\infty$ and $A(j)$ being positive and strictly increasing. 
-$$\hat{p} := \arg\min_{j \in \mathbb{N}} J_n(j)$$
-is then a consistent estimator of $p$.
+with <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650018991.jpg"> being a positive function converging to 0 as <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650019043.jpg"> and <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650019115.jpg"> being positive and strictly increasing. 
 
-As an extension to simply adding a penalty term to the determinant, a scaling approach was considered by [@lilian]. Let $\hat{d}_j = \det H(\hat{\mathbf{c}}^{2j+1})$, $d_j = \det H(\mathbf{c}^{2j+1})$ and $j_m \geq p, j_m \in \mathbb{N}$. Since the estimated moments $\hat{\mathbf{c}}^{2j+1}$ are asymptotically normal, one can apply the delta method giving
-$$
-\sqrt{n} \cdot
-  \big(
-    \hat{d}_1-d_1,
-    \dots,
-    \hat{d}_{p-1}-d_{p-1},
-    \hat{d}_p-0,
-    \dots,
-    \hat{d}_{j_m}-0
-  \big)^\top \quad \overset{\mathcal{D}}{\longrightarrow} \quad \mathcal{N}(0_{j_m \times 1}, \Sigma_ {j_m \times j_m}).
-$$
-Instead of inspecting the vector $(\hat{d}_1, \dots, \hat{d}_{j_m})^T$, one could therefore also base the complexity analysis on a vector of scaled determinants, employing a nonparametric bootstrap procedure on $\mathbf{X}$.
-To this end, let $\tilde{\Sigma} \in \mathbb{R}^{j_m \times j_m}$ denote the covariance matrix of the determinants $\hat{d}^{*b}_{j}$ calculated on the $b^{\text{th}}$ bootstrap sample for $b=1, \dots, B$ and $j = 1, \dots j_m$. Note that 
+<img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650019176.jpg">
+
+is then a consistent estimator of <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649977354.jpg">.
+
+As an extension to simply adding a penalty term to the determinant, a scaling approach was considered by [@lilian]. Let <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650019301.jpg">, <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650019380.jpg"> and <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650019564.jpg">. Since the estimated moments <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650018121.jpg"> are asymptotically normal, one can apply the delta method giving
+
+<img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650019736.jpg">
+
+Instead of inspecting the vector <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650019799.jpg">, one could therefore also base the complexity analysis on a vector of scaled determinants, employing a nonparametric bootstrap procedure on <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649977791.jpg">.
+To this end, let <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650019902.jpg"> denote the covariance matrix of the determinants $\hat{d}^{*b}_{j}$ calculated on the $b^{\text{th}}$ bootstrap sample for $b=1, \dots, B$ and $j = 1, \dots j_m$. Note that 
 
 $$\tilde{\Sigma} \to \frac{\Sigma}{n} \quad \text{ as }B \to \infty, n \to \infty$$
 
@@ -359,7 +353,7 @@ Coming back to the overall goal of complexity estimation, the function `nonparam
 
 We will initially apply this method to the two already generated datasets of $3$-component Poisson and normal mixtures using the penalty $A(j)l()n = \frac{j \log(n)}{\sqrt{n}}$ and scaling the determinants as described above.
 
-First, for converting the previously simulated samples from $3$-component Poisson and normal mixtures yielding the objects of class `rMix` to objects of class `datMix` one should apply the `RtoDat` function as follows:
+First, for converting the previously simulated samples from 3-component Poisson and normal mixtures yielding the objects of class `rMix` to objects of class `datMix` one should apply the `RtoDat` function as follows:
 ```{r rtodat}
 MLE.pois <- function(dat) mean(dat)
 
