@@ -467,3 +467,123 @@ param_sca <- paramHankel.scaled(children.dM, j.max = 5, B = 1000, ql = 0.025,
                           qu = 0.975)
 plot(param_sca, breaks = 8, ylim = c(0, 0.8))
 ```
+
+## Section 4. Functions using distances
+
+Unlike the theory on Hankel matrices introduced in Section 3, many theoretical considerations rely on estimates of the weights <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649979158.jpg"> and the component parameters <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649979228.jpg">. As mentioned in the introduction, it is assumed that the family of component densities <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650015320.jpg"> is known. To embed the subsequent algorithms in a more theoretical framework, consider the parametric family of mixture densities
+
+<img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650027370.jpg">
+
+With <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650015320.jpg"> set in advance, elements of <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650027451.jpg"> can be written as
+
+<img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650027564.jpg">
+
+Note that the support of <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650027645.jpg"> will depend on the support of <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650027658.jpg"> and <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650027735.jpg"> (This can be seen by setting <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650027784.jpg">) for all <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649975639.jpg">. Now take a specific mixture <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650028187.jpg">, where <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650028256.jpg">. Clearly, the mixture's complexity is defined as
+
+<img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650028308.jpg">
+
+The above suggests an estimation procedure based on initially finding the "best" possible estimate (in a sense to be determined) <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650028366.jpg"> for a given value of <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649975639.jpg">, in order to compare the thereby specified pdf/pmf 
+
+<img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650028449.jpg">
+
+with a non-parametric density/probability mass estimate $\tilde{f}_n(x)$. As the classes $\mathcal{F}_j$ and $\mathcal{F}_{j+1}$ are nested, the distance $D$ (to be defined below) between $\hat{f}_j$ and $\tilde{f}_n$ will not increase with <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649975639.jpg">. Thus, it makes sense to add some penalty term (increasing in <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649975639.jpg">) to $D(\hat{f}_j, \tilde{f}_n)$ and find the first value of <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649975639.jpg"> where the penalized distance for <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649975639.jpg"> is smaller than that for <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649978303.jpg">. Rearranging the terms gives rise to an algorithm starting at <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650022011.jpg">, involving some threshold $t(j,n)$ depending on the penalty, where, if <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649975639.jpg"> is the first integer satisfying
+
+$$D(\hat{f}_j, \tilde{f}_n) - D(\hat{f}_{j+1}, \tilde{f}_n) \leq t(j,n),$$
+
+then <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649975639.jpg"> is taken as the estimate <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650014579.jpg">. If the inequality is not fulfilled, <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649975639.jpg"> is increased by 1 and the procedure is repeated. Consistency of estimators defined this way has been shown in a number of cases, amongst them those used by the **mixComp** algorithms, and the reader is referred to [@l2; @hell; @hellcont] for the proofs relevant to the results implemented in the package.
+
+The preceding notation was held as broad as possible, since different distance measures $D$ and non-parametric estimators $\tilde{f}_n$ can be used. Those relevant to the package are mostly well-known, still, definitions can be found in the Appendix. Three procedures are implemented in **mixComp** based on the foregoing methodology: `L2.disc`, `hellinger.disc` and `hellinger.cont`.
+
+#### 1. `L2.disc`
+
+`L2.disc` employs the squared $L_2$ distance as the distance measure $D$ and is only to be used for *discrete* mixtures since the nonparametric estimate $\tilde{f}_n$ is defined as the empirical probability mass function. In this setting, the "best" estimate 
+$$(\hat{\mathbf{w}}^j, \hat{\mathbf{\theta}}^j) \in W_j \times \Theta_j$$
+for a given $j$ corresponds to
+$$(\hat{\mathbf{w}}^j, \hat{\mathbf{\theta}}^j) = \arg\min_{(\mathbf{w}, \mathbf{\theta})} L_2^2(f_{j, \mathbf{w}, \mathbf{\theta}}, \hat{f_n}) 
+= \arg\min_{(\mathbf{w}, \mathbf{\theta})} \left\{ \sum_{x=0}^{\infty} f_{j, \mathbf{w}, \mathbf{\theta}}^2(x) - \frac{2}{n} \sum_{i=1}^{n}f_{j, \mathbf{w}, \mathbf{\theta}}(X_i)\right\}.$$
+
+As the squared $L_2$ distance might involve an infinite sum (for distributions with infinite support), the user has the option to determine the cut-off value using the `n.inf` argument, which is set to 1000 by default. The parameters $(\hat{\mathbf{w}}^{j+1}, \hat{\mathbf{\theta}}^{j+1})$ are obtained analogously. Once both parameter sets have been determined, the difference in their respective squared $L_2$ distances to $\tilde{f}_n$ is compared to a `threshold` (equaling $t(j,n)$ defined above. The threshold function can be entered directly or one of the predefined thresholds, called `LIC` or `SBC` and given respectively by
+$$\frac{0.6}{n} \ln\left(\frac{j+1}{j}\right) \quad\quad \text{ and} \quad\quad \frac{0.6 \ln(n)}{n} \ln\left(\frac{j+1}{j}\right)$$
+
+can be used. Note that, if a customized function is to be used, its arguments have to be named `j` and `n`. If the difference in squared distances is smaller than the selected threshold, the algorithm terminates and the true order is estimated as $j$, otherwise $j$ is increased by $1$ and the procedure starts over. The reader is invited to consult [@l2] for further details.
+
+#### 2. `hellinger.disc`
+
+This second function presents an alternative estimation procedure for *discrete* mixtures, working much the same as `L2.disc`, however, using a different measure of distance and different thresholds. As the name suggests, it is based on the square of the Hellinger distance, causing the "best" estimate $(\hat{\mathbf{w}}^j, \hat{\mathbf{\theta}}^j) \in W_j \times \Theta_j$ for a given $j$ to equal
+
+$$(\hat{\mathbf{w}}^j, \hat{\mathbf{\theta}}^j) = \arg\min_{(\mathbf{w}, \mathbf{\theta})} H^2(f_{j, \mathbf{w}, \mathbf{\theta}}, \hat{f_n}) 
+= \arg\max_{(\mathbf{w}, \mathbf{\theta})} \sum_{x=0}^{X_{(n)}} \sqrt{f_{j, \mathbf{w}, \mathbf{\theta}}(x) \tilde{f}_n(x)},$$
+
+with $X_{(n)} = \max_{i = 1}^n (X_i)$. The relevant theory can be found in [@hell]. In accordance with their work, the two predefined thresholds are given by
+
+$$\text{AIC} = \frac{d+1}{n} \quad \quad \text{and} \quad \quad \text{SBC} = \frac{(d+1)\ln(n)}{2n}$$
+
+(recall that $d$ is the number of component parameters, i.e. $\Theta \subseteq \mathbb{R}^d$). If a customized function is to be used, its arguments have to named `j` and `n` once more, so if the user wants to include the number of component parameters $d$, it has to be entered explicitly. 
+
+#### 3. `hellinger.cont`
+ 
+Unlike the two preceding functions, this procedure is applicable to *continuous* mixture models and uses a kernel density estimator (KDE) as $\tilde{f}_n$. Its `bandwidth` can be chosen by the user, or the adaptive KDE found in [@adap, p. 1720, equation (2)] may be used by specifying `bandwidth = "adaptive"`. The calculations are based on the continuous version of the squared Hellinger distance, where the "best" estimate $(\hat{\mathbf{w}}^j, \hat{\mathbf{\theta}}^j) \in W_j \times \Theta_j$ for a given $j$ corresponds to
+
+$$
+(\hat{\mathbf{w}}^j, \hat{\mathbf{\theta}}^j) = \arg\min_{(\mathbf{w}, \mathbf{\theta})} H^2(f_{j, \mathbf{w}, \mathbf{\theta}}, \hat{f_n}) 
+= \arg\max_{(\mathbf{w}, \mathbf{\theta})} \int \sqrt{f_{j, \mathbf{w}, \mathbf{\theta}}(x)\tilde{f}_n(x)}\ dx.
+$$
+
+Since the computational burden of optimizing over an integral to find the "best" weights and component parameters is immense, the algorithm approximates the objective function defined in the previous equation by sampling $n_s = $ `sample.n` observations $Y_i$ from $\tilde{f}_n(x)$ and setting
+
+$$
+(\hat{\mathbf{w}}^j, \hat{\mathbf{\theta}}^j) = \arg\max_{(\mathbf{w}, \mathbf{\theta})} \sum_{i = 1}^{n_s} \sqrt{\frac{f_{j, \mathbf{w}, \mathbf{\theta}}(Y_i)}{\tilde{f}_n(Y_i)}}.
+$$
+
+Consider again the artificially created samples from the 3-component normal mixture with $\mathbf{w} = (0.3, 0.4, 0.3)$, $\mathbf{\mu} = (10, 13, 17)$ and $\mathbf{\sigma} = (1, 1, 1)$ and the Poisson mixture with $\mathbf{w} = (0.45, 0.45, 0.1)$, $\mathbf{\lambda} = (1, 5, 10)$.
+This procedure `hellinger.cont` uses the same thresholds as `hellinger.disc`.
+
+```{r plothel, figures-side, fig.show="hold", out.width="50%"}
+set.seed(0)
+h_disc_pois <- hellinger.disc(pois.dM, threshold = "AIC")
+h_cont_norm <- hellinger.cont(normLoc.dM, bandwidth = 0.5, sample.n = 5000, 
+                      threshold = "AIC")
+par(mar = c(5, 5, 1, 1))
+plot(h_disc_pois)
+plot(h_cont_norm)
+```
+
+For a real-world example, refer back to the `faithful` dataset and the corresponding `datMix` object which was created in Section 1. Fitting the distance methods to a continuous density requires a choice of bandwidth. While using the adaptive bandwidth is an option, if the user does not want to do so, it is recommended to use the function `kdensity` from the package **kdensity** [@kdensity] which automatically selects an optimal bandwidth. If the user wants to compare different bandwidth values, it is advisable to look at the plots of the respective kernel density estimates using `kdensity` and to choose one that captures the shape of the data well without fitting to noise.
+
+`hellinger.cont` fits a 2-component mixture to the data, which fits the data well and comprises similar parameter estimates to those found in the literature.
+
+```{r faithplothel, fig.width = 5, fig.height = 4}
+# estimate the number of components:
+library(kdensity)
+res <- hellinger.cont(faithful.dM, bandwidth = kdensity(faithful.obs)$bw,
+                      sample.n = 5000, threshold = "AIC")
+plot(res)
+```
+
+
+At this point, it is worth having a closer look at the thresholds. They each satisfy $t(j,n) \rightarrow 0$ as $n \rightarrow \infty$, the sole condition the authors require. Now, the consistency proofs for the estimators defined in this Section all rely on the fact that, as $n \rightarrow \infty$,
+$$D(\hat{f}_j, \tilde{f}_n) - D(\hat{f}_{j+1}, \tilde{f}_n) \rightarrow d_j > 0, \text{ for } j < p$$
+and
+$$D(\hat{f}_j, \tilde{f}_n) - D(\hat{f}_{j+1}, \tilde{f}_n) \rightarrow 0, \text{ for } j \geq p,$$
+where $p$ is the true complexity (compare with [@l2, p. 4253, Proof of the Theorem], [@hell, p. 4383, Proof] and [@hellcont, p. 1485, Proof of Theorem 1]. If however $t(j,n)$ goes to $0$ faster than $D(\hat{f}_j, \tilde{f}_n) - D(\hat{f}_{j+1}, \tilde{f}_n)$ for $j \geq p$, asymptotically, the decision rule outlined above will always lead to $j$ being rejected. Therefore, a second condition should be placed on $t(j,n)$, namely choosing it in accordance with 
+$$D(\hat{f}_p, \tilde{f}_n) - D(\hat{f}_{p+1}, \tilde{f}_n) = o_p(t(j,n)).$$
+
+Both the LIC and the AIC as well as the SBC in the continuous case do not satisfy this condition, yet they are still part of the package for two reasons. First, since they were used in the original papers, they are included for the sake of completeness and reproducibility of original results. Second, consistency is an asymptotic property, and while the aforementioned thresholds do not fulfill it, they still perform well (and not rarely better than consistent thresholds) for smaller sample sizes. In the example above, the number of components is correctly identified under the non-consistent AIC threshold. Nonetheless, the user will get a warning when using one of non-consistent predefined thresholds.
+
+The preceding example shows that $\hat{p}$ directly depends on the chosen threshold $t(j, n)$. While some thresholds can be motivated better than others from a theoretical perspective, the choice will ultimately always remain somewhat arbitrary. It would thus be desirable to have versions of the preceding functions which do not suffer from this drawback. `L2.boot.disc`, `hellinger.boot.disc` and `hellinger.boot.cont` all work similarly to their counterparts, with the exception that the difference in distances is not compared to a predefined threshold but a value generated by a bootstrap procedure.  At every iteration (of $j$), the procedure sequentially tests $p = j$ versus $p = j+1$ for $j = 1,2, \dots$, using a parametric bootstrap to generate `B` samples of size $n$ from a $j$-component mixture given the previously calculated "best" parameter values $(\hat{\mathbf{w}}^j, \hat{\mathbf{\theta}}^j)$. For each of the bootstrap samples, again the "best" estimates corresponding to densities with $j$ and $j+1$ components are calculated, as well as their difference in distances from $\tilde{f}_n$. The null hypothesis $H_0: p = j$ is rejected and $j$ increased by $1$ if the original difference $D(\hat{f}_j, \tilde{f}_n) - D(\hat{f}_{j+1}, \tilde{f}_n)$ lies outside of the interval $[ql, qu]$, specified by the `ql` and `qu` empirical quantiles of the bootstrapped differences. Otherwise, $j$ is returned as the order estimate $\hat{p}$. 
+
+As an example, consider the poisson `rMix` object generated in the Section 2. It was a sample from the 3-component poisson mixture corresponding to $\mathbf{w} = (0.45, 0.45, 0.1)$ and $\mathbf{\lambda} = (1, 5, 10)$.
+The corresponding `datMix` object can be generated to use the function  `hellinger.boot.disc` for identifying the number of components as follows: 
+
+```{r poishelex, results='hide', message=FALSE, warning=FALSE, fig.width = 5, fig.height = 4}
+poisList <- vector(mode = "list", length = 1)
+names(poisList) <- "lambda"
+poisList$lambda <- c(0, Inf)
+MLE.pois <- function(dat) mean(dat)
+pois.dM <- RtoDat(poisRMix, theta.bound.list = poisList, 
+                  MLE.function = MLE.pois)
+set.seed(1)
+res <- hellinger.boot.disc(pois.dM, B = 50, ql = 0.025, qu = 0.975)
+
+plot(res)
+```
