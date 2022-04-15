@@ -238,10 +238,10 @@ Then, for all <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Im
 
 <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650017845.jpg">
 
-Making use of this fact, the first approach to estimating the order of a mixture that is implemented in **mixComp** relies on initially finding a consistent estimator of $\textbf{c}^{2j+1}$ based on $\textbf{X}$, say $\hat{\textbf{c}}^{2j+1}$, to then iteratively calculate the applicable Hankel matrix while increasing the assumed order $j$ until a sufficiently small value of 
-$\det H(\hat{\textbf{c}}^{2j+1})$ is attained. However, since $\det H(\hat{\textbf{c}}^{2j+1})$ should be close to 0 for all $j \geq p$, this would lead to choosing $\hat{p}$ rather larger than the true value and it seems natural to introduce a penalty term. Therefore [@hankel] define the empirical penalized objective function as
+Making use of this fact, the first approach to estimating the order of a mixture that is implemented in **mixComp** relies on initially finding a consistent estimator of <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650018010.jpg"> based on <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649977791.jpg">, say <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650018121.jpg">, to then iteratively calculate the applicable Hankel matrix while increasing the assumed order <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649975639.jpg"> until a sufficiently small value of 
+<img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650015122.jpg"> is attained. However, since <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650015122.jpg"> should be close to 0 for all <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650017206.jpg">, this would lead to choosing <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650014579.jpg"> rather larger than the true value and it seems natural to introduce a penalty term. Therefore [@hankel] define the empirical penalized objective function as
 
-$$J_n(j) := \lvert \det H(\hat{\mathbf{c}}^{2j+1}) \rvert + A(j)l(n),$$
+<img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650018549.jpg">
 
 with $l(n)$ being a positive function converging to $0$ as $n\to\infty$ and $A(j)$ being positive and strictly increasing. 
 $$\hat{p} := \arg\min_{j \in \mathbb{N}} J_n(j)$$
