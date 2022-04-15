@@ -83,3 +83,138 @@ The packages **mixtools** [see @mixtools] and **flexmix** [see @flexmix1; @flexm
 We also want to briefly mention further theoretical work on the estimation of mixture complexity not included in the **mixComp** functionality for now. [@chen] propose a method that is reminiscent of the ones described in Section 4. The main difference is that the authors consider distribution functions instead densities, i.e. they consider minimizing a penalized distance between the distribution function of the mixture and the empirical distribution function. The approach of [@figueiredo] is based on a minimum message length-like criterion, however, their method struggles to deal with mixtures with very different weights. [@xian] propose a procedure based on alternating between splitting and merging the components in an EM-algorithm. This algorithm requires selecting two thresholds, the choice of which is somewhat unclear when working with a specific dataset. [@miller] follow a Bayesian approach, taking the usual finite mixture model with Dirichlet weights and putting a prior distribution on the unknown number of components. 
 
 The methods that were included in the package can be roughly devided into three categories: methods based on Hankel matrices, following the theory of [@hankel] and selected because of the fact that computation of <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649979158.jpg"> and <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649979228.jpg"> is not required, a method based on the likelihood ratio test statistic (LRTS) following [@lrt] since a likelihood ratio test seems like a natural approach in our setting and methods employing minimum distance calculations based on works from multiple authors -- [@hell; @hellcont; @l2; @adap] and included as a computationally more efficient alternative to the LRTS method for certain distributions and distances (this method is especially fast for discrete distributions when using Hellinger distance). The relevant theory will be portrayed at the beginning of each of the respective chapters. The examples depicted in these first chapters all contain mixtures of "standard" distributions for which evaluation of the density, cumulative distribution function and quantile function as well as random variate generation may be done by functions available from the **stats** package. The last chapter showcases how the **mixComp** package can be used to estimate the complexity of any mixture as long as the user provides functions generating random variates from the component distribution and evaluating the density thereof.
+
+
+## Section 2. Objects and functions defined in mixComp
+
+Table 1 depicts five object classes defined in **mixComp**. The first two respectively represent a finite mixture distribution and a random sample drawn from such a distribution. The `Mix` object is printed as a matrix of component weights and parameters and is plotted as the density of the specified mixture, showing the overall as well as the component densities. The `rMix` object prints as the vector of observations and plots as a histogram, showcasing the individual components as well as the full sample. Both objects contain a number of attributes giving additional information, details of which can be found in the corresponding **R** help files. 
+
+#### Table 1: Objects and functions defined in mixComp
+|  Object class  | Created via                                  | Description                                     |
+|:--------------:|:--------------------------------------------:|:-----------------------------------------------:|
+| `Mix`          | `Mix`                                        | Represents a finite mixture                     |
+| `rMix`         | `rMix`                                       | Randomly generated data from a finite mixture   |
+| `datMix`       | `datMix` or `RtoDat`                         | Observed data from (presumably) a finite mixture|
+| `hankDet`      | `nonparamHankel`                             | Vector of estimated Hankel matrix determinants  |
+| `paramEst`     | `paramHankel(.scaled)`, `L2(.boot).disc`, `hellinger(.boot).disc`, `hellinger(.boot).cont` or `mix.lrt`  | Complexity estimate $\hat{p}$, together with estimates of the weights $\hat{\mathbf{w}}$ and the component parameters $\hat{\mathbf{\theta}}$|
+
+The generation of an object of class `Mix` hinges on four central arguments: a string `dist` specifying the name of the family of component densities (or kernels) $\{g(x;\theta):\theta \in \Theta \}$, a boolean`discrete` stating whether the distribution is discrete, a vector `w` giving the weights $w_i$ and a list `theta.list` (the component parameters can also be supplied via the `...` argument) containing the parameters of the component densities $\theta_i, i \in 1, \dots, p$. While the creation of `Mix` objects is mostly straightforward, two things should be noted in this regard: First, the **mixComp** procedures will search for functions called `rdist` and `ddist` in the accessible namespaces. For most "standard" distributions, these functions are contained in the **stats** package and do not need to be user-written (compare with the Section 6). To make use of these functions, it is essential that the string `dist` is named correctly (e.g. to create a gaussian mixture on the basis of the **stats** package, `dist` has to be specified as `norm` instead of `normal`, `gaussian` etc. for the package to find the functions `dnorm` and `rnorm`). Second, the names of the list elements of `theta.list`(for the names of the `...` arguments) have to match the names of the formal arguments of the functions `ddist` and `rdist` exactly (e.g. for a gaussian mixture, the list elements have to be named `mean` and `sd`, as these are the formal arguments used by `rnorm` and `dnorm`).
+
+The following example creates two `Mix` objects, a $3$-component mixture of normal distributions and a $3$-component mixture of Poisson distributions. 
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#<"
+)
+options(knitr.duplicate.label = "allow")
+```
+
+```{r setup}
+library(mixComp)
+```
+
+```{r mixobj}
+set.seed(0)
+# construct a Nix object:
+normLocMix <- Mix("norm", discrete = FALSE, w = c(0.3, 0.4, 0.3), mean = c(10, 13, 17), sd = c(1, 1, 1))
+poisMix <- Mix("pois", discrete = TRUE, w = c(0.45, 0.45, 0.1), lambda = c(1, 5, 10))
+```
+
+The created `Mix` objects can then be plotted.
+```{r mixplot, figures-side, fig.show="hold", out.width="50%"}
+# plot the mixtures:
+par(mar = c(5, 5, 1, 1))
+plot(normLocMix, main = "3-component normal mixture", cex.main = 0.9)
+plot(poisMix, main = "3-component poisson mixture", cex.main = 0.9)
+```
+
+If required, random samples can be generated from these mixtures.
+```{r rmix}
+# generate random samples:
+normLocRMix <- rMix(1000, obj = normLocMix)
+poisRMix <- rMix(1000, obj = poisMix)
+```
+
+The histograms of the generated random samples can be plotted.
+```{r plotrmix, figures-side, fig.show="hold", out.width="50%"}
+# plot the histograms of the random samples:
+par(mar = c(5, 5, 1, 1))
+plot(normLocRMix, main = "Three component normal mixture", cex.main = 0.9)
+plot(poisRMix, main = "Three component poisson mixture", cex.main = 0.9)
+```
+
+The third object class shown in Table 1, called `datMix`, represents the data vector $\textbf{X}$ based on which the mixture complexity is supposed to be estimated. These objects are most central to the package, as every procedure estimating the order of a mixture takes a `datMix` object as input. Apart from $\mathbf{X}$, it contains other "static" information needed for the estimation procedure (in contrast to "tuning parameters", which can be changed with every function call. An example of such a tuning parameter is the number of bootstrap replicates for a function employing a bootstrap procedure). A brief overview of which "static" attributes need to be supplied for each complexity estimation routine is given in Table 2. 
+
+#### Table 2: Inputs needed for different functions contained in mixComp
+| `R function`            |`dist`|`discrete`|`theta.bound.list`|  `MLE.function` | `Hankel.method` | `Hankel.function` |
+|:-----------------------:|:----:|:--------:|:----------------:|:---------------:|:---------------:|:-----------------:|
+|`nonparamHankel`         |  x   |          |                  |                 |        x        |         x         |
+|`nonparamHankel(.scaled)`|  x   |    x     |         x        | o + i (optional)|        x        |         x         |
+|`L2(.boot).disc`         |  x   |    x     |         x        |   i (optional)  |                 |                   |
+|`hellinger(.boot).disc`  |  x   |    x     |         x        |   i (optional)  |                 |                   |
+|`hellinger(.boot).cont`  |  x   |    x     |         x        |   i (optional)  |                 |                   |
+|`mix.lrt`                |  x   |    x     |         x        | o + i (optional)|                 |                   |
+
+In the table, "o" and "i" respectively stand for input used during optimization and initialization.
+As a simple example of a given dataset to which mixture models have been applied extensively, take the Old Faithful dataset [@R; @faithful1; @faithful2]. In the context of mixture model estimation, the variable `waiting`, which gives the time in minutes between eruptions of the Old Faithful geyser in the Yellowstone National Park, is often considered to be the variable of interest. To estimate the number of components of the mixture distribution that provides a suitable approximation to the `waiting` data via **mixComp**, the raw data vector of observations has to be converted to a `datMix` object first. For the sake of exposition we specify all arguments of  the `datMix` function, starting with the vector of observations $\textbf{X}$ and the string `dist`, specifying $\{g(x;\theta):\theta \in \Theta \}$ and the boolean `discrete`. As has often been done in the relevant literature, we assume that the data comes from a normal mixture.
+
+```{r faithopts}
+faithful.obs <- faithful$waiting
+norm.dist <- "norm"
+norm.discrete <- FALSE
+```
+
+Second, a named list of length $d$ containing the bounds of $\theta \in \Theta \subseteq \mathbf{R}^d$ has to be created. In this example, $\theta = \{\mu, \sigma\} \in \Theta = \mathbf{R} \times (0, \infty) \subseteq \mathbf{R}^2$.
+
+```{r normlist}
+# define the range for parameter values:
+norm.bound.list <- list("mean" = c(-Inf, Inf), "sd" = c(0, Inf))
+```
+
+Next, the argument `MLE.function` contains a single function if $d = 1$ or a list of functions of length $d$ otherwise, specifying the $d$ functions needed to estimate the MLE's of $\theta$ based on $\textbf{X}$ if $p$ were equal to 1 (i.e. the MLE's of the component distribution). If this argument is supplied and the `datMix` object is handed over to a complexity estimation procedure relying on optimizing over a likelihood function, the `MLE.function` attribute will be used for the single component case. In case the objective function is either not a likelihood or corresponds to a mixture with more than $1$ component, numerical optimization will be used based on **Rsolnp**'s function `solnp` [@solnp, @Rsolnp]. The initial values (for the parameters of a $j$-component mixture, say) supplied to the solver are then calculated as follows: the data $\textbf{X}$ is clustered into $j$ groups by the function `clara` (of the **cluster** package by [@cluster] and the data corresponding to each group is given to `MLE.function`. The size of the groups is taken as initial component weights and the MLE's are taken as initial component parameter estimates. Specifying `MLE.function` is optional and if it is not, for example because the MLE solution does not exists in closed form, numerical optimization is used to find the relevant MLE's.
+
+Presuming a normal mixture, one specifies $2$ functions, namely the MLE of the mean $\hat{\mu}_{MLE} = \frac{1}{n}\sum_{i = 1}^n X_i$ and the MLE of the standard deviation $\hat{\sigma}_{MLE} = \sqrt{\frac{1}{n}\sum_{i = 1}^n (X_i - \hat{\mu}_{MLE})^2}$.
+
+```{r normfun}
+# define the MLE functions for the mean and sd: 
+MLE.norm.mean <- function(dat) mean(dat)
+MLE.norm.sd <- function(dat){
+sqrt((length(dat) - 1) / length(dat)) * sd(dat)
+} 
+MLE.norm.list <- list("MLE.norm.mean" = MLE.norm.mean, "MLE.norm.sd" = MLE.norm.sd)
+```
+
+The last two arguments, `Hankel.method` and `Hankel.function`, need to be supplied if the mixture complexity is to be estimated based on the Hankel matrix of the moments of the mixing distribution. The reader is referred to the Section 3 for further information on how these arguments are to be specified (in this case, the simplifying assumption of unit variance is made. This would be a poor choice for the `waiting` data, so $p$ should not be estimated with one of the methods using these arguments, namely `nonparamHankel`, `paramHankel` and `paramHankel.scaled`, see Table 2). 
+
+```{r normmom}
+method <- "translation"
+# define the function for computing the moments:
+mom.std.norm <- function(j){
+  ifelse(j %% 2 == 0, prod(seq(1, j - 1, by = 2)), 0)
+}
+```
+
+Finally, all previously generated objects are combined to a `datMix` object.
+
+```{r faithdatmix}
+# construct a datMix object that summarizes all the necessary information:
+faithful.dM <- datMix(faithful.obs, dist = norm.dist, discrete = norm.discrete,
+                      theta.bound.list = norm.bound.list,
+                      MLE.function = MLE.norm.list, Hankel.method = method,
+                      Hankel.function = mom.std.norm)
+```
+
+In the preceding example, the data vector $\textbf{X}$ was taken from an already existing dataset. As seen before, the `rMix` function can be used to generate a $n$-sized sample from a specific mixture. If this synthesized data is to be used in simulations (i.e. passed to one of the functions estimating the mixture complexity) an `rMix` object can be converted to a `datMix` object via the `RtoDat` function. Apart from `dist` and `discrete`, all `datMix` arguments have to be supplied to `RtoDat` likewise. We will introduce the relevant examples in Section 3.
+
+Unlike the above mentioned objects whose creation precedes any type of mixture complexity estimation, objects of the bottom two classes (see Table 1) contain the results of the estimation procedures. Generally, the functions estimating the number of components differ in the types of families of component densities $\{g(x;\theta):\theta \in \Theta \}$ for which they allow and in whether they provide estimates of the weights $\hat{w}_i$ and the component parameters $\hat{\theta}_i, i \in 1, \dots, \hat{p}$, the latter determining the object class of the estimation result. These differences are shown in Table 3. The function `nonparamHankel` returns an object of class `hankDet`, which is a vector of determinants (scaled and/or penalized), each entry belonging to a certain complexity estimate. The link between these determinants and $p$ will be discussed in the Section 3. `paramEst` objects arise when using any other function estimating the mixture complexity, all of which additionally return estimates of the component weights and parameters. For both object classes, print and plot methods are available to summarize and visualize the estimation results. 
+
+#### Table 3: Distribution restrictions and output types of different functions contained in mixComp
+|     R function                    |Restrictions on the family of the component density |Estimation of $\mathbf{w}$ and $\mathbf{\theta}$|
+|:---------------------------------:|:--------------------------------------------------:|:----------------------------------------------:|
+|`nonparamHankel`                   |Compatible with `explicit`, `translation` or `scale`|                                                |
+|`nonparamHankel(.scaled)`          |Compatible with `explicit`, `translation` or `scale`|                       x                        |  
+|`L2(.boot).disc`                   |Discrete distributions                              |                       x                        | 
+|`hellinger(.boot).disc`            |Discrete distributions                              |                       x                        | 
+|`hellinger(.boot).cont`            |Continuous distributions                            |                       x                        | 
+|`mix.lrt`                          |                                                    |                       x                        | 
