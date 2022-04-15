@@ -680,3 +680,81 @@ res <- mix.lrt(norm0.5.dM, B = 50, quantile = 0.95)
 print(res)
 plot(res)
 ```
+
+## Section 7. Computational nuance for mixComp functions using the solnp() solver
+
+Several functions in the **mixComp** package (namely, `nonparamHankel`, `paramHankel`, `hellinger.cont`, `hellinger.disc`, `L2.disc`, `mix.lrt`) make use of `solnp()`  function (**Rsolnp** library), which is a solver for general nonlinear programming problems. The above mentioned **mixComp** functions attempt to generate good starting values by clustering the data via `clara` function prior to applying  `solnp()`, which lead to convergence of the algorithm in most of the cases. However when running multiple simulations, `solnp()` might not converge for particular initial values with default control values. This may happen when very few observations are assigned to some of the clusters have, in which case the solver can get "stuck", not even resulting in bad exit status (codes 1 and 2 in returned by `solnp()` convergence value). This issue can be overcome by specifying the control parameters in the functions using the `solnp()` solver (e.g. by defining `L2.boot.disc(geom.dM, j.max = 5, B = 500, ql = 0.025, qu = 0.975, control = list("rho" = 0.1, tol = 0.0000001, trace = 0))`, see description of the `solnp()` function for further details on setting the control parameters) or by setting a time limit for the function execution and going to the next iteration whenever the time limit is exceeded. 
+
+
+## Section 8. Summary and discussion
+
+In this paper we presented the R package **mixComp**, a collection of routines developed to estimate a mixture's complexity from a data sample <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649977791.jpg">. Moreover, it provides the possibility of generating artificial data from specified mixtures as well as proper visualization tools for the complexity estimation result, plotting either the successive determinant values or the final fitted mixture. If estimates of the component weights and parameters are sought, <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650014579.jpg"> can be passed to one of the many **R** packages specialized in their calculation, or one of the **mixComp** functions returning weight and parameter estimates can be used. However, it should be noted that the theory on which this package is based concentrates on showing consistency for <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650014579.jpg"> -- other estimates obtained in the process are merely by-products. A primary goal of the package was to make it extendible, meaning that it can be utilized on mixtures of less well-known distributions, as long as sufficient information on the density and random variate generation is provided. We hope that this package will be useful for practitioners in the many areas where mixture models are applicable.
+
+## Computational details
+
+All computations and graphics in this paper have been done using **R** version 4.0.0 with the packages **boot** 1.3-24, **cluster** 2.1.0, **expm** 0.999-4, **matrixcalc** 1.0-3, **Rsolnp** 1.16 and **kdensity** 1.0.1. **R** itself
+and all packages used are available from the Comprehensive **R** Archive Network (CRAN) at https://CRAN.R-project.org/.
+
+
+## Appendix 
+### Distance and non-parametric estimator definitions
+
+Let <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650054486.jpg"> be an i.i.d. sample of size <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649977745.jpg"> from some continuous distribution with unknown density <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650027645.jpg">. Its *kernel densty estimator* is defined as
+
+<img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650054693.jpg">
+
+with kernel <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650054779.jpg"> and bandwidth <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650054831.jpg">.
+
+As an extension, [@adap] defined the *adaptive kernel density estimator* as
+
+<img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650055002.jpg">	
+
+with kernel <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650054779.jpg">, bandwidth <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650055259.jpg"> and weights (positive and summing to 1) <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650055316.jpg">.
+	
+Let <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650054486.jpg"> be an i.i.d. sample of size <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649977745.jpg"> from some discrete distribution with unknown probability mass function <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650027645.jpg">. Its *empirical probability mass function* is defined as
+
+<img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650054952.jpg">
+
+Let <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650027658.jpg">, <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650027645.jpg"> be two probability mass functions defined on <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650055651.jpg">.
+The *squared* <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649973841.jpg"> *distance* between <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650027658.jpg"> and <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650027645.jpg"> is given by
+
+<img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650055147.jpg">	
+
+Let  <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650027658.jpg">, <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650027645.jpg"> be two density or probability mass functions defined on <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650055651.jpg">.
+The *squared Hellinger distance* between  <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650027658.jpg"> and <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650027645.jpg"> is given by
+
+<img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650055464.jpg">	
+
+in the discrete case and by
+
+<img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650055550.jpg">	
+
+in the continuous case.
+
+### Further results on the real-world datasets
+
+The Table below showcases the results of all complexity estimation procedures when applied to the four real-world datasets that were discussed in this paper. The table also includes the results for the Shakespeare dataset borrowed from [@shakespeare]. It was not mentioned in the vignette but is included in the **mixComp** package. The following settings were used to calculate these results (default setting were used unless indicated otherwise):
+
+* `set.seed(1)` was used for all complexity calculations,
+* for `hellinger.cont` and `hellinger.boot.cont` the bandwidths suggested by **kdensity** were used,
+* for `nonparamHankel`, we used <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650025161.jpg"> and `j.max = 6`,
+* for the bootstrapped distance and the LRTS methods, we used `B = 50`.
+
+#### Table A: Results for all **mixComp** methods used on real-world data
+|  Method                   | Children | Old Faithful | Shakespeare | Acidity |
+|:-------------------------:|:--------:|:------------:|:-----------:|:-------:|
+| `nonparamHankel`          |    2     |      x       |      2      |    x    |
+| `nonparamHankel`(scaled)  |    2     |      x       |      2      |    x    |
+| `paramHankel`             |    2     |      x       |      2      |    x    |
+| `paramHankel.scaled`      |    2     |      x       |      2      |    x    |
+| `L2.disc`                 |    2     |      x       |      3      |    x    |
+| `L2.boot.disc`            |    2     |      x       |      4      |    x    |
+| `hellinger.disc`          |    2     |      x       |      3      |    x    |
+| `hellinger.boot.disc`     |    2     |      x       |      3      |    x    |
+| `hellinger.cont`          |    x     |      2       |      x      |    2    |
+| `hellinger.boot.cont`     |    x     |      2       |      x      |    2    |
+| `mix.lrt`                 |    2     |      2       |      3      |    2    |
+
+
+\pagebreak
+### References
