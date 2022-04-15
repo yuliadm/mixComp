@@ -251,30 +251,23 @@ As an extension to simply adding a penalty term to the determinant, a scaling ap
 <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650019736.jpg">
 
 Instead of inspecting the vector <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650019799.jpg">, one could therefore also base the complexity analysis on a vector of scaled determinants, employing a nonparametric bootstrap procedure on <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649977791.jpg">.
-To this end, let <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650019902.jpg"> denote the covariance matrix of the determinants $\hat{d}^{*b}_{j}$ calculated on the $b^{\text{th}}$ bootstrap sample for $b=1, \dots, B$ and $j = 1, \dots j_m$. Note that 
+To this end, let <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650019902.jpg"> denote the covariance matrix of the determinants <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650021468.jpg"> calculated on the <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650021576.jpg">th bootstrap sample for <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650021631.jpg"> and <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650021686.jpg">. Note that 
 
-$$\tilde{\Sigma} \to \frac{\Sigma}{n} \quad \text{ as }B \to \infty, n \to \infty$$
+<img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650021686.jpg">
 
-and write $\tilde{\Sigma}^{-1/2} = \sqrt{n} \cdot \hat{\Sigma}^{-1/2}$. Define the rescaled vector 
-$$
-\big( y_1, \dots, y_p, \dots, y_{j_m} \big)^\top := \sqrt{n} \cdot {\hat{\Sigma}}^{-1/2} \big(
-   \hat{d}_1,
-    \dots,
-    \hat{d}_p,
-    \dots,
-    \hat{d}_{j_m}
-  \big)^\top.
-$$
+and write <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650021787.jpg">. Define the rescaled vector 
+
+<img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650021849.jpg">
 
 Note that in the case of the scaled version,  the criterion to be minimized becomes 
-$$
-{J_n(j)}_{scaled} := \vert y_j \vert + A(j)l(n) \cdot \sqrt{n}.
-$$
-That is, the chosen penalty function should be multiplied by $\sqrt{n}$.
 
-This approach was proposed to address the issue of determinants already being very small from the beginning (even for $j = 1$), which, in the simulations by [@lilian], made it hard to discern the "best" complexity estimate, a problem that was not reduced much by solely adding a penalty term.  
+<img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650021903.jpg">
 
-With this general framework in place, the computation now merely hinges on calculating $\hat{\textbf{c}}^{2j+1}$. The **mixComp** package offers three methods to do so. The method to use depends on the family of component densities $\{g(x;\theta):\theta \in \Theta \}$ and is linked to some function $f_j(\mathbf{X})$ needed to estimate $\hat{\mathbf{c}}^{2j+1}$. The calculation method and the relevant function are specified when creating the `datMix` object as arguments `Hankel.method` and `Hankel.function`.
+That is, the chosen penalty function should be multiplied by <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649973529.jpg">.
+
+This approach was proposed to address the issue of determinants already being very small from the beginning (even for <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650022011.jpg">), which, in the simulations by [@lilian], made it hard to discern the "best" complexity estimate, a problem that was not reduced much by solely adding a penalty term.  
+
+With this general framework in place, the computation now merely hinges on calculating <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650018121.jpg">. The **mixComp** package offers three methods to do so. The method to use depends on the family of component densities <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650015320.jpg"> and is linked to some function <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650022217.jpg"> needed to estimate <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650018121.jpg">. The calculation method and the relevant function are specified when creating the `datMix` object as arguments `Hankel.method` and `Hankel.function`.
 
 
 #### 1. `Hankel.method = "explicit"`
