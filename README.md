@@ -95,33 +95,16 @@ Table 1 depicts five object classes defined in **mixComp**. The first two respec
 | `hankDet`      | `nonparamHankel`                             | Vector of estimated Hankel matrix determinants  |
 | `paramEst`     | `paramHankel(.scaled)`, `L2(.boot).disc`, `hellinger(.boot).disc`, `hellinger(.boot).cont` or `mix.lrt`  | Complexity estimate <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650014579.jpg">, together with estimates of the weights <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650014622.jpg"> and the component parameters <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650014686.jpg">|
 
-The generation of an object of class `Mix` hinges on four central arguments: a string `dist` specifying the name of the family of component densities (or kernels) <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650014854.jpg">, a boolean`discrete` stating whether the distribution is discrete, a vector `w` giving the weights <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649977761.jpg"> and a list `theta.list` (the component parameters can also be supplied via the `...` argument) containing the parameters of the component densities <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650015122.jpg">. While the creation of `Mix` objects is mostly straightforward, two things should be noted in this regard: First, the **mixComp** procedures will search for functions called `rdist` and `ddist` in the accessible namespaces. For most "standard" distributions, these functions are contained in the **stats** package and do not need to be user-written (compare with the Section 6). To make use of these functions, it is essential that the string `dist` is named correctly (e.g. to create a gaussian mixture on the basis of the **stats** package, `dist` has to be specified as `norm` instead of `normal`, `gaussian` etc. for the package to find the functions `dnorm` and `rnorm`). Second, the names of the list elements of `theta.list`(for the names of the `...` arguments) have to match the names of the formal arguments of the functions `ddist` and `rdist` exactly (e.g. for a gaussian mixture, the list elements have to be named `mean` and `sd`, as these are the formal arguments used by `rnorm` and `dnorm`).
+The generation of an object of class `Mix` hinges on four central arguments: a string `dist` specifying the name of the family of component densities (or kernels) <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650014854.jpg">, a boolean`discrete` stating whether the distribution is discrete, a vector `w` giving the weights <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649977761.jpg"> and a list `theta.list` (the component parameters can also be supplied via the `...` argument) containing the parameters of the component densities <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650015122.jpg">. While the creation of `Mix` objects is mostly straightforward, two things should be noted in this regard: First, **mixComp** procedures will search for functions called `rdist` and `ddist` in the accessible namespaces. For most "standard" distributions, these functions are contained in the **stats** package and do not need to be user-written (compare with the Section 6). To make use of these functions, it is essential that the string `dist` is named correctly (e.g. to create a gaussian mixture on the basis of the **stats** package, `dist` has to be specified as `norm` instead of `normal`, `gaussian` etc. for the package to find the functions `dnorm` and `rnorm`). Second, the names of the list elements of `theta.list`(for the names of the `...` arguments) have to match the names of the formal arguments of the functions `ddist` and `rdist` exactly (e.g. for a gaussian mixture, the list elements have to be named `mean` and `sd`, as these are the formal arguments used by `rnorm` and `dnorm` functions of the **stats** package).
 
 The following example creates two `Mix` objects, a 3-component mixture of normal distributions and a 3-component mixture of Poisson distributions. 
-
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#<"
-)
-options(knitr.duplicate.label = "allow")
-```
-
-```{r setup}
-library(mixComp)
-```
 
 ```{r mixobj}
 set.seed(0)
 # construct a Nix object:
 normLocMix <- Mix("norm", discrete = FALSE, w = c(0.3, 0.4, 0.3), mean = c(10, 13, 17), sd = c(1, 1, 1))
 poisMix <- Mix("pois", discrete = TRUE, w = c(0.45, 0.45, 0.1), lambda = c(1, 5, 10))
-```
-
-The created `Mix` objects can then be plotted.
-```{r mixplot, figures-side, fig.show="hold", out.width="50%"}
 # plot the mixtures:
-par(mar = c(5, 5, 1, 1))
 plot(normLocMix, main = "3-component normal mixture", cex.main = 0.9)
 plot(poisMix, main = "3-component poisson mixture", cex.main = 0.9)
 ```
@@ -133,12 +116,7 @@ If required, random samples can be generated from these mixtures.
 # generate random samples:
 normLocRMix <- rMix(1000, obj = normLocMix)
 poisRMix <- rMix(1000, obj = poisMix)
-```
-
-The histograms of the generated random samples can be plotted.
-```{r plotrmix, figures-side, fig.show="hold", out.width="50%"}
 # plot the histograms of the random samples:
-par(mar = c(5, 5, 1, 1))
 plot(normLocRMix, main = "Three component normal mixture", cex.main = 0.9)
 plot(poisRMix, main = "Three component poisson mixture", cex.main = 0.9)
 ```
@@ -158,6 +136,7 @@ The third object class shown in Table 1, called `datMix`, represents the data ve
 |`mix.lrt`                |  x   |    x     |         x        | o + i (optional)|                 |                   |
 
 In the table, "o" and "i" respectively stand for input used during optimization and initialization.
+
 As a simple example of a given dataset to which mixture models have been applied extensively, take the Old Faithful dataset [@R; @faithful1; @faithful2]. In the context of mixture model estimation, the variable `waiting`, which gives the time in minutes between eruptions of the Old Faithful geyser in the Yellowstone National Park, is often considered to be the variable of interest. To estimate the number of components of the mixture distribution that provides a suitable approximation to the `waiting` data via **mixComp**, the raw data vector of observations has to be converted to a `datMix` object first. For the sake of exposition we specify all arguments of  the `datMix` function, starting with the vector of observations <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649977791.jpg"> and the string `dist`, specifying <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650015320.jpg"> and the boolean `discrete`. As has often been done in the relevant literature, we assume that the data comes from a normal mixture.
 
 ```{r faithopts}
