@@ -128,6 +128,8 @@ par(mar = c(5, 5, 1, 1))
 plot(normLocMix, main = "3-component normal mixture", cex.main = 0.9)
 plot(poisMix, main = "3-component poisson mixture", cex.main = 0.9)
 ```
+<img src="https://github.com/yuliadm/mixComp/blob/main/images/normMix.png">
+<img src="https://github.com/yuliadm/mixComp/blob/main/images/poisMix.png">
 
 If required, random samples can be generated from these mixtures.
 ```{r rmix}
