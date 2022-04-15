@@ -224,3 +224,261 @@ Unlike the above mentioned objects whose creation precedes any type of mixture c
 |`mix.lrt`                          |                                                    |                       x                        | 
 
 
+## Section 3. Functions using Hankel matrices
+
+In 1997, [@hankel] showed that the order of a mixture <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649977354.jpg"> is characterized by the smallest integer <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649975639.jpg"> such that the determinant of the <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650017103.jpg"> Hankel matrix of the first <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650017156.jpg"> moments of the mixing distribution equals zero. Moreover, it can be shown that this determinant is zero for all <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650017206.jpg">. Formally, for any vector <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650017273.jpg"> with <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650017336.jpg"> equal to 1, the *Hankel matrix* of <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650017386.jpg"> is defined as the <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650017441.jpg"> matrix given by
+
+<img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650017499.jpg">
+
+Now, let <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650017555.jpg"> be the vector containing the first <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650017605.jpg"> (raw) moments of the mixing distribution. For finite mixture models, this amounts to
+
+<img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650017661.jpg">
+
+Then, for all <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650017720.jpg">, <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650017786.jpg"> is non-negative and
+
+<img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650017845.jpg">
+
+Making use of this fact, the first approach to estimating the order of a mixture that is implemented in **mixComp** relies on initially finding a consistent estimator of $\textbf{c}^{2j+1}$ based on $\textbf{X}$, say $\hat{\textbf{c}}^{2j+1}$, to then iteratively calculate the applicable Hankel matrix while increasing the assumed order $j$ until a sufficiently small value of 
+$\det H(\hat{\textbf{c}}^{2j+1})$ is attained. However, since $\det H(\hat{\textbf{c}}^{2j+1})$ should be close to 0 for all $j \geq p$, this would lead to choosing $\hat{p}$ rather larger than the true value and it seems natural to introduce a penalty term. Therefore [@hankel] define the empirical penalized objective function as
+
+$$J_n(j) := \lvert \det H(\hat{\mathbf{c}}^{2j+1}) \rvert + A(j)l(n),$$
+
+with $l(n)$ being a positive function converging to $0$ as $n\to\infty$ and $A(j)$ being positive and strictly increasing. 
+$$\hat{p} := \arg\min_{j \in \mathbb{N}} J_n(j)$$
+is then a consistent estimator of $p$.
+
+As an extension to simply adding a penalty term to the determinant, a scaling approach was considered by [@lilian]. Let $\hat{d}_j = \det H(\hat{\mathbf{c}}^{2j+1})$, $d_j = \det H(\mathbf{c}^{2j+1})$ and $j_m \geq p, j_m \in \mathbb{N}$. Since the estimated moments $\hat{\mathbf{c}}^{2j+1}$ are asymptotically normal, one can apply the delta method giving
+$$
+\sqrt{n} \cdot
+  \big(
+    \hat{d}_1-d_1,
+    \dots,
+    \hat{d}_{p-1}-d_{p-1},
+    \hat{d}_p-0,
+    \dots,
+    \hat{d}_{j_m}-0
+  \big)^\top \quad \overset{\mathcal{D}}{\longrightarrow} \quad \mathcal{N}(0_{j_m \times 1}, \Sigma_ {j_m \times j_m}).
+$$
+Instead of inspecting the vector $(\hat{d}_1, \dots, \hat{d}_{j_m})^T$, one could therefore also base the complexity analysis on a vector of scaled determinants, employing a nonparametric bootstrap procedure on $\mathbf{X}$.
+To this end, let $\tilde{\Sigma} \in \mathbb{R}^{j_m \times j_m}$ denote the covariance matrix of the determinants $\hat{d}^{*b}_{j}$ calculated on the $b^{\text{th}}$ bootstrap sample for $b=1, \dots, B$ and $j = 1, \dots j_m$. Note that 
+
+$$\tilde{\Sigma} \to \frac{\Sigma}{n} \quad \text{ as }B \to \infty, n \to \infty$$
+
+and write $\tilde{\Sigma}^{-1/2} = \sqrt{n} \cdot \hat{\Sigma}^{-1/2}$. Define the rescaled vector 
+$$
+\big( y_1, \dots, y_p, \dots, y_{j_m} \big)^\top := \sqrt{n} \cdot {\hat{\Sigma}}^{-1/2} \big(
+   \hat{d}_1,
+    \dots,
+    \hat{d}_p,
+    \dots,
+    \hat{d}_{j_m}
+  \big)^\top.
+$$
+
+Note that in the case of the scaled version,  the criterion to be minimized becomes 
+$$
+{J_n(j)}_{scaled} := \vert y_j \vert + A(j)l(n) \cdot \sqrt{n}.
+$$
+That is, the chosen penalty function should be multiplied by $\sqrt{n}$.
+
+This approach was proposed to address the issue of determinants already being very small from the beginning (even for $j = 1$), which, in the simulations by [@lilian], made it hard to discern the "best" complexity estimate, a problem that was not reduced much by solely adding a penalty term.  
+
+With this general framework in place, the computation now merely hinges on calculating $\hat{\textbf{c}}^{2j+1}$. The **mixComp** package offers three methods to do so. The method to use depends on the family of component densities $\{g(x;\theta):\theta \in \Theta \}$ and is linked to some function $f_j(\mathbf{X})$ needed to estimate $\hat{\mathbf{c}}^{2j+1}$. The calculation method and the relevant function are specified when creating the `datMix` object as arguments `Hankel.method` and `Hankel.function`.
+
+
+#### 1. `Hankel.method = "explicit"`
+
+This method can be applied when a closed form expression for estimates of the moments of the mixing distribution exists. `Hankel.function` then contains the function explicitly estimating $\mathbf{c}^{2j+1}$. 
+
+As an example, consider a mixture of geometric distributions, where it can be shown that
+$$c^{2j+1}_j = 1 - \sum_{l = 0}^{j-1} f(l) = 1 - F(j-1),$$
+with $F$ the true cumulative distribution function. This expression is called $c^{2j+1}_j$ only for notational consisteny; the RHS is simply a closed-form expression for the $j^{th}$ moment of the mixing distribution of a geometric mixture. Hence one may take
+$$ \hat{c}^{2j+1}_j = 1 - \hat{F}(j-1)$$
+as an estimator, with  $\hat{F}$ being the empirical distribution function.
+
+```{r geommom}
+# define the function for computing the moments:
+explicit.geom <- function(dat, j){
+  1 - ecdf(dat)(j - 1)
+}
+```
+
+As a second example, consider what [@hankel, p. 283, equation (3)] called the "natural" estimator, i.e. using
+$$
+\hat{c}^{2j+1}_j = f_j\left(\frac{1}{n} \sum_{i=1}^n \psi_j(X_i)\right)
+$$
+when
+$$
+c^{2j+1}_j = f_j(\mathbb{E}[\psi_j(X_i)]).
+$$
+
+Note that the estimators of this form may also be supplied as `Hankel.method = "explicit"` with `Hankel.function`. For example, the "natural" estimator is applicable in the case of Poisson mixtures. If $Y \sim Pois(\lambda)$, it is a well known fact that
+$$\lambda^j = \mathbb{E}[Y(Y-1)\dots(Y-j+1)],$$
+which then suggests using
+$$\hat{c}^{2j+1}_j = \frac{1}{n} \sum_{i=1}^n X_i(X_i-1)\dots(X_i-j+1)$$
+as an estimator.
+
+```{r geompois}
+# define the function for computing the moments:
+explicit.pois <- function(dat, j){
+  mat <- matrix(dat, nrow = length(dat), ncol = j) - 
+         matrix(0:(j-1), nrow = length(dat), ncol = j, byrow = TRUE)
+  return(mean(apply(mat, 1, prod)))
+}
+```
+
+
+#### 2. `Hankel.method = "translation"`
+ 
+Example 3.1. in [@hankel, p.284] describes how $\textbf{c}^{2j+1}$ can be estimated if the family of component distributions $(G_\theta)$ is given by $\text{d}G_\theta(x) = \text{d}G(x-\theta)$, where $G$ is a known probability distribution whose moments can be given explicitly. In this case, a triangular linear system can be solved for the estimated moments of the mixing distribution $\hat{\textbf{c}}^{2j+1}$ using the empirical moments of the mixture distribution and the known moments of $G$. The former can be estimated from the data vector $\textbf{X}$ whereas the latter has to be supplied by the user. Thus, `Hankel.function` contains a function of $j$ returning the $j^{th}$ (raw) moment of $G$.
+
+As an example, consider a mixture of normal distributions with unknown mean and unit variance. Then $G$ is the standard normal distribution, and its $j$th moment $m_j$ is defined as
+$$
+m_j=
+\begin{cases}
+0 & \text{if } j \text{ uneven}\\
+(j-1)!! & \text{if } j \text{ even}
+.\end{cases}
+$$
+
+```{r}
+# define the function for computing the moments:
+mom.std.norm <- function(j){
+  ifelse(j %% 2 == 0, prod(seq(1, j - 1, by = 2)), 0)
+}
+```
+
+
+#### 3. `Hankel.method = "scale"`
+
+Similarly, example 3.2. in [@hankel, p.285] describes how $\textbf{c}^{2j+1}$ can be estimated if the family of component distributions $(G_\theta)$ is given by $\text{d}G_\theta(x) = \text{d}G(\frac{x}{\theta})$, where $G$ is a known probability distribution whose moments can be given explicitly. Likewise, a triangular linear system can be solved for $\hat{\textbf{c}}^{2j+1}$, using the empirical moments of the mixture distribution and the known moments of $G$. `Hankel.function` contains a function of $j$ returning the $j^{th}$ moment of $G$. Note that squares have to be taken everywhere if for some integer $j$, $m_j = 0$ (compare with [@hankel, p.285]).
+
+As an example, consider a mixture of normal distributions with zero mean and unknown variance. Then $G$ is again the standard normal distribution, and its $j^{th}$ moment is defined as above.
+
+Coming back to the overall goal of complexity estimation, the function `nonparamHankel` returns all estimated determinant values corresponding to complexities up to `j.max`, so that the user can pick the lowest $j$ generating a sufficiently small determinant. The function allows the inclusion of a penalty term as a function of the sample size `n` and the currently assumed complexity `j` which will be added to the determinant value (by supplying `pen.function`), and/or scaling of the determinants (by setting `scaled  = TRUE`). For scaling, a nonparametric bootstrap is used to calculate the covariance of the estimated determinants, with `B` being the size of the bootstrap sample. The inverse of the square root (i.e. the matrix $S$ such that $A = SS$, where $A$ is the (square) covariance matrix. The procedure uses **expm**'s `sqrtm` [@expm]) of this covariance matrix is then multiplied with the estimated determinant vector to get the scaled determinant vector.
+
+We will initially apply this method to the two already generated datasets of $3$-component Poisson and normal mixtures using the penalty $A(j)l()n = \frac{j \log(n)}{\sqrt{n}}$ and scaling the determinants as described above.
+
+First, for converting the previously simulated samples from $3$-component Poisson and normal mixtures yielding the objects of class `rMix` to objects of class `datMix` one should apply the `RtoDat` function as follows:
+```{r rtodat}
+MLE.pois <- function(dat) mean(dat)
+
+# create datMix objects:
+pois.dM <- RtoDat(poisRMix, theta.bound.list = list(lambda = c(0, Inf)), 
+                  MLE.function = MLE.pois, Hankel.method = "explicit",
+                  Hankel.function = explicit.pois)
+
+
+normLoc.dM <- RtoDat(normLocRMix, theta.bound.list = norm.bound.list,
+                     MLE.function = MLE.norm.list, Hankel.method = "translation",
+                     Hankel.function = mom.std.norm)
+```
+
+In the case of the scaled version of the method, the penalty should be multiplied by $\sqrt{n}$ as mentioned earlier. 
+```{r nonph}
+# define the penalty function:
+pen <- function(j, n){
+  j * log(n)
+}
+
+# apply the nonparamHankel function to the datMix objects:
+set.seed(1)
+poisdets_sca_pen <- nonparamHankel(pois.dM, j.max = 5, scaled = TRUE, 
+                                   B = 1000, pen.function = pen)
+normdets_sca_pen <- nonparamHankel(normLoc.dM, j.max = 5, scaled = TRUE, 
+                                   B = 1000, pen.function = pen)
+```
+
+We can print and plot the results as suggested below.
+
+```{r plotnonph, figures-side, fig.show="hold", out.width="50%"}
+# print the results (for the Poisson mixture)
+print(poisdets_sca_pen)
+# plot results for both mixtures:
+par(mar = c(5, 5, 1, 1))
+plot(poisdets_sca_pen, main = "3-component Poisson mixture", cex.main = 0.9)
+plot(normdets_sca_pen, main = "3-component Normal mixture", cex.main = 0.9)
+```
+
+The resulting plots indicate that while theoretically sound, the scaled version of the Hankel method can struggle to correctly identify the number of components in practice.
+
+As the preceding example shows, it can be quite difficult to determine the order estimate from the vector of estimated determinants alone. Thus, the package includes another option of estimating $p$ based on Hankel matrices, however, using a more "parametric" approach which goes hand in hand with estimating $\mathbf{w}$ and $\mathbf{\theta}$. The `paramHankel` procedure initially assumes the mixture to only contain a single component, setting $j = 1$, and then sequentially tests $p = j$ versus $p = j+1$ for $j = 1,2, \dots$, until the algorithm terminates. To do so, it determines the MLE for a $j$-component mixture $(\hat{\mathbf{w}}^j, \hat{\mathbf{\theta}}^j) = (\hat{w}_1, \dots, \hat{w}_j, \hat{\theta}_1, \dots, \hat{\theta}_j) \in W_j \times \Theta_j$, generates `B` parametric bootstrap samples of size $n$ from the distribution corresponding to $(\hat{\mathbf{w}}^j, \hat{\mathbf{\theta}}^j)$ and calculates `B` determinants of the corresponding $(j+1) \times (j+1)$ Hankel matrices. The null hypothesis $H_0: p = j$ is rejected and $j$ increased by $1$ if the determinant value based on the original data vector $\textbf{X}$ lies outside of the interval $[ql, qu]$, a range specified by the `ql` and `qu` empirical quantiles of the bootstrapped determinants. Otherwise, $j$ is returned as the order estimate $\hat{p}$. 
+
+`paramHankel.scaled` functions similarly to `paramHankel` with the exception that the bootstrapped determinants are scaled by the empirical standard deviation of the bootstrap sample. To scale the original determinant, `B` nonparametric bootstrap samples of size $n$ are generated from the data, the corresponding determinants are calculated and their empirical standard deviation is used.
+
+Applying `paramHankel.scaled` to the same Poisson and Normal mixtures results in the correct identification of the mixture complexity in both cases as can be seen in the plot:
+
+```{r plotph, figures-side, fig.show="hold", out.width="50%"}
+# apply papamHankel.scaled to datMix objects:
+set.seed(1)
+pois_sca_pen <- paramHankel.scaled(pois.dM)
+norm_sca_pen <- paramHankel.scaled(normLoc.dM)
+# plot the results for both mixtures:
+par(mar=c(5, 5, 1, 1))
+plot(pois_sca_pen,)
+plot(norm_sca_pen)
+```
+
+As another example, consider data generated from a three component geometric mixture, with $\mathbf{w} = (0.1, 0.6, 0.3)$ and $\mathbf{\theta} = (0.8, 0.2, 0.4)$. 
+
+```{r geomex}
+set.seed(1)
+# define the geometric mixture:
+geomMix <- Mix("geom", discrete=TRUE, w = c(0.1, 0.6, 0.3), prob = c(0.8, 0.2, 0.4))
+# generate a random sample from the mixture:
+geomRMix <- rMix(1000, obj = geomMix)
+# construct the corresponding datMis object:
+MLE.geom <- function(dat){
+  1/(mean(dat)+1)
+}
+geom.dM <- RtoDat(geomRMix, Hankel.method = "explicit", 
+                  Hankel.function = explicit.geom, 
+                  theta.bound.list = list(prob = c(0, 1)), 
+                  MLE.function = MLE.geom)
+# etimate the number of components using paramHankel function:
+(res <- paramHankel(geom.dM, j.max = 5, B = 1000, ql = 0.025, qu = 0.975))
+```
+
+Again, `paramHankel` correctly identifies the data as having been generated by a $3$-component mixture.
+
+Consider now, as a real-world example, the Children dataset whose content was taken from the Annual Report of the pension fund S.P.P. of 1952. The dataset initially appeared in work of [@thisted] and was subsequently analysed by many authors. It entails data on 4075 widows who recieved pension from the fund, with their number of children being our variable of interest. For example, there are 3062 widows without children, 587 widows with one child, etc. Many authors have noted that this data is not consistent with being a random sample from a Poisson distribution since the number of zeros found in the data is too large. Thisted approached this by fitting a mixture of two populations, one which is always zero and one which follows a Poisson distribution. **mixComp** includes this data stored as a dataframe. Here, we want to investigate 
+how the Hankel matrix methods compare when fitting the data to a mixture of Poissons.
+
+The estimation process starts with the construction of the `datMix` object.
+
+```{r childex}
+# convert the data to vetor:
+children.obs <- unlist(children)
+# define the MLE function:
+MLE.pois <- function(dat) mean(dat)
+# construct a datMix object:
+children.dM <- datMix(children.obs, dist = "pois", discrete = TRUE, 
+                      Hankel.method = "explicit", 
+                      Hankel.function = explicit.pois,
+                      theta.bound.list = list(lambda = c(0, Inf)), 
+                      MLE.function = MLE.pois)
+```
+
+
+First, we check the nonparametric method. We define the penalty $A(j)l(n)$ as $j\log(n)$ (by multiplying $\frac{j\log(n)}{\sqrt{n}}$ by $\sqrt{n}$). The result suggests that the data comes from a 2-component mixture.
+
+```{r childplotnph, fig.width = 5, fig.height = 4}
+# define the penalty:
+pen <- function(j, n) j * log(n)
+# estimate the number of components:
+set.seed(0)
+(det_sca_pen <- nonparamHankel(children.dM, j.max = 5, scaled = TRUE, 
+                              B = 1000, pen.function = pen))
+#plot the results:
+plot(det_sca_pen, main = "Non-parametric Hankel method for Children dataset",
+     cex.main = 0.9)
+```
+
+Next, we check the fit of the parametric version. The printed result of `paramHankel.scaled` shows that this method also suggests 2 to be the number of components, with the first component corresponding to a Poisson distribution with $\lambda = 0.0306$. Note that the limit case $\lambda = 0$ results in a point mass at $0$, and that this fit therefore nicely lines up with the idea of a component accounting for only the zero observations. The plot shows that this method yields a sensible fit overall.
+
+```{r childplotph, fig.width = 5, fig.height = 4}
+set.seed(0)
+param_sca <- paramHankel.scaled(children.dM, j.max = 5, B = 1000, ql = 0.025, 
+                          qu = 0.975)
+plot(param_sca, breaks = 8, ylim = c(0, 0.8))
+```
