@@ -474,7 +474,7 @@ Unlike the theory on Hankel matrices introduced in Section 3, many theoretical c
 
 <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650027370.jpg">
 
-With <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650015320.jpg"> set in advance, elements of <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650027451.jpg"> can be written as
+With <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650015320.jpg"> set in advance, elements of <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650030256.jpg"> can be written as
 
 <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650027564.jpg">
 
