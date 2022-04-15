@@ -512,7 +512,7 @@ can be used. Note that, if a customized function is to be used, its arguments ha
 
 #### 2. `hellinger.disc`
 
-This second function presents an alternative estimation procedure for *discrete* mixtures, working much the same as `L2.disc`, however, using a different measure of distance and different thresholds. As the name suggests, it is based on the square of the Hellinger distance, causing the "best" estimate $(\hat{\mathbf{w}}^j, \hat{\mathbf{\theta}}^j) \in W_j \times \Theta_j$ for a given <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649975639.jpg"> to equal
+This second function presents an alternative estimation procedure for *discrete* mixtures, working much the same as `L2.disc`, however, using a different measure of distance and different thresholds. As the name suggests, it is based on the square of the Hellinger distance, causing the "best" estimate <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650032650.jpg"> for a given <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649975639.jpg"> to equal
 
 $$(\hat{\mathbf{w}}^j, \hat{\mathbf{\theta}}^j) = \arg\min_{(\mathbf{w}, \mathbf{\theta})} H^2(f_{j, \mathbf{w}, \mathbf{\theta}}, \hat{f_n}) 
 = \arg\max_{(\mathbf{w}, \mathbf{\theta})} \sum_{x=0}^{X_{(n)}} \sqrt{f_{j, \mathbf{w}, \mathbf{\theta}}(x) \tilde{f}_n(x)},$$
