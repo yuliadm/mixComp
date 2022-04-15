@@ -388,6 +388,8 @@ par(mar = c(5, 5, 1, 1))
 plot(poisdets_sca_pen, main = "3-component Poisson mixture", cex.main = 0.9)
 plot(normdets_sca_pen, main = "3-component Normal mixture", cex.main = 0.9)
 ```
+<img src="https://github.com/yuliadm/mixComp/blob/main/images/np_art_1.png">
+<img src="https://github.com/yuliadm/mixComp/blob/main/images/np_art_2.png">
 
 The resulting plots indicate that while theoretically sound, the scaled version of the Hankel method can struggle to correctly identify the number of components in practice.
 
