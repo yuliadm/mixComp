@@ -589,3 +589,94 @@ res <- hellinger.boot.disc(pois.dM, B = 50, ql = 0.025, qu = 0.975)
 
 plot(res)
 ```
+
+## Section 5. Functions using LRTS
+
+As a third option of estimating the mixture complexity, the **mixComp** package provides an algorithm based on the likelihood ratio test statistic (LRTS), sequentially testing <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650025663.jpg"> versus <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650025642.jpg"> for <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650025687.jpg">, until the algorithm terminates. As noted in Section 1, it is not possible to use the generalized likelihood ratio test in the context of mixture models directly as the standard way of obtaining the asymptotic distribution of the LRTS under the null hypothesis cannot be applied. However, one can get estimates of the test's critical values by employing a bootstrap procedure.
+
+Making use of this approach, the function `mix.lrt` iteratively increases the assumed order <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649975639.jpg"> and finds the MLE for both, the density of a mixture with <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649975639.jpg"> and <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649978303.jpg"> components, giving <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650028366.jpg"> and <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650051363.jpg">. It then calculates the corresponding LRTS, defined as
+
+<img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650051485.jpg">
+
+with
+
+<img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650051541.jpg">
+
+<img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650051597.jpg"> being the likelihood function given the data <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649977791.jpg">.
+
+Next, a parametric bootstrap is used to generate `B` samples of size <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649977745.jpg"> from a <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649975639.jpg">-component mixture given the previously calculated MLE <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650030786.jpg">. For each of the bootstrap samples, the MLEs corresponding to densities of mixtures with <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649975639.jpg"> and <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649978303.jpg"> components are calculated, as well as the LRTS. The null hypothesis <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650026196.jpg"> is rejected and <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649975639.jpg"> increased by 1 if the LRTS based on the original data vector <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649977791.jpg"> is larger than the chosen `quantile` of its bootstrapped counterparts. Otherwise, <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649975639.jpg"> is returned as the order estimate <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650014579.jpg">. For further details, the reader is referred to [@lrt].
+
+For example, refer back to the `waiting` variable from the `faithful` dataset. The `mix.lrt` function returns a 2-component mixture with reasonable estimates for the component weights and parameters.
+
+```{r, fig.width = 5, fig.height = 4, results='hide', message=FALSE, warning=FALSE}
+set.seed(1)
+res <- mix.lrt(faithful.dM, B = 50, quantile = 0.95)
+print(res)
+plot(res)
+```
+
+Consider as another example the Acidity dataset (also included in the package) which comprises measurements of the acid neutralizing capacity (ANC) taken from 155 lakes in North-Central Wisconsin. The ANC indicates a lakes' capability to absorb acid, with low values potentially leading to a loss of biological resources. This dataset has been first analysed as a mixture of normal distributions on the log scale by [@acidity]. The paper suggests the number of components to equal 2 (with 3 also being considered). The `mix.lrt` method agrees with such conclusions, returning a 2-component mixture with reasonable estimates for the component weights and parameters.
+
+```{r lrtacid, fig.width = 5, fig.height = 4, results='hide', message=FALSE, warning=FALSE}
+acidity.obs <- unlist(acidity)
+
+acidity.dM <- datMix(acidity.obs, dist = "norm", discrete = FALSE, 
+                     MLE.function = MLE.norm.list, 
+                     theta.bound.list = norm.bound.list)
+
+set.seed(0)
+res <- mix.lrt(acidity.dM, B = 50, quantile = 0.95)
+plot(res)
+```
+
+## Section 6. Non-standard mixtures
+
+In all preceding examples, the families of component densities <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649976784.jpg"> belonged to one of the "standard" probability distributions included in the **stats** package, which provides the density/mass function, cumulative distribution function, quantile function and random variate generation for selected distributions. The function names are of the form `dxxx`, `pxxx`, `qxxx` and `rxxx` respectively. With some additional effort, it is possible to use the **mixComp** package on "non-standard" distributions -- the user merely has to provide functions evaluating the density and generating random numbers for the component distribution. In accordance with **R** conventions, the user-generated function `dxxx` has to take `x` and the distribution parameters as input and returns the value of the density function specified by the parameters at the point `x`. Likewise, `rxxx` requires `n` and the distribution parameters as input and returns `n` random numbers based on the distribution specified by the aforementioned parameters.
+
+As an example, consider a sample <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649977791.jpg"> from a 3-component mixture of normals with means equal to 10, 11 and 13. Assume that the standard deviation of all components is known to be 0.5, yet the number of components and their means are unknown. Then each of the components follows a <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650052707.jpg"> distribution, which shall be called `norm0.5`. The first step is always that of creating the `dxxx` and `rxxx` functions, since they will be called by the **mixComp** functions.
+
+The following example creates the `Mix` and `rMix` objects
+based on the density of a normal mixture with <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650048978.jpg">, <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650052857.jpg"> and <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650052889.jpg"> and plots the obtained mixture density and the corresponding random sample. 
+
+```{r, figures-side, fig.show="hold", out.width="50%", results='hide', message=FALSE, warning=FALSE}
+dnorm0.5 <- function(x, mean){
+  dnorm(x, mean = mean,  sd = 0.5)
+}
+rnorm0.5 <- function(n, mean){
+  rnorm(n, mean = mean,  sd = 0.5)
+}
+## create objects `Mix` and `rMix`:
+set.seed(1)
+norm0.5Mix <- Mix("norm0.5", discrete = FALSE, w = c(0.3, 0.4, 0.3), mean = c(10, 11, 13))
+norm0.5RMix <- rMix(1000, obj = norm0.5Mix)
+## plot the results:
+plot(norm0.5Mix)
+plot(norm0.5RMix)
+```
+
+Below we will estimate of the mixture density using `mix.lrt` given a sample from the 3-component normal mixture with <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650048978.jpg">, <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650052857.jpg">, <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650052889.jpg">.
+
+We start by creating all necessary inputs:
+```{r}
+norm0.5.list <- vector(mode = "list", length = 1)
+names(norm0.5.list) <- c("mean")
+norm0.5.list$mean <- c(-Inf, Inf)
+
+MLE.norm0.5 <- function(dat) mean(dat)
+
+norm0.5.dM <- RtoDat(norm0.5RMix, theta.bound.list = norm0.5.list,
+                     MLE.function = MLE.norm0.5)
+```
+
+
+Finally, the **mixComp** procedures can be used on the `datMix` object as usual. The results can be printed and plotted using `print` and `plot` functions.
+```{r, results='hide', message=FALSE, warning=FALSE}
+set.seed(1)
+res <- mix.lrt(norm0.5.dM, B = 50, quantile = 0.95)
+```
+
+
+```{r, fig.width = 5, fig.height = 4}
+print(res)
+plot(res)
+```
