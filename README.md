@@ -1,5 +1,5 @@
-# mixComp
-
+---
+title: 'mixComp: An R package for estimation of a finite mixture model complexity'
 tags:
   - R
   - mixture complexity estimation
