@@ -11,7 +11,7 @@ tags:
 authors:
   - name: Anja Weigel^[author] # note this makes a footnote 
     affiliation: 2  
-    - name: Fadoua Balabdaoui^[co-author] # note this makes a footnote 
+  - name: Fadoua Balabdaoui^[co-author] # note this makes a footnote 
     affiliation: 1 
   - name: Yulia Kulagina^[co-author, maintainer] # note this makes a footnote 
     affiliation: 1
