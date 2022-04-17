@@ -514,7 +514,7 @@ Unlike the two preceding functions, this procedure is applicable to *continuous*
 
 <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650047870.jpg">
 
-Since the computational burden of optimizing over an integral to find the "best" weights and component parameters is immense, the algorithm approximates the objective function defined in the previous equation by sampling <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650047870.jpg"> `sample.n` observations <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650048345.jpg"> from <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650030450.jpg"> and setting
+Since the computational burden of optimizing over an integral to find the "best" weights and component parameters is immense, the algorithm approximates the objective function defined in the previous equation by sampling <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650047975.jpg"> `sample.n` observations <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650048345.jpg"> from <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650030450.jpg"> and setting
 
 <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650048404.jpg">
 
