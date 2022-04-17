@@ -651,6 +651,8 @@ norm0.5RMix <- rMix(1000, obj = norm0.5Mix)
 plot(norm0.5Mix)
 plot(norm0.5RMix)
 ```
+<img src="https://github.com/yuliadm/mixComp/blob/main/images/norm0.5Mix.png">
+<img src="https://github.com/yuliadm/mixComp/blob/main/images/norm0.5RMix.png">
 
 Below we will estimate of the mixture density using `mix.lrt` given a sample from the 3-component normal mixture with <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650048978.jpg">, <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650052857.jpg">, <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650052889.jpg">.
 
@@ -678,6 +680,7 @@ res <- mix.lrt(norm0.5.dM, B = 50, quantile = 0.95)
 print(res)
 plot(res)
 ```
+<img src="https://github.com/yuliadm/mixComp/blob/main/images/est-norm0.5.png">
 
 ## Section 7. Computational nuance for mixComp functions using the solnp() solver
 
