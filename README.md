@@ -757,5 +757,25 @@ The Table below showcases the results of all complexity estimation procedures wh
 | `mix.lrt`                 |    2     |      2       |      3      |    2    |
 
 
-\pagebreak
 ### References
+<a id="1">[1]</a> 
+Azzalini A, Bowman A (1990). “A Look at Some Data on the Old Faithful Geyser.” Journal
+of the Royal Statistical Society C, 39(3), 357–365. doi:10.2307/2347385. URL https:
+//www.jstor.org/stable/2347385.
+
+<a id="2">[2]</a> 
+Azzalini A, Bowman A (1990). “A Look at Some Data on the Old Faithful Geyser.” Journal
+of the Royal Statistical Society C, 39(3), 357–365. doi:10.2307/2347385. URL https:
+//www.jstor.org/stable/2347385.
+
+<a id="3">[3]</a> 
+Balabdaoui F, de Fournas-Labrosse G (2020). “Least Squares Estimation of a Completely
+Monotone pm: From Analysis to Statistics.” JSPI, 204, 55–71.
+
+<a id="4">[4]</a> 
+Balabdaoui F, Kulagina Y (2020). “Completely Monotone Distributions: Mixing, Approxi-
+mation and Estimation of Number of Species.” Computational Statistics & Data Analysis,
+150, 107014, 26. ISSN 0167-9473. doi:10.1016/j.csda.2020.107014.
+Benaglia T, Chauveau D, Hunter DR, Young D (2009). “mixtools: An R Package for
+Analyzing Finite Mixture Models.” Journal of Statistical Software, 32(6), 1–29. URL
+http://www.jstatsoft.org/v32/i06/.
