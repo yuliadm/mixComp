@@ -546,7 +546,7 @@ res <- hellinger.cont(faithful.dM, bandwidth = kdensity(faithful.obs)$bw,
                       sample.n = 5000, threshold = "AIC")
 plot(res)
 ```
-<img src="https://github.com/yuliadm/mixComp/blob/main/images/hell-cont-OF.png">
+<img src="https://github.com/yuliadm/mixComp/blob/main/images/hell-cont-norm.png">
 
 At this point, it is worth having a closer look at the thresholds. They each satisfy <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650049424.jpg"> as <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650019043.jpg">, the sole condition the authors require. Now, the consistency proofs for the estimators defined in this Section all rely on the fact that, as <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650019043.jpg">,
 
