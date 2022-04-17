@@ -416,7 +416,7 @@ how the Hankel matrix methods compare when fitting the data to a mixture of Pois
 The estimation process starts with the construction of the `datMix` object.
 
 ```{r childex}
-# convert the data to vetor:
+# convert the data to vector:
 children.obs <- unlist(children)
 # define the MLE function:
 MLE.pois <- function(dat) mean(dat)
