@@ -257,7 +257,7 @@ As an example, consider a mixture of geometric distributions, where it can be sh
 
 <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650022531.jpg">
 
-with <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649922138.jpg"> the true cumulative distribution function. This expression is called <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650022588.jpg"> only for notational consisteny; the RHS is simply a closed-form expression for the <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649975639.jpg">th moment of the mixing distribution of a geometric mixture. Hence one may take
+with <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649922138.jpg"> the true cumulative distribution function. Hence one may take
 
 <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650022746.jpg">
 
