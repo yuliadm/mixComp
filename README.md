@@ -567,48 +567,33 @@ The preceding example shows that <img src="https://github.com/yuliadm/mixComp/bl
 Since the bootstrap version returns a very similar result to the threshold version on the Old Faithful dataset, we introduce a new example here. Consider the so-called Shakespeare dataset which comprises the number of occurrences of the words that Shakespeare used in his writings. For example, the number of times Shakespeare used a word only once is 14 376, while the number of times the same word occurred exactly 10 times in his writing is 363. The same data have been considered in other papers, see e.g., [@sp68], [@Efron1976], [@CheeWang2016] and [@balabdkulagina]. In the last three papers, the underlying statistical question that the authors wanted to answer is: how many words did Shakespeare actually know? This problem is known under the name of 'species richness' and can be solved using a variety of approaches. The goal is to use the observed frequencies of species, here words, to estimate the unobserved number of words that Shakespeare knew and did not use in his writings. While there is a whole spectrum of methods for estimating species richness, we limit ourselves here to motivate fitting a finite mixture of geometrics to the data. It is known from [@steutel69] that the class of completely monotone probability mass functions defined on the set of non-negative integers, that is the class of <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649977354.jpg"> such that <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650224248.jpg"> for all integers <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650224316.jpg"> coincides with the class of all mixtures of geometrics probability mass functions (here <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650224375.jpg"> and <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650224434.jpg"> for any integer <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650224521.jpg">). In [@bdF2019], the monotone complete least squares estimator (LSE) was defined for such class, which is the first non-parametric estimator that was considered for an element in such a family. Complete monotonicity can be defined on any subset of the set of integers of the form <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650224708.jpg"> since the change of variable <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650224786.jpg"> brings us back to complete monotonicity on <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650224850.jpg">. It can be clearly seen that the complete monotone estimator fits very well the empirical estimator of the word occurrences. This result strongly suggests that complete monotonicity is a very appropriate model. In the scope of this paper, we want to explore how fitting a finite mixture of geometric distributions with unknown number of components works for this dataset. This alternative approach is actually inspired by the fact that the complete monotone LSE is itself a finite mixture of geometrics (with a random number of components). Such a result is rather universal and its exact statement can be found in Proposition 2.3 in [@bdF2019]. 
 
 
-Since we inherently do not observe the number of words Shakespeare did not use, the data start at 1. However, using $Y = X-1$ and assuming $Y$ is a geometric mixture with parameters $\{p, w_1, \dots, w_p, \theta_1, \dots, \theta_p\}$ leads to the following model for $X$:
+Since we inherently do not observe the number of words Shakespeare did not use, the data start at 1. However, using <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650228576.jpg"> and assuming <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650228421.jpg"> is a geometric mixture with parameters <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650228651.jpg"> leads to the following model for <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650228501.jpg">:
 
-\begin{equation}
-f(x)  =  w_1  (1-\theta_1)^{x-1}  \theta_1  +  \ldots  +  w_{p} (1-\theta_{p})^{x-1}  \theta_{p}, \ \ x \in \{1,2,\ldots \, 100\}
-\label{eq:shakespeare}
-\end{equation}
+<img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650228680.jpg">
 
-In accordance with the \proglang{R}-function \code{dgeom}, the parametrization we use for the probability mass function of a geometric distribution means that $\theta_i \in [0,1)$ is the success probability for the $i$-th component, $i~\in~\{1, \ldots, p\}$. Building on Equation~\ref{eq:shakespeare}, the clear appropriateness of the complete monotone model for the word frequencies in the Shakespeare data can be complemented by a more applied interpretation, its underyling assumption being that words in any language belong to different categories depending on the context in which they are used. As there is a finite number of words, this justifies the appropriateness of fitting a finite mixture model, whose components would correspond to the aforementioned categories. With the $i^{\text{th}}$ component distribution given by $g(x;\theta_i) = (1-\theta_i)^{x-1}  \theta_i,\ x = 1,2,\dots$, this expression can be seen as the probability of a word belonging to category $i$ not appearing (in some new work) after having previously been used $x$ times.
-\newpage
-The \code{datMix} object corresponding to the Shakespeare dataset is generated as follows: 
+In accordance with the R-function `dgeom`, the parametrization we use for the probability mass function of a geometric distribution means that <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650228713.jpg"> is the success probability for the <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649975606.jpg">-th component, <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650228824.jpg">. Building on the above equation, the clear appropriateness of the complete monotone model for the word frequencies in the Shakespeare data can be complemented by a more applied interpretation, its underyling assumption being that words in any language belong to different categories depending on the context in which they are used. As there is a finite number of words, this justifies the appropriateness of fitting a finite mixture model, whose components would correspond to the aforementioned categories. With the <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649975606.jpg">-th component distribution given by <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650229293.jpg">, this expression can be seen as the probability of a word belonging to category <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649975606.jpg"> not appearing (in some new work) after having previously been used <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650229825.jpg"> times.
+
+The `datMix` object corresponding to the Shakespeare dataset is generated as follows: 
 
 
-<<distance.boot1>>=
-
+```
 shakespeare.obs <- unlist(shakespeare) - 1
-
+# define the MLE function:
 MLE.geom <- function(dat) 1 / (mean(dat) + 1)
 
 Shakespeare.dM <- datMix(shakespeare.obs, dist = "geom", discrete = TRUE, 
-  MLE.function = MLE.geom, theta.bound.list = list(prob = c(0, 1)))
-@
+MLE.function = MLE.geom, theta.bound.list = list(prob = c(0, 1)))
 
-\code{hellinger.boot.disc} estimates that the data comes from a 3-component geometric mixture (thus clustering the english words Shakespeare used into three categories), with Figure~\ref{hellbootplot} showcasing the resulting fit.
-
-<<distance.boot2, results = FALSE, message = FALSE>>=
+# estimate the number of components and plot the results:
 set.seed(0)
 res <- hellinger.boot.disc(Shakespeare.dM, B = 50, ql = 0.025, qu = 0.975)
-@
+plot(res)
+```
 
-<<distance.boot3>>=
-res
-@
+<img src="https://github.com/yuliadm/mixComp/blob/main/images/hell-boot-geom.png">
 
+`hellinger.boot.disc` estimates that the data comes from a 3-component geometric mixture (thus clustering the english words Shakespeare used into three categories).
 
-\begin{figure}[!h]
-  \centering
-<<hell_boot_plot, out.width = "0.75\\textwidth">>=
-plot(res, breaks = 100, xlim = c(0, 20))
-@
-\caption{Result of \code{hellinger.boot.disc} applied to the Shakespeare dataset.}
-\label{hellbootplot}
-\end{figure}
 
 
 ## Section 5. Functions using LRTS
