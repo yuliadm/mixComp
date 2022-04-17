@@ -773,9 +773,151 @@ Balabdaoui F, de Fournas-Labrosse G (2020). “Least Squares Estimation of a Com
 Monotone pm: From Analysis to Statistics.” JSPI, 204, 55–71.
 
 <a id="4">[4]</a> 
-Balabdaoui F, Kulagina Y (2020). “Completely Monotone Distributions: Mixing, Approxi-
-mation and Estimation of Number of Species.” Computational Statistics & Data Analysis,
+Balabdaoui F, Kulagina Y (2020). “Completely Monotone Distributions: Mixing, Approximation 
+and Estimation of Number of Species.” Computational Statistics & Data Analysis,
 150, 107014, 26. ISSN 0167-9473. doi:10.1016/j.csda.2020.107014.
+
+<a id="5">[5]</a> 
 Benaglia T, Chauveau D, Hunter DR, Young D (2009). “mixtools: An R Package for
 Analyzing Finite Mixture Models.” Journal of Statistical Software, 32(6), 1–29. URL
 http://www.jstatsoft.org/v32/i06/.
+
+<a id="6">[6]</a> 
+Chee CS, Wang Y (2016). “Nonparametric Estimation of Species Richness Using Discrete
+k-Monotone Distributions.” Computational Statistics & Data Analysis, 93, 107–118. ISSN
+0167-9473.
+
+<a id="7">[7]</a> 
+Chen J, Kalbfleisch J (1996). “Penalized Minimum-Distance Estimates in Finite Mixture
+Models.” Canadian Journal of Statistics, 24(2), 167–175.
+
+<a id="8">[8]</a> 
+Crawford SL (1994). “An Application of the Laplace Method to Finite Mixture Distributions.”
+Journal of the American Statistical Association, 89(425), 259–267. ISSN 01621459. URL
+http://www.jstor.org/stable/2291222.
+
+<a id="9">[9]</a> 
+Crawford SL, DeGroot MH, Kadane JB, Small MJ (1992). “Modeling Lake-Chemistry Distri-
+butions: Approximate Bayesian Methods for Estimating a Finite-Mixture Model.” Techno-
+metrics, 34(4), 441–453. ISSN 00401706. URL http://www.jstor.org/stable/1268943.
+
+<a id="10">[10]</a> 
+Cutler A, Cordero-Braña OI (1996). “Minimum Hellinger Distance Estimation for Finite
+Mixture Models.” Journal of the American Statistical Association, 91(436), 1716–1723.
+ISSN 01621459. doi:10.2307/2291601. URL http://www.jstor.org/stable/2291601.
+
+<a id="11">[11]</a> 
+Dacunha-Castelle D, Gassiat E (1997). “The Estimation of the Order of a Mixture Model.”
+Bernoulli, 3(3), 279–299. doi:10.2307/3318593. URL https://www.jstor.org/stable/
+3318593.
+
+<a id="12">[12]</a> 
+Dempster AP, Laird NM, Rubin DB (1977). “Maximum Likelihood from Incomplete Data
+via the EM Algorithm.” Journal of the Royal Statistical Society B, 39(1), 1–38. ISSN
+0035-9246. With discussion, URL http://www.jstor.org/stable/2984875.
+
+<a id="13">[13]</a> 
+Efron B, Thisted R (1976). “Estimating the Number of Unseen Species: How Many Words
+Did Shakespeare Know?” Biometrka, 63, 435–447. ISSN 0006-341X.
+
+<a id="14">[14]</a> 
+Figueiredo MAT, Jain AK (2002). “Unsupervised Learning of Finite Mixture Models.” IEEE
+Transactions on Pattern Analysis and Machine Intelligence, 24(3), 381–396.
+
+<a id="15">[15]</a> 
+Ghalanos A, Theussl S (2015). Rsolnp: General Non-linear Optimization Using Augmented
+Lagrange Multiplier Method. R package version 1.16.
+
+<a id="16">[16]</a> 
+Goulet V, Dutang C, Maechler M, Firth D, Shapira M, Stadelmann M (2019). expm: Matrix
+Exponential, Log, ’etc’. R package version 0.999-4, URL https://CRAN.R-project.org/
+package=expm.
+
+<a id="17">[17]</a> 
+Grün B, Leisch F (2007). “Fitting Finite Mixtures of Generalized Linear Regressions in
+R.” Computational Statistics & Data Analysis, 51(11), 5247–5252. doi:10.1016/j.csda.
+2006.08.014.
+
+<a id="18">[18]</a> 
+Grün B, Leisch F (2008). “FlexMix Version 2: Finite Mixtures with Concomitant Variables
+and Varying and Constant Parameters.” Journal of Statistical Software, 28(4), 1–35. doi:
+10.18637/jss.v028.i04. URL http://www.jstatsoft.org/v28/i04/.
+
+<a id="19">[19]</a> 
+Härdle W (1991). Smoothing Techniques : With Implementation in S. Springer-Verlag New
+York, New York, NY, USA. doi:10.1007/978-1-4612-4432-5.
+
+<a id="20">[20]</a> 
+Leisch F (2004). “FlexMix: A General Framework for Finite Mixture Models and Latent
+Class Regression in R.” Journal of Statistical Software, 11(8), 1–18. doi:10.18637/jss.
+v011.i08. URL http://www.jstatsoft.org/v11/i08/.
+
+<a id="21">[21]</a> 
+Lindsay BG (1983a). “The Geometry of Mixture Likelihoods: A General Theory.” The Annals
+of Statistics, 11(1), 86–94. ISSN 0090-5364. doi:10.1214/aos/1176346059.30
+
+<a id="22">[22]</a> 
+Lindsay BG (1983b). “The Geometry of Mixture Likelihoods: The Exponential Family.” The
+Annals of Statistics, 11(3), 783–792. ISSN 0090-5364. doi:10.1214/aos/1176346245.
+
+<a id="23">[23]</a> 
+Macdonald P, Du J (2018). mixdist: Finite Mixture Distribution Models. R package version
+0.5-5, URL https://CRAN.R-project.org/package=mixdist.
+
+<a id="24">[24]</a> 
+Maechler M, Rousseeuw P, Struyf A, Hubert M, Hornik K (2019). cluster: Cluster Analysis
+Basics and Extensions. R package version 2.1.0 — For new features, see the ’Changelog’
+file (in the package source).
+
+<a id="25">[25]</a> 
+McLachlan G, Peel D (2000). Finite Mixture Models. Wiley Series in Probability and Statis-
+tics: Applied Probability and Statistics. John Wiley & Sons. ISBN 0-471-00626-2. doi:
+10.1002/0471721182.
+
+<a id="26">[26]</a> 
+Melnykov V, Chen WC, Maitra R (2012). “MixSim: An R Package for Simulating Data
+to Study Performance of Clustering Algorithms.” Journal of Statistical Software, 51(12),
+1–25. URL http://www.jstatsoft.org/v51/i12/.
+
+<a id="27">[27]</a> 
+Miller JW, Harrison MT (2018). “Mixture Models with a Prior on the Number of Compo-
+nents.” Journal of the American Statistical Association, 113(521), 340–356.
+
+<a id="28">[28]</a> 
+Müller L (2020). Clustering with Mixtures: A Comparative Study. Master’s thesis, ETH.
+
+<a id="29">[29]</a> 
+Moss J, Tveten M (2019). kdensity: Kernel Density Estimation with Parametric Starts
+and Asymmetric Kernels. R package version 1.0.1, URL https://CRAN.R-project.org/
+package=kdensity.
+
+<a id="30">[30]</a> 
+R Core Team (2020). R: A Language and Environment for Statistical Computing. R Foun-
+dation for Statistical Computing, Vienna, Austria. URL https://www.R-project.org/.
+
+<a id="31">[31]</a> 
+Richardson S, Green PJ (1997). “On Bayesian Analysis of Mixtures with an Unknown Number
+of Components (with Discussion).” Journal of the Royal Statistical Society B, 59(4), 731–
+792. doi:10.1111/1467-9868.00095. URL https://rss.onlinelibrary.wiley.com/
+doi/abs/10.1111/1467-9868.00095.
+
+<a id="32">[32]</a> 
+Scrucca L, Fop M, Murphy TB, Raftery AE (2016). “mclust 5: Clustering, Classification and
+Density Estimation Using Gaussian Finite Mixture Models.” The R Journal, 8(1), 289–317.
+URL 10.32614/RJ-2016-021.
+
+<a id="33">[33]</a> 
+Spevack M (1968). “A Complete and Systematic Concordance to the Works of Shakespeare.”
+Vols. 1–6. George Olms, Hildesheim.
+
+<a id="34">[34]</a> 
+Steutel FW (1969). “Note on Completely Monotone Densities.” The Annals of Mathematical
+Statistics, 40, 1130–1131. ISSN 0003-4851.
+
+<a id="29">[29]</a> 
+Teicher H (1963). “Identifiability of Finite Mixtures.” The Annals of Mathematical Statistics,
+34, 1265–1269. ISSN 0003-4851. doi:10.1214/aoms/1177703862.
+
+<a id="29">[29]</a> 
+Thisted RA (1988). Elements of Statistical Computing: Numerical Computation. Chapman
+& Hall, Ltd., GBR. ISBN 0412013711.
