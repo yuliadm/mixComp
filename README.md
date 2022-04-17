@@ -612,16 +612,7 @@ with
 
 Next, a parametric bootstrap is used to generate `B` samples of size <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649977745.jpg"> from a <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649975639.jpg">-component mixture given the previously calculated MLE <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650030786.jpg">. For each of the bootstrap samples, the MLEs corresponding to densities of mixtures with <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649975639.jpg"> and <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649978303.jpg"> components are calculated, as well as the LRTS. The null hypothesis <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650026196.jpg"> is rejected and <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649975639.jpg"> increased by 1 if the LRTS based on the original data vector <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649977791.jpg"> is larger than the chosen `quantile` of its bootstrapped counterparts. Otherwise, <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649975639.jpg"> is returned as the order estimate <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650014579.jpg">. For further details, the reader is referred to [@lrt].
 
-For example, refer back to the `waiting` variable from the `faithful` dataset. The `mix.lrt` function returns a 2-component mixture with reasonable estimates for the component weights and parameters.
-
-```{r, fig.width = 5, fig.height = 4, results='hide', message=FALSE, warning=FALSE}
-set.seed(1)
-res <- mix.lrt(faithful.dM, B = 50, quantile = 0.95)
-print(res)
-plot(res)
-```
-
-Consider as another example the Acidity dataset (also included in the package) which comprises measurements of the acid neutralizing capacity (ANC) taken from 155 lakes in North-Central Wisconsin. The ANC indicates a lakes' capability to absorb acid, with low values potentially leading to a loss of biological resources. This dataset has been first analysed as a mixture of normal distributions on the log scale by [@acidity]. The paper suggests the number of components to equal 2 (with 3 also being considered). The `mix.lrt` method agrees with such conclusions, returning a 2-component mixture with reasonable estimates for the component weights and parameters.
+For the two artificial datasets, this method estimates 3-component mixtures with very similar parameters to the distance methods, so we go straight to a real-world example. Consider the Acidity dataset which comprises measurements of the acid neutralizing capacity (ANC) taken from 155 lakes in North-Central Wisconsin. The ANC indicates a lakes' capability to absorb acid, with low values potentially leading to a loss of biological resources. This dataset has been analysed as a mixture of normal distributions on the log scale by [@acidity1], [@acidity2] and [@acidity3]. While the former papers suggest the number of components to equal 2 (with 3 also being considered), the latter estimates <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649977354.jpg"> to lie between 3 and 5. The `mix.lrt` method agrees with [@acidity1] and [@acidity2], returning a 2-component mixture with reasonable estimates for the component weights and parameters.
 
 ```{r lrtacid, fig.width = 5, fig.height = 4, results='hide', message=FALSE, warning=FALSE}
 acidity.obs <- unlist(acidity)
@@ -634,6 +625,7 @@ set.seed(0)
 res <- mix.lrt(acidity.dM, B = 50, quantile = 0.95)
 plot(res)
 ```
+<img src="https://github.com/yuliadm/mixComp/blob/main/images/lrt-norm.png">
 
 ## Section 6. Non-standard mixtures
 
