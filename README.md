@@ -1,5 +1,34 @@
 # mixComp
 
+tags:
+  - R
+  - mixture complexity estimation
+  - mixture models
+  - Hankel matrix
+  - minimum distance
+  - likelihood-rato test
+
+authors:
+  - name: Anja Weigel^[author] # note this makes a footnote 
+    affiliation: 2  
+    - name: Fadoua Balabdaoui^[co-author] # note this makes a footnote 
+    affiliation: 1 
+  - name: Yulia Kulagina^[co-author, maintainer] # note this makes a footnote 
+    affiliation: 1
+  - name: Lilian Mueller^[contributor]
+    affiliation: 2
+  - name: Martin Maechler^[contributor]
+    (package 'nor1mix' as model, <https://orcid.org/0000-0002-8685-9910>)
+    affiliation: 1  
+    
+affiliations:
+ - name: ETH Zurich, Seminar for Statistics, Switzerland
+   index: 1
+ - name: ETH Zurich, Switzerland
+   index: 2
+date: 13 August 2017
+bibliography: paper.bib
+
 The **mixComp** package provides a number of methods for estimating the complexity of a finite mixture.
 The considered approaches can be loosely grouped into three categories:
 <ul>
