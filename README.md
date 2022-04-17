@@ -506,7 +506,7 @@ with <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650047
 
 <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650047548.jpg">
 
-(recall that <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649976201.jpg"> is the number of component parameters, i.e. <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649922033.jpg">). If a customized function is to be used, its arguments have to named `j` and `n` once more, so if the user wants to include the number of component parameters <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649976201.jpg">, it has to be entered explicitly. 
+(recall that <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649976201.jpg"> is the number of dimensions, i.e. <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649922033.jpg">). If a customized function is to be used, its arguments have to named `j` and `n` once more, so if the user wants to include the number of component parameters <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649976201.jpg">, it has to be entered explicitly. 
 
 #### 3. `hellinger.cont`
  
