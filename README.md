@@ -232,7 +232,7 @@ As an extension to simply adding a penalty term to the determinant, a scaling ap
 Instead of inspecting the vector <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650019799.jpg">, one could therefore also base the complexity analysis on a vector of scaled determinants, employing a nonparametric bootstrap procedure on <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649977791.jpg">.
 To this end, let <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650019902.jpg"> denote the covariance matrix of the determinants <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650021468.jpg"> calculated on the <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650021576.jpg">-th bootstrap sample for <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650021631.jpg"> and <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650021686.jpg">. Note that 
 
-<img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650021686.jpg">
+<img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650021736.jpg">
 
 and write <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650021787.jpg">. Define the rescaled vector 
 
