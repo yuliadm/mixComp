@@ -533,6 +533,10 @@ plot(h_cont_norm)
 
 For a real-world example, refer back to the `faithful` dataset and the corresponding `datMix` object which was created in Section 1. Fitting the distance methods to a continuous density requires a choice of bandwidth. While using the adaptive bandwidth is an option, if the user does not want to do so, it is recommended to use the function `kdensity` from the package **kdensity** [@kdensity] which automatically selects an optimal bandwidth. If the user wants to compare different bandwidth values, it is advisable to look at the plots of the respective kernel density estimates using `kdensity` and to choose one that captures the shape of the data well without fitting to noise.
 
+<img src="https://github.com/yuliadm/mixComp/blob/main/images/bandwidth1.png">
+<img src="https://github.com/yuliadm/mixComp/blob/main/images/bandwidth4.png">
+<img src="https://github.com/yuliadm/mixComp/blob/main/images/bandwidth8.png">
+
 `hellinger.cont` fits a 2-component mixture to the data, which fits the data well and comprises similar parameter estimates to those found in the literature.
 
 ```{r faithplothel, fig.width = 5, fig.height = 4}
@@ -542,8 +546,6 @@ res <- hellinger.cont(faithful.dM, bandwidth = kdensity(faithful.obs)$bw,
                       sample.n = 5000, threshold = "AIC")
 plot(res)
 ```
-
-
 
 
 At this point, it is worth having a closer look at the thresholds. They each satisfy <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650049424.jpg"> as <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650019043.jpg">, the sole condition the authors require. Now, the consistency proofs for the estimators defined in this Section all rely on the fact that, as <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650019043.jpg">,
