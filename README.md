@@ -1,68 +1,68 @@
 ---
-title: 'Gala: A Python package for galactic dynamics'
+title: 'Estimating the Complexity of a Finite Mixture with the \proglang{R} Package \pkg{mixComp}'
 tags:
-  - Python
-  - astronomy
-  - dynamics
-  - galactic dynamics
-  - milky way
+  - R
+  - mixture complexity estimation
+  - mixture models
+  - Hankel matrix
+  - minimum distance
+  - likelihood-rato test
 authors:
-  - name: Adrian M. Price-Whelan^[Co-first author] # note this makes a footnote saying 'Co-first author'
-    orcid: 0000-0000-0000-0000
-    affiliation: "1, 2" # (Multiple affiliations must be quoted)
-  - name: Author Without ORCID^[Co-first author] # note this makes a footnote saying 'Co-first author'
+  - name: Anja Weigel^[author] # note this makes a footnote 
+    affiliation: 2  
+  - name: Fadoua Balabdaoui^[co-author] # note this makes a footnote 
+    affiliation: 1 
+  - name: Yulia Kulagina^[co-author, maintainer] # note this makes a footnote 
+    affiliation: 1
+  - name: Lilian Mueller^[contributor]
     affiliation: 2
-  - name: Author with no affiliation^[Corresponding author]
-    affiliation: 3
+  - name: Martin Maechler^[contributor]
+    (package 'nor1mix' as model, <https://orcid.org/0000-0002-8685-9910>)
+    affiliation: 1  
 affiliations:
- - name: Lyman Spitzer, Jr. Fellow, Princeton University, USA
+  - name: ETH Zurich, Seminar for Statistics, Switzerland
    index: 1
- - name: Institution Name, Country
+  - name: ETH Zurich, Switzerland
    index: 2
- - name: Independent Researcher, Country
-   index: 3
-date: 13 August 2017
-bibliography: paper.bib
+date: 17 April 2022
+bibliography: refs.bib
 
-# Optional fields if submitting to a AAS journal too, see this blog post:
-# https://blog.joss.theoj.org/2018/12/a-new-collaboration-with-aas-publishing
-aas-doi: 10.3847/xxxxx <- update this with the DOI from AAS once you know it.
-aas-journal: Astrophysical Journal <- The name of the AAS journal.
 ---
 
 # Summary
 
-The forces on stars, galaxies, and dark matter under external gravitational
-fields lead to the dynamical evolution of structures in the universe. The orbits
-of these bodies are therefore key to understanding the formation, history, and
-future state of galaxies. The field of "galactic dynamics," which aims to model
-the gravitating components of galaxies to study their structure and evolution,
-is now well-established, commonly taught, and frequently used in astronomy.
-Aside from toy problems and demonstrations, the majority of problems require
-efficient numerical tools, many of which require the same base code (e.g., for
-performing numerical orbit integration).
+The **mixComp** package provides a number of methods for estimating the complexity of a finite mixture.
+The considered approaches can be loosely grouped into three categories:
+<ul>
+  <li> methods built upon the determinants of the Hankel matrix of moments of the mixing distribution; </li>
+  <li> methods based on penalized minimum distance between the unknown probability density and a consistent estimator thereof. The distances considered in this survey are the Hellinger and the $L_2$-distances; </li>
+  <li> likelihood ratio test (LRT) - based techniques. </li>
+</ul>
+While not the primary goal, most methods simultaneously estimate the component weights and parameters. In this document, we give a brief overview of the methodology, and demonstrate the package's functionality in both real world examples and synthetically generated data. Moreover, we show how the package can be used on virtually any parametric mixture as long as functions generating random variates and evaluating the density are provided for the component distribution.
 
 # Statement of need
 
-`Gala` is an Astropy-affiliated Python package for galactic dynamics. Python
-enables wrapping low-level languages (e.g., C) for speed without losing
-flexibility or ease-of-use in the user-interface. The API for `Gala` was
-designed to provide a class-based and user-friendly interface to fast (C or
-Cython-optimized) implementations of common operations such as gravitational
-potential and force evaluation, orbit integration, dynamical transformations,
-and chaos indicators for nonlinear dynamics. `Gala` also relies heavily on and
-interfaces well with the implementations of physical units and astronomical
-coordinate systems in the `Astropy` package [@astropy] (`astropy.units` and
-`astropy.coordinates`).
+Mixture models occur in numerous settings including random
+and fixed effects models, clustering, deconvolution, empirical Bayes prob-
+lems and many others. In particular, they are often used to model the data
+which are believed to come from a heterogeneous population, consisting of
+several homogeneous subpopulations. In such cases the problem of finding
+a good estimator for the number of components in the mixture arises naturally, 
+whether of primary interest in itself or as a first step in estimating the
+population distribution. Estimation of the order of a finite mixture model
+is known to be a hard statistical task, and multiple techniques have been
+suggested for solving it.
 
-`Gala` was designed to be used by both astronomical researchers and by
-students in courses on gravitational dynamics or astronomy. It has already been
-used in a number of scientific publications [@Pearson:2017] and has also been
-used in graduate courses on Galactic dynamics to, e.g., provide interactive
-visualizations of textbook material [@Binney:2008]. The combination of speed,
-design, and support for Astropy functionality in `Gala` will enable exciting
-scientific explorations of forthcoming data releases from the *Gaia* mission
-[@gaia] by students and experts alike.
+The **mixComp** package provides a variety of approaches for estimation of the complexity of
+a finite mixture distribution, simultaneously estimating the component weights and parameters. 
+The estimation results can be printed out and plotted for further analysis and study.
+The documentation contains multiple examples based on simulated as well as real data, several real-world 
+datasets have been built-in to the package for convenience.
+
+The use of the **mixComp** package might be of interest to researchers and practitioners who 
+are studying phenomena that can be effectively modelled using mixture distributions. 
+Among other things it can be used to identify settings and conditions, under which a certain 
+method provides more accurate estimates than the others.
 
 # Mathematics
 
