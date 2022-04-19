@@ -132,9 +132,9 @@ plot(normLocMix, main = "3-component normal mixture", cex.main = 0.9)
 plot(poisMix, main = "3-component poisson mixture", cex.main = 0.9)
 ```
 
-![3-component normal mixture](images/normMix.png) 
+![3-component normal mixture](figures/normMix.png) 
 
-![3-component poisson mixture](images/poisMix.png) 
+![3-component poisson mixture](figures/poisMix.png) 
 
 
 If required, random samples can be generated from these mixtures.
@@ -147,9 +147,9 @@ plot(normLocRMix, main = "3-component normal mixture", cex.main = 0.9)
 plot(poisRMix, main = "3-component poisson mixture", cex.main = 0.9)
 ```
 
-![3-component normal mixture](images/normRMix.png) 
+![3-component normal mixture](figures/normRMix.png) 
 
-![3-component poisson mixture](images/poisRMix.png) 
+![3-component poisson mixture](figures/poisRMix.png) 
   
 The third object class shown in Table 1, called `datMix`, represents the data vector $\mathbf{X}$ based on which the mixture complexity is supposed to be estimated. These objects are most central to the package, as every procedure estimating the order of a mixture takes a `datMix` object as input. Apart from $\mathbf{X}$, it contains other "static" information needed for the estimation procedure (in contrast to "tuning parameters", which can be changed with every function call. An example of such a tuning parameter is the number of bootstrap replicates for a function employing a bootstrap procedure). A brief overview of which "static" attributes need to be supplied for each complexity estimation routine is given in Table 2. 
 
@@ -412,9 +412,9 @@ par(mar = c(5, 5, 1, 1))
 plot(poisdets_sca_pen, main = "3-component poisson mixture", cex.main = 0.9)
 plot(normdets_sca_pen, main = "3-component normal mixture", cex.main = 0.9)
 ```
-![3-component poisson mixture](images/np_art_1.png)
+![3-component poisson mixture](figures/np_art_1.png)
 
-![3-component normal mixture](images/np_art_2.png)
+![3-component normal mixture](figures/np_art_2.png)
 
 
 Having created the data ourselves, we know that it comes from a 3-component Poisson mixture and a 3-component Gaussian mixture respectively. The resulting plots indicate that while theoretically sound, the scaled version of the Hankel method can struggle to correctly identify the number of components in practice.
@@ -436,9 +436,9 @@ plot(pois_sca_pen,)
 plot(norm_sca_pen)
 ```
 
-![Scaled Hankel determinants for a poisson mixture](images/p_art_1.png)
+![Scaled Hankel determinants for a poisson mixture](figures/p_art_1.png)
 
-![Scaled Hankel determinants for a normal mixture](images/p_art_2.png)
+![Scaled Hankel determinants for a normal mixture](figures/p_art_2.png)
 
 
 Consider now, as a real-world example, the Children dataset whose content was taken from the Annual Report of the pension fund S.P.P. of 1952. The dataset initially appeared in work of [@thisted] and was subsequently analysed by many authors. It entails data on 4075 widows who recieved pension from the fund, with their number of children being our variable of interest. For example, there are 3062 widows without children, 587 widows with one child, etc. Many authors have noted that this data is not consistent with being a random sample from a Poisson distribution since the number of zeros found in the data is too large. Thisted approached this by fitting a mixture of two populations, one which is always zero and one which follows a Poisson distribution. **mixComp** includes this data stored as a dataframe. Here, we want to investigate 
@@ -474,7 +474,7 @@ plot(det_sca_pen, main = "Non-parametric Hankel method for Children dataset",
      cex.main = 0.9)
 ```
 
-![Non-parametric Hankel method for Children dataset](images/np_real.png)
+![Non-parametric Hankel method for Children dataset](figures/np_real.png)
 
 Next, we check the fit of the parametric version. The printed result of `paramHankel.scaled` shows that this method also suggests 2 to be the number of components, with the first component corresponding to a Poisson distribution with$\lambda = 0.0306$. Note that the limit case $\lambda = 0$ results in a point mass at 0, and that this fit therefore nicely lines up with the idea of a component accounting for only the zero observations. The plot shows that this method yields a sensible fit overall.
 
@@ -485,7 +485,7 @@ param_sca <- paramHankel.scaled(children.dM, j.max = 5, B = 1000, ql = 0.025,
 plot(param_sca, breaks = 8, ylim = c(0, 0.8))
 ```
 
-![Parametric Hankel method for Children dataset](images/p_real.png)
+![Parametric Hankel method for Children dataset](figures/p_real.png)
 
 
 # Section 4. Functions using distances
@@ -573,9 +573,9 @@ plot(h_disc_pois)
 plot(h_cont_norm)
 ```
 
-![Hellinger distance method for a poisson mixture](images/dist_art_1.png)
+![Hellinger distance method for a poisson mixture](figures/dist_art_1.png)
 
-![Hellinger distance method for a normal mixture](images/dist_art_2.png)
+![Hellinger distance method for a normal mixture](figures/dist_art_2.png)
 
 
 For a real-world example, refer back to the `faithful` dataset and the corresponding `datMix` object which was created in Section 1. Fitting the distance methods to a continuous density requires a choice of bandwidth. While using the adaptive bandwidth is an option, if the user does not want to do so, it is recommended to use the function `kdensity` from the package **kdensity** [@kdensity] which automatically selects an optimal bandwidth (can be accessed via `kdensity(data)$bw`). If the user wants to compare different bandwidth values, it is advisable to look at the plots of the respective kernel density estimates using `kdensity` and to choose one that captures the shape of the data well without fitting to noise.
@@ -596,7 +596,7 @@ res <- hellinger.cont(faithful.dM, bandwidth = kdensity(faithful.obs)$bw,
 plot(res)
 ```
 
-![Hellinger distance method applied to the Old Faithful data](images/hell-cont-norm.png)
+![Hellinger distance method applied to the Old Faithful data](figures/hell-cont-norm.pdf)
 
 At this point, it is worth having a closer look at the thresholds. They each satisfy $t(j,n) \rightarrow 0$ as $n \rightarrow \infty$, the sole condition the authors require. Now, the consistency proofs for estimators defined via Equation \autoref{eq:distances} all rely on the fact that, as $n \rightarrow \infty$,
 
@@ -640,7 +640,7 @@ res <- hellinger.boot.disc(Shakespeare.dM, B = 50, ql = 0.025, qu = 0.975)
 plot(res)
 ```
 
-![Hellinger distance method with bootstrap applied to the Shakespeare data](images/hell-boot-geom.png)
+![Hellinger distance method with bootstrap applied to the Shakespeare data](figures/hell-boot-geom.pdf)
 
 
 `hellinger.boot.disc` estimates that the data comes from a 3-component geometric mixture (thus clustering the english words Shakespeare used into three categories).
@@ -673,7 +673,7 @@ res <- mix.lrt(acidity.dM, B = 50, quantile = 0.95)
 plot(res)
 ```
 
-![LRT method applied to the Acidity data](images/lrt-norm.png)
+![LRT method applied to the Acidity data](figures/lrt-norm.pdf)
 
 
 # Section 6. Non-standard mixtures
@@ -702,9 +702,9 @@ plot(norm0.5Mix)
 plot(norm0.5RMix)
 ```
 
-![Non-standard normal mixture](images/norm0.5Mix.png)
+![Non-standard normal mixture](figures/norm0.5Mix.png)
 
-![Non-standard normal mixture](images/norm0.5RMix.png)
+![Non-standard normal mixture](figures/norm0.5RMix.png)
 
 
 Below we will estimate of the mixture density using `mix.lrt` given a sample from the considered above 3-component normal mixture. We start by creating all necessary inputs:
