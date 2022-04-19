@@ -31,12 +31,11 @@ aas-journal: Astrophysical Journal <- The name of the AAS journal.
 
 The **mixComp** package provides a number of methods for obtaining a consistent estimate of the complexity of a 
 finite mixture (the focus is made on the univariate case). The considered approaches can be loosely grouped into three categories:
-<ul>
-  <li> methods built upon the determinants of the Hankel matrix of moments of the mixing distribution; </li>
-  <li> methods based on penalized minimum distance between the unknown probability density and a consistent estimator thereof. 
-    The distances considered in this survey are the Hellinger and the $L_2$-distances; </li>
-  <li> likelihood ratio test (LRT) - based techniques. </li>
-</ul>
+  - methods built upon the determinants of the Hankel matrix of moments of the mixing distribution; 
+  - methods based on penalized minimum distance between the unknown probability density and a consistent estimator thereof 
+    (the distances considered in this survey are the Hellinger and the $L_2$-distances);
+  - likelihood ratio test (LRT) - based techniques.
+
 While not the primary goal, most methods simultaneously estimate the component weights and parameters. 
 In this document, we give a brief overview of the methodology, and demonstrate the package's functionality in 
 both real world examples and synthetically generated data. Moreover, we show how the package can be used on virtually 
