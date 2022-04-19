@@ -233,10 +233,10 @@ $$ p = \min\{j \geq 1 : \det H(\textbf{c}^{2j+1}) = 0\}. $$
 
 Making use of this fact, the first approach to estimating the order of a mixture that is implemented in **mixComp** relies on initially finding a consistent estimator of $\textbf{c}^{2j+1}$ based on $\textbf{X}$, say $\hat{\textbf{c}}^{2j+1}$, to then iteratively calculate the applicable Hankel matrix while increasing the assumed order $j$ until a sufficiently small value of $\det H(\hat{\textbf{c}}^{2j+1})$ is attained. However, since $\det H(\hat{\textbf{c}}^{2j+1})$ should be close to 0 for all $j \geq p$, this would lead to choosing $\hat{p}$ rather larger than the true value and it seems natural to introduce a penalty term. Therefore [@hankel] define the empirical penalized objective function as
 
-$$J_n(j) \coloneqq \lvert \det H(\hat{\textbf{c}}^{2j+1}) \rvert + A(j)l(n),$$
+$$J_n(j) := \lvert \det H(\hat{\textbf{c}}^{2j+1}) \rvert + A(j)l(n),$$
 
 with $l(n)$ being a positive function converging to $0$ as $n\to\infty$ and $A(j)$ being positive and strictly increasing. 
-$$\hat{p} \coloneqq \argmin_{j \in \mathbb{N}} J_n(j)$$
+$$\hat{p} := \argmin_{j \in \mathbb{N}} J_n(j)$$
 is then a consistent estimator of $p$.
 
 As an extension to simply adding a penalty term to the determinant, a scaling approach was considered by \citet{lilian}. Let $\hat{d}_j = \det H(\hat{\textbf{c}}^{2j+1})$, $d_j = \det H(\textbf{c}^{2j+1})$ and $j_m \geq p, j_m \in \mathbb{N}$. Since the estimated moments $\hat{\textbf{c}}^{2j+1}$ are asymptotically normal, one can apply the delta method giving
@@ -745,34 +745,34 @@ and all packages used are available from the Comprehensive **R** Archive Network
 
 Let $\textbf{X} = \{X_1, \dots, X_n\}$ be an i.i.d. sample of size $n$ from some continuous distribution with unknown density $f$. Its *kernel densty estimator* is defined as
 
-$$\tilde{f}_n(x) \coloneqq \frac{1}{nc_n}\sum_{i=1}^n K\left( \frac{x-X_i}{c_n} \right),$$	
+$$\tilde{f}_n(x) := \frac{1}{nc_n}\sum_{i=1}^n K\left( \frac{x-X_i}{c_n} \right),$$	
 
 with kernel $K$ and bandwidth $c_n$.
 
 As an extension, [@adap] defined the *adaptive kernel density estimator* as
 
-$$\tilde{f}_n(x) \coloneqq \frac{1}{n}\sum_{i=1}^n \sum_{j=1}^k \frac{a_j(X_i)}{c_{n, j}} K\left( \frac{x-X_i}{c_{n, j}} \right),$$	
+$$\tilde{f}_n(x) := \frac{1}{n}\sum_{i=1}^n \sum_{j=1}^k \frac{a_j(X_i)}{c_{n, j}} K\left( \frac{x-X_i}{c_{n, j}} \right),$$	
 
 with kernel $K$, bandwidth $c_{n, j}$ and weights (positive and summing to $1$) $a_j(X_i)$.
 	
 Let $\textbf{X} = \{X_1, \dots, X_n\}$ be an i.i.d. sample of size $n$ from some discrete distribution with unknown probability mass function $f$. Its *empirical probability mass function* is defined as
 
-$$\tilde{f}_n(x) \coloneqq \frac{1}{n}\sum_{i=1}^n \mathbbm{1}_{\{X_i = x\}}.$$	
+$$\tilde{f}_n(x) := \frac{1}{n}\sum_{i=1}^n \mathbbm{1}_{\{X_i = x\}}.$$	
 
 Let $g, f$ be two probability mass functions defined on $\mathcal{X}$.
 The squared $L_2$ distance between $g$ and $f$ is given by
 
-$$L_2^2(g,f) \coloneqq \sum_{\mathcal{X}} (g(x)-f(x))^2.$$	
+$$L_2^2(g,f) := \sum_{\mathcal{X}} (g(x)-f(x))^2.$$	
 	
 
 Let $g, f$ be two density or probability mass functions defined on $\mathcal{X}$.
 The squared Hellinger distance between $g$ and $f$ is given by
 
-$$H^2(g,f) \coloneqq \sum_{\mathcal{X}} \left( \sqrt{g(x)}-\sqrt{f(x)} \right)^2$$	
+$$H^2(g,f) := \sum_{\mathcal{X}} \left( \sqrt{g(x)}-\sqrt{f(x)} \right)^2$$	
 	
 in the discrete case and by
 
-$$H^2(g,f) \coloneqq \int_{\mathcal{X}} \left( \sqrt{g(x)}-\sqrt{f(x)} \right)^2 dx$$	
+$$H^2(g,f) := \int_{\mathcal{X}} \left( \sqrt{g(x)}-\sqrt{f(x)} \right)^2 dx$$	
 
 in the continuous case.
 
