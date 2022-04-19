@@ -312,12 +312,12 @@ As a second example, consider what [@hankel, p. 283, equation (3)] called the "n
 when
 
 \begin{equation}\label{eq:2}
-c^{2j+1}_j = f_j(\E[\psi_j(X_i)]).
+c^{2j+1}_j = f_j(\mathbb{E}[\psi_j(X_i)]).
 \end{equation}
 
 Note that the estimators of this form may also be supplied as `Hankel.method = "explicit"` with `Hankel.function` equal to the right-hand side of Equation \autoref{eq:1}. For example, the "natural" estimator is applicable in the case of Poisson mixtures. If $Y \sim Pois(\lambda)$, it is a well known fact that
 
-$$\lambda^j = \E[Y(Y-1)\dots(Y-j+1)],$$
+$$\lambda^j = \mathbb{E}[Y(Y-1)\dots(Y-j+1)],$$
 
 which, in combination with \autoref{eq:1} and \autoref{eq:2} suggests using
 
@@ -336,7 +336,7 @@ explicit.pois <- function(dat, j){
 
 #### 2. `Hankel.method = "translation"`
  
-In Example 3.1., [@hankel, p.284] describe how $\textbf{c}^{2j+1}$ can be estimated if the family of component distributions $(G_\theta)$ is given by $\text{d}G_\theta(x) = \text{d}G(x-\theta)$, where $G$ is a known probability distribution whose moments can be given explicitly. In this case, a triangular linear system can be solved for the estimated moments of the mixing distribution $\hat{\textbf{c}}^{2j+1}$ using the empirical moments of the mixture distribution and the known moments of $G$. The former can be estimated from the data vector $\textbf{X}$ whereas the latter has to be supplied by the user. Thus, `Hankel.function` contains a function of $j$ returning the $j$-th (raw) moment of $G$.
+In Example 3.1., [@hankel, p.284] describe how $\textbf{c}^{2j+1}$ can be estimated if the family of component distributions $(G_\theta)$ is given by $\text{d}G_\theta(x) = \text{d}G(x-\theta)$, where $G$ is a known probability distribution whose moments can be given explicitly. In this case, a triangular linear system can be solved for the estimated moments of the mixing distribution $\hat{\textbf{c}}^{2j+1}$ using the empirical moments of the mixture distribution and the known moments of $G$. The former can be estimated from the data vector $\mathbf{X}$ whereas the latter has to be supplied by the user. Thus, `Hankel.function` contains a function of $j$ returning the $j$-th (raw) moment of $G$.
 
 As an example, consider a mixture of normal distributions with unknown mean and unit variance. Then $G$ is the standard normal distribution, and its $j$-th moment $m_j$ is defined as
 
