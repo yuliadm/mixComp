@@ -1,5 +1,5 @@
 ---
-title: 'mixComp: An R package for estimating complexity of a mixture mixture'
+title: 'mixComp: An R package for estimating complexity of a mixture'
 tags:
   - R
   - mixture distribution
@@ -88,7 +88,7 @@ and
 
 $$W_j = \{w_1, \dots, w_j: \sum_{i=1}^j w_i = 1, w_i \geq 0, \text{ for } i = 1,\dots,j\}.$$
 
-Throughout this document, it is assumed that the family of the component densities $\{g(x; \theta):\theta \in \Theta\}$ is known, but the component parameters $ \textbf{\theta}= (\theta_1, \dots, \theta_p) \in \Theta_p$, the component weights $\textbf{w} = (w_1, \dots, w_p) \in W_p$ and the mixture complexity $p \in \mathbb{N}$ are unknown, with $p$ being the parameter of interest. Assume now that $F$ is a finite mixture distribution with density $f(x) = \sum_{i=1}^p w_i g(x; \theta_i)$ and $\textbf{X} = \{X_1, \dots, X_n\}$ is an i.i.d. sample of size $n$ from $F$. The **mixComp** package aims to estimate the smallest such $p$ on the basis of $\textbf{X}$, either on its own or by simultaneously estimating the weights $w_i$ and the component parameters $\theta_i$, $i \in 1, \dots, p$.
+Throughout this document, it is assumed that the family of the component densities $\{g(x; \theta):\theta \in \Theta\}$ is known, but the component parameters $\textbf{\theta}= (\theta_1, \dots, \theta_p) \in \Theta_p$, the component weights $\textbf{w} = (w_1, \dots, w_p) \in W_p$ and the mixture complexity $p \in \mathbb{N}$ are unknown, with $p$ being the parameter of interest. Assume now that $F$ is a finite mixture distribution with density $f(x) = \sum_{i=1}^p w_i g(x; \theta_i)$ and $\textbf{X} = \{X_1, \dots, X_n\}$ is an i.i.d. sample of size $n$ from $F$. The **mixComp** package aims to estimate the smallest such $p$ on the basis of $\textbf{X}$, either on its own or by simultaneously estimating the weights $w_i$ and the component parameters $\theta_i$, $i \in 1, \dots, p$.
 
 In this setup, it seems natural to test for the number of components by comparing two consecutive models. Traditionally, the problem of choosing between nested models may be approached by applying the generalized likelihood ratio test and referring to the $\chi^2_r$ distribution to assess significance, where $r$ is given by the number of constraints imposed on the alternative hypothesis $H_1$ to arrive at the null hypothesis $H_0$. However, in the context of mixture models, there are several issues hindering application of this classical theory. One of them is that there is no unique way of obtaining $H_0$ from $H_1$. As an example, the two null hypotheses $H_0: w_{j+1} = 0$ and $H_0: \theta_{j+1} = \theta_{1}$ both yield the smaller model, showcasing the difficulties of applying the classical asymptotic theory of the likelihood ratio. This problem has been studied extensively in the literature and numerous alternative approaches to mixture complexity estimation have been suggested, laying the theoretical foundation for the subsequently described algorithms.
 
@@ -114,7 +114,7 @@ Table 1 depicts five object classes defined in **mixComp**. The first two respec
 | `rMix`         | `rMix`                                       | Randomly generated data from a finite mixture   |
 | `datMix`       | `datMix` or `RtoDat`                         | Observed data from (presumably) a finite mixture|
 | `hankDet`      | `nonparamHankel`                             | Vector of estimated Hankel matrix determinants  |
-| `paramEst`     | `paramHankel(.scaled)`, `L2(.boot).disc`, `hellinger(.boot).disc`, `hellinger(.boot).cont` or `mix.lrt`  | Complexity estimate $\hat{p}$, together with estimates of the weights $\hat{\mathbf{w}}$ and the component parameters $\hat{\mathbf{\theta}}$>|
+| `paramEst`     | `paramHankel(.scaled)`, `L2(.boot).disc`, `hellinger(.boot).disc`, `hellinger(.boot).cont` or `mix.lrt`  | Complexity estimate $\hat{p}$, together with estimates of the weights $\hat{\mathbf{w}}$ and the component parameters $\hat{\mathbf{\theta}}$|
 
 The generation of an object of class `Mix` hinges on four central arguments: a string `dist` specifying the name of the family of component densities (or kernels) $\{g(x;\theta):\theta \in \Theta \}$, a boolean`discrete` stating whether the distribution is discrete, a vector `w` giving the weights $w_i$ and a list `theta.list` (the component parameters can also be supplied via the `...` argument) containing the parameters of the component densities $\theta_i, i \in 1, \dots, p$. While the creation of `Mix` objects is mostly straightforward, two things should be noted in this regard: First, **mixComp** procedures will search for functions called `rdist` and `ddist` in the accessible namespaces. For most "standard" distributions, these functions are contained in the **stats** package and do not need to be user-written (compare with the Section 6). To make use of these functions, it is essential that the string `dist` is named correctly (e.g. to create a gaussian mixture on the basis of the **stats** package, `dist` has to be specified as `norm` instead of `normal`, `gaussian` etc. for the package to find the functions `dnorm` and `rnorm`). Second, the names of the list elements of `theta.list`(for the names of the `...` arguments) have to match the names of the formal arguments of the functions `ddist` and `rdist` exactly (e.g. for a gaussian mixture, the list elements have to be named `mean` and `sd`, as these are the formal arguments used by `rnorm` and `dnorm` functions of the **stats** package).
 
@@ -123,15 +123,18 @@ The following example creates two `Mix` objects, a 3-component mixture of normal
 ``` r
 set.seed(0)
 # construct a Nix object:
-normLocMix <- Mix("norm", discrete = FALSE, w = c(0.3, 0.4, 0.3), mean = c(10, 13, 17), sd = c(1, 1, 1))
-poisMix <- Mix("pois", discrete = TRUE, w = c(0.45, 0.45, 0.1), lambda = c(1, 5, 10))
+normLocMix <- Mix("norm", discrete = FALSE, w = c(0.3, 0.4, 0.3), 
+		   mean = c(10, 13, 17), sd = c(1, 1, 1))
+poisMix <- Mix("pois", discrete = TRUE, w = c(0.45, 0.45, 0.1), 
+		lambda = c(1, 5, 10))
 # plot the mixtures:
 plot(normLocMix, main = "3-component normal mixture", cex.main = 0.9)
 plot(poisMix, main = "3-component poisson mixture", cex.main = 0.9)
 ```
 
-![normMix](images/normMix.png) 
-![poisMix](images/poisMix.png) 
+![3-component normal mixture](images/normMix.png) 
+
+![3-component poisson mixture](images/poisMix.png) 
 
 
 If required, random samples can be generated from these mixtures.
@@ -140,12 +143,13 @@ If required, random samples can be generated from these mixtures.
 normLocRMix <- rMix(1000, obj = normLocMix)
 poisRMix <- rMix(1000, obj = poisMix)
 # plot the histograms of the random samples:
-plot(normLocRMix, main = "Three component normal mixture", cex.main = 0.9)
-plot(poisRMix, main = "Three component poisson mixture", cex.main = 0.9)
+plot(normLocRMix, main = "3-component normal mixture", cex.main = 0.9)
+plot(poisRMix, main = "3-component poisson mixture", cex.main = 0.9)
 ```
 
-![normRMix](images/normRMix.png) 
-![poisRMix](images/poisRMix.png) 
+![3-component normal mixture](images/normRMix.png) 
+
+![3-component poisson mixture](images/poisRMix.png) 
   
 The third object class shown in Table 1, called `datMix`, represents the data vector $\mathbf{X}$ based on which the mixture complexity is supposed to be estimated. These objects are most central to the package, as every procedure estimating the order of a mixture takes a `datMix` object as input. Apart from $\mathbf{X}$, it contains other "static" information needed for the estimation procedure (in contrast to "tuning parameters", which can be changed with every function call. An example of such a tuning parameter is the number of bootstrap replicates for a function employing a bootstrap procedure). A brief overview of which "static" attributes need to be supplied for each complexity estimation routine is given in Table 2. 
 
@@ -184,7 +188,8 @@ MLE.norm.mean <- function(dat) mean(dat)
 MLE.norm.sd <- function(dat){
 sqrt((length(dat) - 1) / length(dat)) * sd(dat)
 } 
-MLE.norm.list <- list("MLE.norm.mean" = MLE.norm.mean, "MLE.norm.sd" = MLE.norm.sd)
+MLE.norm.list <- list("MLE.norm.mean" = MLE.norm.mean, 
+		      "MLE.norm.sd" = MLE.norm.sd)
 ```
 The last two arguments, `Hankel.method` and `Hankel.function`, need to be supplied if the mixture complexity is to be estimated based on the Hankel matrix of the moments of the mixing distribution. The reader is referred to the Section 3 for further information on how these arguments are to be specified (in this case, the simplifying assumption of unit variance is made. This would be a poor choice for the `waiting` data, so $p$ should not be estimated with one of the methods using these arguments, namely `nonparamHankel`, `paramHankel` and `paramHankel.scaled`, see Table 2). 
 
@@ -197,7 +202,7 @@ mom.std.norm <- function(j){
 ```
 Finally, all previously generated objects are combined to a `datMix` object.
 
-```
+``` r
 # construct a datMix object that summarizes all the necessary information:
 faithful.dM <- datMix(faithful.obs, dist = norm.dist, discrete = norm.discrete,
                       theta.bound.list = norm.bound.list,
@@ -404,11 +409,12 @@ We can print and plot the results as suggested below.
 print(poisdets_sca_pen)
 # plot results for both mixtures:
 par(mar = c(5, 5, 1, 1))
-plot(poisdets_sca_pen, main = "3-component Poisson mixture", cex.main = 0.9)
-plot(normdets_sca_pen, main = "3-component Normal mixture", cex.main = 0.9)
+plot(poisdets_sca_pen, main = "3-component poisson mixture", cex.main = 0.9)
+plot(normdets_sca_pen, main = "3-component normal mixture", cex.main = 0.9)
 ```
-![np_art_1](images/np_art_1.png)
-![np_art_2](images/np_art_2.png)
+![3-component poisson mixture](images/np_art_1.png)
+
+![3-component normal mixture](images/np_art_2.png)
 
 
 Having created the data ourselves, we know that it comes from a 3-component Poisson mixture and a 3-component Gaussian mixture respectively. The resulting plots indicate that while theoretically sound, the scaled version of the Hankel method can struggle to correctly identify the number of components in practice.
@@ -430,8 +436,9 @@ plot(pois_sca_pen,)
 plot(norm_sca_pen)
 ```
 
-![p_art_1](images/p_art_1.png)
-![p_art_2](images/p_art_2.png)
+![Scaled Hankel determinants for a poisson mixture](images/p_art_1.png)
+
+![Scaled Hankel determinants for a normal mixture](images/p_art_2.png)
 
 
 Consider now, as a real-world example, the Children dataset whose content was taken from the Annual Report of the pension fund S.P.P. of 1952. The dataset initially appeared in work of [@thisted] and was subsequently analysed by many authors. It entails data on 4075 widows who recieved pension from the fund, with their number of children being our variable of interest. For example, there are 3062 widows without children, 587 widows with one child, etc. Many authors have noted that this data is not consistent with being a random sample from a Poisson distribution since the number of zeros found in the data is too large. Thisted approached this by fitting a mixture of two populations, one which is always zero and one which follows a Poisson distribution. **mixComp** includes this data stored as a dataframe. Here, we want to investigate 
@@ -466,7 +473,8 @@ set.seed(0)
 plot(det_sca_pen, main = "Non-parametric Hankel method for Children dataset",
      cex.main = 0.9)
 ```
-![np_real](images/np_real.png)
+
+![Non-parametric Hankel method for Children dataset](images/np_real.png)
 
 Next, we check the fit of the parametric version. The printed result of `paramHankel.scaled` shows that this method also suggests 2 to be the number of components, with the first component corresponding to a Poisson distribution with$\lambda = 0.0306$. Note that the limit case $\lambda = 0$ results in a point mass at 0, and that this fit therefore nicely lines up with the idea of a component accounting for only the zero observations. The plot shows that this method yields a sensible fit overall.
 
@@ -477,7 +485,7 @@ param_sca <- paramHankel.scaled(children.dM, j.max = 5, B = 1000, ql = 0.025,
 plot(param_sca, breaks = 8, ylim = c(0, 0.8))
 ```
 
-![p_real](images/p_real.png)
+![Parametric Hankel method for Children dataset](images/p_real.png)
 
 
 # Section 4. Functions using distances
@@ -491,7 +499,7 @@ With $\{g(x;\theta): \theta \in \Theta \}$ set in advance, elements of $\mathcal
 
 $$f_{j,\mathbf{w},\mathbf{\theta}}(x) = \sum_{i = 1}^j w_i g(x; \theta_i).$$
 
-Note that the support of $f$ will depend on the support of $g$ and $\mathcal{F}_j \subseteq \mathcal{F}_{j+1}$\footnote{This is obvious by setting $w_{j+1} = 0$.} for all $j$. Now take a specific mixture $f_0 = f_{p_0, \mathbf{w}_0,\mathbf{\theta}_0}$, where $(\mathbf{w}_0,\mathbf{\theta}_0) \in W_{p_0} \times \Theta_{p_0}$. Clearly, the mixture complexity is defined as
+Note that the support of $f$ will depend on the support of $g$ and $\mathcal{F}_j \subseteq \mathcal{F}_{j+1}$ (this is obvious by setting $w_{j+1} = 0$) for all $j$. Now take a specific mixture $f_0 = f_{p_0, \mathbf{w}_0,\mathbf{\theta}_0}$, where $(\mathbf{w}_0,\mathbf{\theta}_0) \in W_{p_0} \times \Theta_{p_0}$. Clearly, the mixture complexity is defined as
 $$p_0 = \min\{j:f_0 \in \mathcal{F}_j\}.$$
 
 The above suggests an estimation procedure based on initially finding the 'best' possible estimate (in a sense to be determined) $(\hat{\mathbf{w}}^j, \hat{\mathbf{\theta}}^j) \in W_j \times \Theta_j$ for a given value of $j$, in order to compare the thereby specified probability density/mass function 
@@ -565,8 +573,9 @@ plot(h_disc_pois)
 plot(h_cont_norm)
 ```
 
-![dist_art_1](images/dist_art_1.png)
-![dist_art_2](images/dist_art_2.png)
+![Hellinger distance method for a poisson mixture](images/dist_art_1.png)
+
+![Hellinger distance method for a normal mixture](images/dist_art_2.png)
 
 
 For a real-world example, refer back to the `faithful` dataset and the corresponding `datMix` object which was created in Section 1. Fitting the distance methods to a continuous density requires a choice of bandwidth. While using the adaptive bandwidth is an option, if the user does not want to do so, it is recommended to use the function `kdensity` from the package **kdensity** [@kdensity] which automatically selects an optimal bandwidth (can be accessed via `kdensity(data)$bw`). If the user wants to compare different bandwidth values, it is advisable to look at the plots of the respective kernel density estimates using `kdensity` and to choose one that captures the shape of the data well without fitting to noise.
@@ -574,9 +583,11 @@ For a real-world example, refer back to the `faithful` dataset and the correspon
 The following figures illustrate the above point by showing the KDE of the Old Faithful data with bandwidths 1, 4 and 8. Here, 4 seems to be an appropriate choice.
 
 
-![bandwidth1](images/bandwidth1.png)
-![bandwidth4](images/bandwidth4.png)
-![bandwidth8](images/bandwidth8.png)
+![bandwidth=1](images/bandwidth1.png)
+
+![bandwidth=4](images/bandwidth4.png)
+
+![bandwidth=8](images/bandwidth8.png)
 
 
 `hellinger.cont` fits a 2-component mixture to the data, which fits the data well and comprises similar parameter estimates to those found in the literature.
@@ -589,7 +600,7 @@ res <- hellinger.cont(faithful.dM, bandwidth = kdensity(faithful.obs)$bw,
 plot(res)
 ```
 
-![hell-cont-norm](images/hell-cont-norm.png)
+![Hellinger distance method applied to the Old Faithful data](images/hell-cont-norm.png)
 
 At this point, it is worth having a closer look at the thresholds. They each satisfy $t(j,n) \rightarrow 0$ as $n \rightarrow \infty$, the sole condition the authors require. Now, the consistency proofs for estimators defined via Equation \autoref{eq:distances} all rely on the fact that, as $n \rightarrow \infty$,
 
@@ -633,7 +644,7 @@ res <- hellinger.boot.disc(Shakespeare.dM, B = 50, ql = 0.025, qu = 0.975)
 plot(res)
 ```
 
-![hell-boot-geom](images/hell-boot-geom.png)
+![Hellinger distance method with bootstrap applied to the Shakespeare data](images/hell-boot-geom.png)
 
 
 `hellinger.boot.disc` estimates that the data comes from a 3-component geometric mixture (thus clustering the english words Shakespeare used into three categories).
@@ -666,7 +677,7 @@ res <- mix.lrt(acidity.dM, B = 50, quantile = 0.95)
 plot(res)
 ```
 
-![lrt-norm](images/lrt-norm.png)
+![LRT method applied to the Acidity data](images/lrt-norm.png)
 
 
 # Section 6. Non-standard mixtures
@@ -687,15 +698,17 @@ rnorm0.5 <- function(n, mean){
 }
 ## create objects `Mix` and `rMix`:
 set.seed(1)
-norm0.5Mix <- Mix("norm0.5", discrete = FALSE, w = c(0.3, 0.4, 0.3), mean = c(10, 11, 13))
+norm0.5Mix <- Mix("norm0.5", discrete = FALSE, w = c(0.3, 0.4, 0.3), 
+		   mean = c(10, 11, 13))
 norm0.5RMix <- rMix(1000, obj = norm0.5Mix)
 ## plot the results:
 plot(norm0.5Mix)
 plot(norm0.5RMix)
 ```
 
-![norm0.5Mix](images/norm0.5Mix.png)
-![norm0.5RMix](images/norm0.5RMix.png)
+![Non-standard normal mixture](images/norm0.5Mix.png)
+
+![Non-standard normal mixture](images/norm0.5RMix.png)
 
 
 Below we will estimate of the mixture density using `mix.lrt` given a sample from the considered above 3-component normal mixture. We start by creating all necessary inputs:
@@ -717,7 +730,7 @@ res <- mix.lrt(norm0.5.dM, B = 50, quantile = 0.95)
 plot(res)
 ```
 
-![est-norm0.5](images/est-norm0.5.png)
+![LRT method applied to the non-standard normal mixture](images/est-norm0.5.png)
 
 
 # Section 7. Computational nuance for mixComp functions using the solnp() solver
