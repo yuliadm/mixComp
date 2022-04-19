@@ -283,17 +283,17 @@ With this general framework in place, the computation now merely hinges on calcu
 
 #### 1. `Hankel.method = "explicit"`
 
-This method can be applied when a closed form expression for estimates of the moments of the mixing distribution exists. `Hankel.function` then contains the function explicitly estimating <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650018010.jpg">. 
+This method can be applied when a closed form expression for estimates of the moments of the mixing distribution exists. `Hankel.function` then contains the function explicitly estimating $\textbf{c}^{2j+1}$. 
 
 As an example, consider a mixture of geometric distributions, where it can be shown that
 
-<img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650022531.jpg">
+$$c^{2j+1}_j = 1 - \sum_{l = 0}^{j-1} f(l) = 1 - F(j-1),$$
 
-with <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649922138.jpg"> the true cumulative distribution function. Hence one may take
+with $F$ the true cumulative distribution function. Hence one may take
 
-<img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650022746.jpg">
+$$\hat{c}^{2j+1}_j = 1 - \hat{F}(j-1)$$
 
-as an estimator, with <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650022798.jpg"> being the empirical distribution function.
+as an estimator, with $\hat{F}$ being the empirical distribution function.
 
 ```{r geommom}
 # define the function for computing the moments:
@@ -304,19 +304,23 @@ explicit.geom <- function(dat, j){
 
 As a second example, consider what [@hankel, p. 283, equation (3)] called the "natural" estimator, i.e. using
 
-<img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650022851.jpg">
+\begin{equation}\label{eq:1}
+\hat{c}^{2j+1}_j = f_j\left(\frac{1}{n} \sum_{i=1}^n \psi_j(X_i)\right)
+\end{equation}
 
 when
 
-<img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650022913.jpg">
+\begin{equation}\label{eq:2}
+c^{2j+1}_j = f_j(\E[\psi_j(X_i)]).
+\end{equation}
 
-Note that the estimators of this form may also be supplied as `Hankel.method = "explicit"` with `Hankel.function`. For example, the "natural" estimator is applicable in the case of Poisson mixtures. If <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650022964.jpg">, it is a well known fact that
+Note that the estimators of this form may also be supplied as `Hankel.method = "explicit"` with `Hankel.function` equal to the right-hand side of Equation \autoref{eq:1}. For example, the "natural" estimator is applicable in the case of Poisson mixtures. If $Y \sim Pois(\lambda)$, it is a well known fact that
 
-<img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650023020.jpg">
+$$\lambda^j = \E[Y(Y-1)\dots(Y-j+1)],$$
 
-which then suggests using
+which, in combination with \autoref{eq:1} and \autoref{eq:2} suggests using
 
-<img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650023088.jpg">
+$$\hat{c}^{2j+1}_j = \frac{1}{n} \sum_{i=1}^n X_i(X_i-1)\dots(X_i-j+1)$$
 
 as an estimator.
 
@@ -332,11 +336,17 @@ explicit.pois <- function(dat, j){
 
 #### 2. `Hankel.method = "translation"`
  
-In Example 3.1., [@hankel, p.284] describes how <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650018010.jpg"> can be estimated if the family of component distributions <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650023420.jpg"> is given by <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650023472.jpg">, where <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650023535.jpg"> is a known probability distribution whose moments can be given explicitly. In this case, a triangular linear system can be solved for the estimated moments of the mixing distribution <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650018121.jpg"> using the empirical moments of the mixture distribution and the known moments of <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650023535.jpg">. The former can be estimated from the data vector <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649977791.jpg"> whereas the latter has to be supplied by the user. Thus, `Hankel.function` contains a function of <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649975639.jpg"> returning the <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649975639.jpg">-th (raw) moment of <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650023535.jpg">.
+In Example 3.1., [@hankel, p.284] describe how $\textbf{c}^{2j+1}$ can be estimated if the family of component distributions $(G_\theta)$ is given by $\text{d}G_\theta(x) = \text{d}G(x-\theta)$, where $G$ is a known probability distribution whose moments can be given explicitly. In this case, a triangular linear system can be solved for the estimated moments of the mixing distribution $\hat{\textbf{c}}^{2j+1}$ using the empirical moments of the mixture distribution and the known moments of $G$. The former can be estimated from the data vector $\textbf{X}$ whereas the latter has to be supplied by the user. Thus, `Hankel.function` contains a function of $j$ returning the $j$-th (raw) moment of $G$.
 
-As an example, consider a mixture of normal distributions with unknown mean and unit variance. Then <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650023535.jpg"> is the standard normal distribution, and its <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649975639.jpg">th moment <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650024376.jpg"> is defined as
+As an example, consider a mixture of normal distributions with unknown mean and unit variance. Then $G$ is the standard normal distribution, and its $j$-th moment $m_j$ is defined as
 
-<img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650024444.jpg">
+$$
+m_j=
+\begin{cases}
+0 & \text{if } j \text{ odd},\\
+(j-1)!! & \text{if } j \text{ even}.
+\end{cases}
+$$
 
 ```{r}
 # define the function for computing the moments:
@@ -344,7 +354,6 @@ mom.std.norm <- function(j){
   ifelse(j %% 2 == 0, prod(seq(1, j - 1, by = 2)), 0)
 }
 ```
-
 
 #### 3. `Hankel.method = "scale"`
 
