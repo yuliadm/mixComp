@@ -65,7 +65,7 @@ method provides more accurate estimates than the others.
 # Installation
 
 To install from `CRAN`, use:
-```
+``` r
 install.packages("mixComp")
 ```
 # Section 1. Introduction to finite mixture models and mixComp
@@ -120,7 +120,7 @@ The generation of an object of class `Mix` hinges on four central arguments: a s
 
 The following example creates two `Mix` objects, a 3-component mixture of normal distributions and a 3-component mixture of Poisson distributions. 
 
-```{r mixobj}
+``` r
 set.seed(0)
 # construct a Nix object:
 normLocMix <- Mix("norm", discrete = FALSE, w = c(0.3, 0.4, 0.3), mean = c(10, 13, 17), sd = c(1, 1, 1))
@@ -134,7 +134,7 @@ plot(poisMix, main = "3-component poisson mixture", cex.main = 0.9)
 
 
 If required, random samples can be generated from these mixtures.
-```{r rmix}
+``` r
 # generate random samples:
 normLocRMix <- rMix(1000, obj = normLocMix)
 poisRMix <- rMix(1000, obj = poisMix)
@@ -163,14 +163,14 @@ In the table, "o" and "i" respectively stand for input used during optimization 
 
 As a simple example of a given dataset to which mixture models have been applied extensively, take the Old Faithful dataset [@R; @faithful1; @faithful2]. In the context of mixture model estimation, the variable `waiting`, which gives the time in minutes between eruptions of the Old Faithful geyser in the Yellowstone National Park, is often considered to be the variable of interest. To estimate the number of components of the mixture distribution that provides a suitable approximation to the `waiting` data via **mixComp**, the raw data vector of observations has to be converted to a `datMix` object first. For the sake of exposition we specify all arguments of  the `datMix` function, starting with the vector of observations $\mathbf{X}$ and the string `dist`, specifying $\{g(x;\theta):\theta \in \Theta \}$ and the boolean `discrete`. As has often been done in the relevant literature, we assume that the data comes from a normal mixture.
 
-```{r faithopts}
+``` r
 faithful.obs <- faithful$waiting
 norm.dist <- "norm"
 norm.discrete <- FALSE
 ```
 Second, a named list of length $d$ containing the bounds of $\theta \in \Theta \subseteq \mathbf{R}^d$ has to be created. In this example, $\theta = \{\mu, \sigma\} \in \Theta = \mathbf{R} \times (0, \infty) \subseteq \mathbf{R}^2$.
 
-```{r normlist}
+``` r
 # define the range for parameter values:
 norm.bound.list <- list("mean" = c(-Inf, Inf), "sd" = c(0, Inf))
 ```
@@ -178,7 +178,7 @@ Next, the argument `MLE.function` contains a single function if $d=1$ or a list 
 
 Presuming a normal mixture, one specifies $2$ functions, namely the MLE of the mean $\hat{\mu}_{MLE} = \frac{1}{n}\sum_{i = 1}^n X_i$ and the MLE of the standard deviation $\hat{\sigma}_{MLE} = \sqrt{\frac{1}{n}\sum_{i = 1}^n (X_i - \hat{\mu}_{MLE})^2}$.
 
-```{r normfun}
+``` r
 # define the MLE functions for the mean and sd: 
 MLE.norm.mean <- function(dat) mean(dat)
 MLE.norm.sd <- function(dat){
@@ -188,7 +188,7 @@ MLE.norm.list <- list("MLE.norm.mean" = MLE.norm.mean, "MLE.norm.sd" = MLE.norm.
 ```
 The last two arguments, `Hankel.method` and `Hankel.function`, need to be supplied if the mixture complexity is to be estimated based on the Hankel matrix of the moments of the mixing distribution. The reader is referred to the Section 3 for further information on how these arguments are to be specified (in this case, the simplifying assumption of unit variance is made. This would be a poor choice for the `waiting` data, so $p$ should not be estimated with one of the methods using these arguments, namely `nonparamHankel`, `paramHankel` and `paramHankel.scaled`, see Table 2). 
 
-```{r normmom}
+``` r
 method <- "translation"
 # define the function for computing the moments:
 mom.std.norm <- function(j){
@@ -197,7 +197,7 @@ mom.std.norm <- function(j){
 ```
 Finally, all previously generated objects are combined to a `datMix` object.
 
-```{r faithdatmix}
+```
 # construct a datMix object that summarizes all the necessary information:
 faithful.dM <- datMix(faithful.obs, dist = norm.dist, discrete = norm.discrete,
                       theta.bound.list = norm.bound.list,
@@ -296,7 +296,7 @@ $$\hat{c}^{2j+1}_j = 1 - \hat{F}(j-1)$$
 
 as an estimator, with $\hat{F}$ being the empirical distribution function.
 
-```{r geommom}
+``` r
 # define the function for computing the moments:
 explicit.geom <- function(dat, j){
   1 - ecdf(dat)(j - 1)
@@ -325,7 +325,7 @@ $$\hat{c}^{2j+1}_j = \frac{1}{n} \sum_{i=1}^n X_i(X_i-1)\dots(X_i-j+1)$$
 
 as an estimator.
 
-```{r geompois}
+``` r
 # define the function for computing the moments:
 explicit.pois <- function(dat, j){
   mat <- matrix(dat, nrow = length(dat), ncol = j) - 
@@ -348,7 +348,7 @@ m_j=
 \end{cases}
 $$
 
-```{r}
+``` r
 # define the function for computing the moments:
 mom.std.norm <- function(j){
   ifelse(j %% 2 == 0, prod(seq(1, j - 1, by = 2)), 0)
@@ -366,7 +366,8 @@ Coming back to the overall goal of complexity estimation, the function `nonparam
 We will initially apply this method to the two already generated datasets of 3-component Poisson and normal mixtures using the penalty $A(j)l(n) = \frac{j\log(n)}{\sqrt{n}}$ and scaling the determinants according to Equation \autoref{eq:scaled}.
 
 First, for converting the previously simulated samples from 3-component Poisson and normal mixtures yielding the objects of class `rMix` to objects of class `datMix` one should apply the `RtoDat` function as follows:
-```{r rtodat}
+
+``` r
 MLE.pois <- function(dat) mean(dat)
 
 # create datMix objects:
@@ -381,7 +382,8 @@ normLoc.dM <- RtoDat(normLocRMix, theta.bound.list = norm.bound.list,
 ```
 
 In the case of the scaled version of the method, the penalty should be multiplied by $\sqrt{n}$ as mentioned earlier. 
-```{r nonph}
+
+``` r
 # define the penalty function:
 pen <- function(j, n){
   j * log(n)
@@ -397,7 +399,7 @@ normdets_sca_pen <- nonparamHankel(normLoc.dM, j.max = 5, scaled = TRUE,
 
 We can print and plot the results as suggested below.
 
-```{r plotnonph, figures-side, fig.show="hold", out.width="50%"}
+``` r
 # print the results (for the Poisson mixture)
 print(poisdets_sca_pen)
 # plot results for both mixtures:
@@ -418,7 +420,7 @@ As the preceding example shows, it can be quite difficult to determine the order
 
 Applying `paramHankel.scaled` to the same Poisson and Normal mixtures results in the correct identification of the mixture complexity in both cases as can be seen in the plot:
 
-```{r plotph, figures-side, fig.show="hold", out.width="50%"}
+``` r
 # apply papamHankel.scaled to datMix objects:
 set.seed(1)
 pois_sca_pen <- paramHankel.scaled(pois.dM)
@@ -439,7 +441,7 @@ how the Hankel matrix methods compare when fitting the data to a mixture of Pois
 
 The estimation process starts with the construction of the `datMix` object.
 
-```{r childex}
+``` r
 # convert the data to vector:
 children.obs <- unlist(children)
 # define the MLE function:
@@ -455,7 +457,7 @@ children.dM <- datMix(children.obs, dist = "pois", discrete = TRUE,
 
 First, we check the nonparametric method. We define the penalty $A(j)l(n)$ as $\frac{j\log(n)}{\sqrt{n}}$ and scale the determinants according to Equation \autoref{eq:scaled} (by multiplying the penalty by $\sqrt{n}$). The result suggests that the data comes from a 2-component mixture.
 
-```{r childplotnph, fig.width = 5, fig.height = 4}
+``` r
 # define the penalty:
 pen <- function(j, n) j * log(n)
 # estimate the number of components:
@@ -469,7 +471,7 @@ plot(det_sca_pen, main = "Non-parametric Hankel method for Children dataset",
 
 Next, we check the fit of the parametric version. The printed result of `paramHankel.scaled` shows that this method also suggests 2 to be the number of components, with the first component corresponding to a Poisson distribution with$\lambda = 0.0306$. Note that the limit case $\lambda = 0$ results in a point mass at 0, and that this fit therefore nicely lines up with the idea of a component accounting for only the zero observations. The plot shows that this method yields a sensible fit overall.
 
-```{r childplotph, fig.width = 5, fig.height = 4}
+``` r
 set.seed(0)
 param_sca <- paramHankel.scaled(children.dM, j.max = 5, B = 1000, ql = 0.025, 
                           qu = 0.975)
@@ -556,7 +558,7 @@ This procedure uses the same thresholds as `hellinger.disc`.
 
 As before, we initially show the fit these methods yield on the two artificial datasets. As can be seen in the resulting plots, both `hellinger.disc` and `hellinger.cont` correctly estimate that the data comes from 3-component mixtures.
 
-```{r plothel, figures-side, fig.show="hold", out.width="50%"}
+``` r
 set.seed(0)
 h_disc_pois <- hellinger.disc(pois.dM, threshold = "AIC")
 h_cont_norm <- hellinger.cont(normLoc.dM, bandwidth = 0.5, sample.n = 5000, 
@@ -582,7 +584,7 @@ The following figures illustrate the above point by showing the KDE of the Old F
 
 `hellinger.cont` fits a 2-component mixture to the data, which fits the data well and comprises similar parameter estimates to those found in the literature.
 
-```{r faithplothel, fig.width = 5, fig.height = 4}
+``` r
 # estimate the number of components:
 library(kdensity)
 res <- hellinger.cont(faithful.dM, bandwidth = kdensity(faithful.obs)$bw,
@@ -621,7 +623,7 @@ In accordance with the **R**-function `dgeom`, the parametrization we use for th
 
 The `datMix` object corresponding to the Shakespeare dataset is generated as follows: 
 
-```
+``` r
 shakespeare.obs <- unlist(shakespeare) - 1
 # define the MLE function:
 MLE.geom <- function(dat) 1 / (mean(dat) + 1)
@@ -656,7 +658,7 @@ Next, a parametric bootstrap is used to generate `B` samples of size $n$ from a 
 
 For the two artificial datasets, this method estimates 3-component mixtures with very similar parameters to the distance methods, so we go straight to a real-world example. Consider the Acidity dataset which comprises measurements of the acid neutralizing capacity (ANC) taken from 155 lakes in North-Central Wisconsin. The ANC indicates a lakes' capability to absorb acid, with low values potentially leading to a loss of biological resources. This dataset has been analysed as a mixture of normal distributions on the log scale by [@acidity1], [@acidity2] and [@acidity3]. While the former papers suggest the number of components to equal 2 (with 3 also being considered), the latter estimates $p$ to lie between 3 and 5. The `mix.lrt` method agrees with [@acidity1] and [@acidity2], returning a 2-component mixture with reasonable estimates for the component weights and parameters.
 
-```{r lrtacid, fig.width = 5, fig.height = 4, results='hide', message=FALSE, warning=FALSE}
+``` r
 acidity.obs <- unlist(acidity)
 
 acidity.dM <- datMix(acidity.obs, dist = "norm", discrete = FALSE, 
@@ -681,7 +683,7 @@ As an example, consider an artificial dataset generated by sampling $\mathbf{X}$
 The following example creates the `Mix` and `rMix` objects
 based on the density of a normal mixture with $\mathbf{w} = (0.3, 0.4, 0.3)$, $\mathbf{\mu} = (10, 11, 13)$ and \linebreak$\mathbf{\sigma} = (0.5, 0.5, 0.5)$ and plots the obtained mixture density and the corresponding random sample. 
 
-```{r, figures-side, fig.show="hold", out.width="50%", results='hide', message=FALSE, warning=FALSE}
+``` r
 dnorm0.5 <- function(x, mean){
   dnorm(x, mean = mean,  sd = 0.5)
 }
@@ -703,7 +705,7 @@ plot(norm0.5RMix)
 
 
 Below we will estimate of the mixture density using `mix.lrt` given a sample from the considered above 3-component normal mixture. We start by creating all necessary inputs:
-```{r}
+``` r
 norm0.5.list <- vector(mode = "list", length = 1)
 names(norm0.5.list) <- c("mean")
 norm0.5.list$mean <- c(-Inf, Inf)
@@ -714,7 +716,7 @@ norm0.5.dM <- RtoDat(norm0.5RMix, theta.bound.list = norm0.5.list,
                      MLE.function = MLE.norm0.5)
 ```
 Now the **mixComp** procedures can be used on the `datMix` object as usual. The results can be printed and plotted using `print` and `plot` functions.
-```{r, results='hide', message=FALSE, warning=FALSE}
+``` r
 set.seed(1)
 res <- mix.lrt(norm0.5.dM, B = 50, quantile = 0.95)
 
