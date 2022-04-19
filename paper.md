@@ -129,9 +129,8 @@ poisMix <- Mix("pois", discrete = TRUE, w = c(0.45, 0.45, 0.1), lambda = c(1, 5,
 plot(normLocMix, main = "3-component normal mixture", cex.main = 0.9)
 plot(poisMix, main = "3-component poisson mixture", cex.main = 0.9)
 ```
-
-![normMix](/images/normMix.png)
-![poisMix](/images/poisMix.png)
+![normMix](https://github.com/yuliadm/mixComp/blob/main/images/normMix.png)
+![poisMix](https://github.com/yuliadm/mixComp/blob/main/images/poisMix.png)
 
 If required, random samples can be generated from these mixtures.
 ```{r rmix}
