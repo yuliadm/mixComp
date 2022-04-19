@@ -40,8 +40,8 @@ While not the primary goal, most methods simultaneously estimate the component w
 # Statement of need
 
 Mixture models occur in numerous settings including random
-and fixed effects models, clustering, deconvolution, empirical Bayes prob-
-lems and many others. In particular, they are often used to model the data
+and fixed effects models, clustering, deconvolution, empirical Bayes problems 
+and many others. In particular, they are often used to model the data
 which are believed to come from a heterogeneous population, consisting of
 several homogeneous subpopulations. In such cases the problem of finding
 a good estimator for the number of components in the mixture arises naturally, 
@@ -320,7 +320,7 @@ when
 c^{2j+1}_j = f_j(\mathbb{E}[\psi_j(X_i)]).
 \end{equation}
 
-Note that the estimators of this form may also be supplied as `Hankel.method = "explicit"` with `Hankel.function` equal to the right-hand side of Equation \autoref{eq:1}. For example, the "natural" estimator is applicable in the case of Poisson mixtures. If $Y \sim Pois(\lambda)$, it is a well known fact that
+Note that the estimators of this form may also be supplied as `Hankel.method = "explicit"` with `Hankel.function` equal to the right-hand side of \autoref{eq:1}. For example, the "natural" estimator is applicable in the case of Poisson mixtures. If $Y \sim Pois(\lambda)$, it is a well known fact that
 
 $$\lambda^j = \mathbb{E}[Y(Y-1)\dots(Y-j+1)],$$
 
@@ -368,7 +368,7 @@ As an example, consider a mixture of normal distributions with zero mean and unk
 
 Coming back to the overall goal of complexity estimation, the function `nonparamHankel` returns all estimated determinant values corresponding to complexities up to `j.max`, so that the user can pick the lowest $j$ generating a sufficiently small determinant. The function allows the inclusion of a penalty term as a function of the sample size `n` and the currently assumed complexity `j` which will be added to the determinant value (by supplying `pen.function`), and/or scaling of the determinants (by setting `scaled  = TRUE`). For scaling, a nonparametric bootstrap is used to calculate the covariance of the estimated determinants, with `B` being the size of the bootstrap sample. The inverse of the square root (i.e. the matrix $S$ such that $A = SS$, where $A$ is the (square) covariance matrix. The procedure uses **expm**'s `sqrtm` [@expm]) of this covariance matrix is then multiplied with the estimated determinant vector to get the scaled determinant vector.
 
-We will initially apply this method to the two already generated datasets of 3-component Poisson and normal mixtures using the penalty $A(j)l(n) = \frac{j\log(n)}{\sqrt{n}}$ and scaling the determinants according to Equation \autoref{eq:scaled}.
+We will initially apply this method to the two already generated datasets of 3-component Poisson and normal mixtures using the penalty $A(j)l(n) = \frac{j\log(n)}{\sqrt{n}}$ and scaling the determinants according to \autoref{eq:scaled}.
 
 First, for converting the previously simulated samples from 3-component Poisson and normal mixtures yielding the objects of class `rMix` to objects of class `datMix` one should apply the `RtoDat` function as follows:
 
@@ -460,7 +460,7 @@ children.dM <- datMix(children.obs, dist = "pois", discrete = TRUE,
 ```
 
 
-First, we check the nonparametric method. We define the penalty $A(j)l(n)$ as $\frac{j\log(n)}{\sqrt{n}}$ and scale the determinants according to Equation \autoref{eq:scaled} (by multiplying the penalty by $\sqrt{n}$). The result suggests that the data comes from a 2-component mixture.
+First, we check the nonparametric method. We define the penalty $A(j)l(n)$ as $\frac{j\log(n)}{\sqrt{n}}$ and scale the determinants according to \autoref{eq:scaled} (by multiplying the penalty by $\sqrt{n}$). The result suggests that the data comes from a 2-component mixture.
 
 ``` r
 # define the penalty:
@@ -598,7 +598,7 @@ plot(res)
 
 ![Hellinger distance method applied to the Old Faithful data](figures/hell-cont-norm.pdf)
 
-At this point, it is worth having a closer look at the thresholds. They each satisfy $t(j,n) \rightarrow 0$ as $n \rightarrow \infty$, the sole condition the authors require. Now, the consistency proofs for estimators defined via Equation \autoref{eq:distances} all rely on the fact that, as $n \rightarrow \infty$,
+At this point, it is worth having a closer look at the thresholds. They each satisfy $t(j,n) \rightarrow 0$ as $n \rightarrow \infty$, the sole condition the authors require. Now, the consistency proofs for estimators defined via \autoref{eq:distances} all rely on the fact that, as $n \rightarrow \infty$,
 
 $$D(\hat{f}_j, \tilde{f}_n) - D(\hat{f}_{j+1}, \tilde{f}_n) \rightarrow d_j > 0, \text{ for } j < p$$
 
@@ -622,7 +622,7 @@ Since we inherently do not observe the number of words Shakespeare did not use, 
 f(x)  =  w_1  (1-\theta_1)^{x-1}  \theta_1  +  \ldots  +  w_{p} (1-\theta_{p})^{x-1}  \theta_{p}, \ \ x \in \{1,2,\ldots \, 100\}
 \end{equation}
 
-In accordance with the **R**-function `dgeom`, the parametrization we use for the probability mass function of a geometric distribution means that $\theta_i \in [0,1)$ is the success probability for the $i$-th component, $i~\in~\{1, \ldots, p\}$. Building on Equation \autoref{eq:shakespeare}, the clear appropriateness of the complete monotone model for the word frequencies in the Shakespeare data can be complemented by a more applied interpretation, its underyling assumption being that words in any language belong to different categories depending on the context in which they are used. As there is a finite number of words, this justifies the appropriateness of fitting a finite mixture model, whose components would correspond to the aforementioned categories. With the $i$-th component distribution given by $g(x;\theta_i) = (1-\theta_i)^{x-1}  \theta_i,\ x = 1,2,\dots$, this expression can be seen as the probability of a word belonging to category $i$ not appearing (in some new work) after having previously been used $x$ times.
+In accordance with the **R**-function `dgeom`, the parametrization we use for the probability mass function of a geometric distribution means that $\theta_i \in [0,1)$ is the success probability for the $i$-th component, $i~\in~\{1, \ldots, p\}$. Building on \autoref{eq:shakespeare}, the clear appropriateness of the complete monotone model for the word frequencies in the Shakespeare data can be complemented by a more applied interpretation, its underyling assumption being that words in any language belong to different categories depending on the context in which they are used. As there is a finite number of words, this justifies the appropriateness of fitting a finite mixture model, whose components would correspond to the aforementioned categories. With the $i$-th component distribution given by $g(x;\theta_i) = (1-\theta_i)^{x-1}  \theta_i,\ x = 1,2,\dots$, this expression can be seen as the probability of a word belonging to category $i$ not appearing (in some new work) after having previously been used $x$ times.
 
 The `datMix` object corresponding to the Shakespeare dataset is generated as follows: 
 
