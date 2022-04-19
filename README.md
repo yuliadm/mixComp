@@ -1,31 +1,34 @@
 ---
-title: 'Estimating the Complexity of a Finite Mixture with the **R** Package **mixComp**'
+title: 'mixComp: An R package for estimating complexity of a mixture mixture'
 tags:
   - R
-  - mixture complexity estimation
-  - mixture models
-  - Hankel matrix
-  - minimum distance
-  - likelihood-rato test
+  - astronomy
+  - dynamics
+  - galactic dynamics
+  - milky way
 authors:
-  - name: Anja Weigel^[author] 
-    affiliation: 2  
-  - name: Fadoua Balabdaoui^[co-author]  
-    affiliation: 1 
-  - name: Yulia Kulagina^[co-author, maintainer] 
+  - name: Anja Weigel^[Co-first author] # note this makes a footnote saying 'Co-first author'
+    affiliation: 2 # (Multiple affiliations must be quoted)
+  - name: Fadoua Balabdaoui^[Co-first author] 
     affiliation: 1
-  - name: Lilian Mueller^[contributor]
+  - name: Yulia Kulagina^[Corresponding author] 
+    affiliation: 1
+  - name: Lilian Mueller^[Contributor]
     affiliation: 2
-  - name: Martin Maechler^[contributor]
-    affiliation: 1  
+  - name: Martin Maechler^[Contributor] 
+    affiliation: 1
 affiliations:
-  - name: ETH Zurich, Seminar for Statistics, Switzerland
+ - name: ETH Zurich, Seminar for Statistics, Switzerland
    index: 1
-  - name: ETH Zurich, Switzerland
+ - name: ETH Zurich, Switzerland
    index: 2
-date: 17 April 2022
+date: 19 April 2022
 bibliography: refs.bib
 
+# Optional fields if submitting to a AAS journal too, see this blog post:
+# https://blog.joss.theoj.org/2018/12/a-new-collaboration-with-aas-publishing
+aas-doi: 10.3847/xxxxx <- update this with the DOI from AAS once you know it.
+aas-journal: Astrophysical Journal <- The name of the AAS journal.
 ---
 
 # Summary
