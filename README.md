@@ -222,7 +222,7 @@ Unlike the above mentioned objects whose creation precedes any type of mixture c
 |`mix.lrt`                          |                                                    |                       x                        | 
 
 
-## Section 3. Functions using Hankel matrices
+# Section 3. Functions using Hankel matrices
 
 $p$ is characterized by the smallest integer $j$ such that the determinant of the $(j+1) \times (j+1)$ Hankel matrix of the first $2j$ moments of the mixing distribution equals zero. Moreover, it can be shown that this determinant is zero for all $j \geq p$. Formally, for any vector $\mathbf{c} = (c_0, \dots, c_{2k}) \in \mathbb{R}^{2k+1}$ with $c_0 = 1$, the Hankel matrix of $\mathbf{c}$ is defined as the $(k+1)\times(k+1)$ matrix given by
 $$H(\mathbf{c})_{i,j} = c_{i+j-2}, \quad \quad 1 \leq i,j \leq k+1.$$
@@ -481,6 +481,165 @@ plot(param_sca, breaks = 8, ylim = c(0, 0.8))
 <img src="https://github.com/yuliadm/mixComp/blob/main/images/np_real.png" />
 <img src="https://github.com/yuliadm/mixComp/blob/main/images/p_real.png" />
 </p>
+
+
+# Section 4. Functions using distances
+
+Unlike the theory on Hankel matrices introduced in Section 3, many theoretical considerations rely on estimates of the weights $\mathbf{w}$ and the component parameters \mbox{\boldmath$\theta$}. As mentioned in the introduction, it is assumed that the family of component densities $\{g(x;\theta): \theta \in \Theta \}$ is known. To embed the subsequent algorithms in a more theoretical framework, consider the parametric family of mixture densities
+
+$$\mathcal{F}_j = \{ f_{j, \mathbf{w},\bm{\theta}} : (\mathbf{w}, \mbox{\boldmath$\theta$}) \in W_j \times \Theta_j \}.$$ 
+
+
+With $\{g(x;\theta): \theta \in \Theta \}$ set in advance, elements of $\mathcal{F}_j$ can be written as
+
+$$f_{j,\mathbf{w},\bm{\theta}}(x) = \sum_{i = 1}^j w_i g(x; \theta_i).$$
+
+Note that the support of $f$ will depend on the support of $g$ and $\mathcal{F}_j \subseteq \mathcal{F}_{j+1}$\footnote{This is obvious by setting $w_{j+1} = 0$.} for all $j$. Now take a specific mixture $f_0 = f_{p_0, \mathbf{w}_0,\bm{\theta}_0}$, where $(\mathbf{w}_0,\bm{\theta}_0) \in W_{p_0} \times \Theta_{p_0}$. Clearly, the mixture complexity is defined as
+$$p_0 = \min\{j:f_0 \in \mathcal{F}_j\}.$$
+
+The above suggests an estimation procedure based on initially finding the 'best' possible estimate (in a sense to be determined) $(\hat{\mathbf{w}}^j, \hat{\bm{\theta}}^j) \in W_j \times \Theta_j$ for a given value of $j$, in order to compare the thereby specified probability density/mass function 
+
+$$\hat{f}_j(x) = f_{j, \hat{\mathbf{w}}^j, \hat{\bm{\theta}}^j}(x),$$
+
+with a non-parametric density/probability mass estimate $\tilde{f}_n(x)$. As the classes $\mathcal{F}_j$ and $\mathcal{F}_{j+1}$ are nested, the distance $D$ (to be defined below) between $\hat{f}_j$ and $\tilde{f}_n$ will only decrease with $j$. Thus, it makes sense to add some penalty term (increasing in $j$) to $D(\hat{f}_j, \tilde{f}_n)$ and find the first value of $j$ where the penalized distance for $j$ is smaller than that for $j+1$. Rearranging the terms gives rise to an algorithm starting at $j = 1$, involving some threshold $t(j,n)$ depending on the penalty, where, if $j$ is the first integer satisfying
+
+\begin{equation}\label{eq:distances}
+D(\hat{f}_j, \tilde{f}_n) - D(\hat{f}_{j+1}, \tilde{f}_n) \leq t(j,n),
+\end{equation}
+
+then $j$ is taken as the estimate $\hat{p}$. If the inequality is not fulfilled, $j$ is increased by $1$ and the procedure is repeated. Consistency of estimators defined this way has been shown in a number of cases, amongst them those used by the **mixComp** algorithms, and the reader is referred to [@l2; @hell; @hellcont] for the proofs relevant to the results implemented in the package.
+
+The preceding notation was held as broad as possible, since different distance measures $D$ and non-parametric estimators $\tilde{f}_n$ can be used. Those relevant to the package are mostly well-known, still, definitions can be found in the Appendix. Three procedures are implemented in **mixComp** based on the foregoing methodology: `L2.disc`, `hellinger.disc` and `hellinger.cont`.
+
+#### 1. `L2.disc`
+
+`L2.disc` employs the squared $L_2$ distance as the distance measure $D$ and is only to be used for discrete mixtures since the nonparametric estimate $\tilde{f}_n$ is defined as the empirical probability mass function. In this setting, the 'best' estimate $(\hat{\mathbf{w}}^j, \hat{\bm{\theta}}^j) \in W_j \times \Theta_j$ for a given $j$ corresponds to
+
+
+$$(\hat{\mathbf{w}}^j, \hat{\bm{\theta}}^j) = \argmin_{(\mathbf{w}, \bm{\theta})} L_2^2(f_{j, \mathbf{w}, \bm{\theta}}, \tilde{f_n}) 
+= \argmin_{(\mathbf{w}, \bm{\theta})} \left\{ \sum_{x=0}^{\infty} f_{j, \mathbf{w}, \bm{\theta}}^2(x) - \frac{2}{n} \sum_{i=1}^{n}f_{j, \mathbf{w}, \bm{\theta}}(X_i)\right\}.$$
+
+
+As the squared $L_2$ distance might involve an infinite sum (for distributions with infinite support), the user has the option to determine the cut-off value using the `n.inf` argument, which is set to 1000 by default. The parameters $(\hat{\mathbf{w}}^{j+1}, \hat{\bm{\theta}}^{j+1})$ are obtained analogously. Once both parameter sets have been determined, the difference in their respective squared $L_2$ distances to $\tilde{f}_n$ is compared to a `threshold` (equaling $t(j,n)$ defined above. The threshold function can be entered directly or one of the predefined thresholds, called `LIC` or `SBC` and given respectively by
+
+$$\frac{0.6}{n} \ln\left(\frac{j+1}{j}\right) \quad\quad \text{ and} \quad\quad \frac{0.6 \ln(n)}{n} \ln\left(\frac{j+1}{j}\right)$$
+
+can be used. Note that, if a customized function is to be used, its arguments have to be named `j` and `n`. If the difference in squared distances is smaller than the selected threshold, the algorithm terminates and the true order is estimated as $j$, otherwise $j$ is increased by 1 and the procedure starts over. The reader is invited to consult [@l2] for further details.
+
+#### 2. `hellinger.disc`
+
+This second function presents an alternative estimation procedure for *discrete* mixtures, working much the same as `L2.disc`, however, using a different measure of distance and different thresholds. As the name suggests, it is based on the square of the Hellinger distance, causing the 'best' estimate $(\hat{\mathbf{w}}^j, \hat{\bm{\theta}}^j) \in W_j \times \Theta_j$ for a given $j$ to equal
+
+$$(\hat{\mathbf{w}}^j, \hat{\bm{\theta}}^j) = \argmin_{(\mathbf{w}, \bm{\theta})} H^2(f_{j, \mathbf{w}, \bm{\theta}}, \tilde{f_n}) 
+= \argmax_{(\mathbf{w}, \bm{\theta})} \sum_{x=0}^{X_{(n)}} \sqrt{f_{j, \mathbf{w}, \bm{\theta}}(x) \tilde{f}_n(x)},$$
+
+with $X_{(n)} = \max_{i = 1}^n (X_i)$. The relevant theory can be found in [@hell]. In accordance with their work, the two predefined thresholds are given by
+
+$$\text{AIC} = \frac{d+1}{n} \quad \quad \text{and} \quad \quad \text{SBC} = \frac{(d+1)\ln(n)}{2n}$$
+
+(recall that $d$ is the number of component parameters, i.e., $\Theta \subseteq \mathbb{R}^d$). If a customized function is to be used, its arguments have to named `j` and `n` once more, so if the user wants to include the number of component parameters $d$, it has to be entered explicitly. 
+
+#### 3. `hellinger.cont`
+ 
+Unlike the two preceding functions, this procedure is applicable to *continuous* mixture models and uses a kernel density estimator (KDE) as $\tilde{f}_n$. Its `bandwidth` can be chosen by the user, or the adaptive KDE found in [@adap, p. 1720, equation (2)] may be used by specifying `bandwidth = "adaptive"`. The calculations are based on the continuous version of the squared Hellinger distance, where the 'best' estimate $(\hat{\mathbf{w}}^j, \hat{\bm{\theta}}^j) \in W_j \times \Theta_j$ for a given $j$ corresponds to
+
+\begin{equation}\label{eq:hellcont}
+(\hat{\mathbf{w}}^j, \hat{\bm{\theta}}^j) = \argmin_{(\mathbf{w}, \bm{\theta})} H^2(f_{j, \mathbf{w}, \bm{\theta}}, \tilde{f_n}) 
+= \argmax_{(\mathbf{w}, \bm{\theta})} \int \sqrt{f_{j, \mathbf{w}, \bm{\theta}}(x)\tilde{f}_n(x)}\ dx.
+\end{equation}
+
+Since the computational burden of optimizing over an integral to find the 'best' weights and component parameters is immense, the algorithm approximates the objective function \autoref{eq:hellcont} by sampling $n_s = $ `sample.n` observations $Y_i$ from $\tilde{f}_n(x)$ and setting
+
+$$
+(\hat{\mathbf{w}}^j, \hat{\bm{\theta}}^j) = \argmax_{(\mathbf{w}, \bm{\theta})} \sum_{i = 1}^{n_s} \sqrt{\frac{f_{j, \mathbf{w}, \bm{\theta}}(Y_i)}{\tilde{f}_n(Y_i)}}.
+$$
+
+This procedure uses the same thresholds as `hellinger.disc`.
+
+As before, we initially show the fit these methods yield on the two artificial datasets. As can be seen in the resulting plots, both `hellinger.disc` and `hellinger.cont` correctly estimate that the data comes from 3-component mixtures.
+
+```{r plothel, figures-side, fig.show="hold", out.width="50%"}
+set.seed(0)
+h_disc_pois <- hellinger.disc(pois.dM, threshold = "AIC")
+h_cont_norm <- hellinger.cont(normLoc.dM, bandwidth = 0.5, sample.n = 5000, 
+                      threshold = "AIC")
+par(mar = c(5, 5, 1, 1))
+plot(h_disc_pois)
+plot(h_cont_norm)
+```
+<p float="left">
+<img src="https://github.com/yuliadm/mixComp/blob/main/images/dist_art_1.png" />
+<img src="https://github.com/yuliadm/mixComp/blob/main/images/dist_art_2.png" />
+</p>
+
+For a real-world example, refer back to the `faithful` dataset and the corresponding `datMix` object which was created in Section 1. Fitting the distance methods to a continuous density requires a choice of bandwidth. While using the adaptive bandwidth is an option, if the user does not want to do so, it is recommended to use the function `kdensity` from the package **kdensity** [@kdensity] which automatically selects an optimal bandwidth (can be accessed via `kdensity(data)$bw`). If the user wants to compare different bandwidth values, it is advisable to look at the plots of the respective kernel density estimates using `kdensity` and to choose one that captures the shape of the data well without fitting to noise.
+
+The following figures illustrate the above point by showing the KDE of the Old Faithful data with bandwidths 1, 4 and 8. Here, 4 seems to be an appropriate choice.
+
+<p float="left">
+<img src="https://github.com/yuliadm/mixComp/blob/main/images/bandwidth1.png" />
+<img src="https://github.com/yuliadm/mixComp/blob/main/images/bandwidth4.png" />
+<img src="https://github.com/yuliadm/mixComp/blob/main/images/bandwidth8.png" />
+</p>
+
+`hellinger.cont` fits a 2-component mixture to the data, which fits the data well and comprises similar parameter estimates to those found in the literature.
+
+```{r faithplothel, fig.width = 5, fig.height = 4}
+# estimate the number of components:
+library(kdensity)
+res <- hellinger.cont(faithful.dM, bandwidth = kdensity(faithful.obs)$bw,
+                      sample.n = 5000, threshold = "AIC")
+plot(res)
+```
+<img src="https://github.com/yuliadm/mixComp/blob/main/images/hell-cont-norm.png">
+
+At this point, it is worth having a closer look at the thresholds. They each satisfy $t(j,n) \rightarrow 0$ as $n \rightarrow \infty$, the sole condition the authors require. Now, the consistency proofs for estimators defined via Equation \autoref{eq:distances} all rely on the fact that, as $n \rightarrow \infty$,
+
+$$D(\hat{f}_j, \tilde{f}_n) - D(\hat{f}_{j+1}, \tilde{f}_n) \rightarrow d_j > 0, \text{ for } j < p$$
+
+and
+
+$$D(\hat{f}_j, \tilde{f}_n) - D(\hat{f}_{j+1}, \tilde{f}_n) \rightarrow 0, \text{ for } j \geq p,$$
+
+where $p$ is the true complexity (compare with [@l2, p. 4253, Proof of the Theorem], [@hell, p. 4383, Proof] and [@hellcont, p. 1485, Proof of Theorem 1]. If however $t(j,n)$ goes to 0 faster than $D(\hat{f}_j, \tilde{f}_n) - D(\hat{f}_{j+1}, \tilde{f}_n)$ for $j \geq p$, asymptotically, the decision rule outlined above will always lead to $j$ being rejected. Therefore, a second condition should be placed on $t(j,n)$, namely choosing it in accordance with 
+
+$$D(\hat{f}_p, \tilde{f}_n) - D(\hat{f}_{p+1}, \tilde{f}_n) = o_p(t(j,n)).$$
+
+Neither the $L_2$ Information Criterion  (LIC) nor the Akakike Information Criterion (AIC), nor in the continuous case, the Schwarz Bayesian Criterion (SBC), satisfy this condition, yet they are still part of the package for two reasons. First, since they were used in the original papers, they are included for the sake of completeness and reproducibility of original results. Second, consistency is an asymptotic property, and while the aforementioned thresholds do not fulfill it, they still perform well (and not rarely better than consistent thresholds) for smaller sample sizes. In the example above, the number of components is correctly identified under the non-consistent AIC threshold. Nonetheless, the user will get a warning when using one of non-consistent predefined thresholds.
+
+The preceding example shows that $\hat{p}$ directly depends on the chosen threshold $t(j, n)$, as is also obvious from Equation \autoref{eq:distances}. While some thresholds can be motivated better than others from a theoretical perspective, the choice will ultimately always remain somewhat arbitrary. It would thus be desirable to have versions of the preceding functions which do not suffer from this drawback. `L2.boot.disc`, `hellinger.boot.disc` and `hellinger.boot.cont` all work similarly to their counterparts, with the exception that the difference in distances is not compared to a predefined threshold but a value generated by a bootstrap procedure.  At every iteration (of $j$), the procedure sequentially tests $p = j$ versus $p = j+1$ for $j = 1,2, \dots$, using a parametric bootstrap to generate \code{B} samples of size $n$ from a $j$-component mixture given the previously calculated 'best' parameter values $(\hat{\mathbf{w}}^j, \hat{\bm{\theta}}^j)$. For each of the bootstrap samples, again the 'best' estimates corresponding to densities with $j$ and $j+1$ components are calculated, as well as their difference in distances from $\tilde{f}_n$. The null hypothesis $H_0: p = j$ is rejected and $j$ is increased by $1$ if the original difference $D(\hat{f}_j, \tilde{f}_n) - D(\hat{f}_{j+1}, \tilde{f}_n)$ lies outside of the interval $[ql, qu]$, specified by the `ql` and `qu` empirical quantiles of the bootstrapped differences. Otherwise, $j$ is returned as the order estimate $\hat{p}$. 
+
+Since the bootstrap version returns a very similar result to the threshold version on the Old Faithful dataset, we introduce a new example here. Consider the so-called Shakespeare dataset which comprises the number of occurrences of the words that Shakespeare used in his writings. For example, the number of times Shakespeare used a word only once is 14 376, while the number of times the same word occurred exactly 10 times in his writing is 363. The same data have been considered in other papers, see e.g., [@sp68], [@Efron1976], [@CheeWang2016] and [@balabdkulagina]. In the last three papers, the underlying statistical question that the authors wanted to answer is: how many words did Shakespeare actually know? This problem is known under the name of 'species richness' and can be solved using a variety of approaches. The goal is to use the observed frequencies of species, here words, to estimate the unobserved number of words that Shakespeare knew and did not use in his writings. While there is a whole spectrum of methods for estimating species richness, we limit ourselves here to motivate fitting a finite mixture of geometrics to the data. It is known from [@steutel69] that the class of completely monotone probability mass functions defined on the set of non-negative integers, that is the class of $p$ such that $(-1)^k \nabla^k p(i) \ge 0$ for all integers $k \ge 0, i \ge 0$ coincides with the class of all mixtures of geometrics probability mass functions (here $\nabla p = p(i+1) - p(i)$ and $\nabla^{r+1} \equiv \nabla \circ \nabla^r $ for any integer $r \ge 1$). In \citet{bdF2019}, the monotone complete least squares estimator (LSE) was defined for such class, which is the first non-parametric estimator that was considered for an element in such a family. Complete monotonicity can be defined on any subset of the set of integers of the form $\{a, a+1, \ldots \} $ for $ a \ge 1$ since the change of variable $x \mapsto x-a$ brings us back to complete monotonicity on $\{0, 1, \ldots \}$. It can be clearly seen ([@balabdkulagina]) that the complete monotone estimator fits very well the empirical estimator of the word occurrences. This result strongly suggests that complete monotonicity is a very appropriate model. In the scope of this paper, we want to explore how fitting a finite mixture of geometric distributions with unknown number of components works for this dataset. This alternative approach is actually inspired by the fact that the complete monotone LSE is itself a finite mixture of geometrics (with a random number of components). Such a result is rather universal and its exact statement can be found in Proposition 2.3 in [@bdF2019]. 
+
+Since we inherently do not observe the number of words Shakespeare did not use, the data start at 1. However, using $Y = X-1$ and assuming $Y$ is a geometric mixture with parameters $\{p, w_1, \dots, w_p, \theta_1, \dots, \theta_p\}$ leads to the following model for $X$:
+
+\begin{equation}\label{eq:shakespeare}
+f(x)  =  w_1  (1-\theta_1)^{x-1}  \theta_1  +  \ldots  +  w_{p} (1-\theta_{p})^{x-1}  \theta_{p}, \ \ x \in \{1,2,\ldots \, 100\}
+\end{equation}
+
+In accordance with the **R**-function `dgeom`, the parametrization we use for the probability mass function of a geometric distribution means that $\theta_i \in [0,1)$ is the success probability for the $i$-th component, $i~\in~\{1, \ldots, p\}$. Building on Equation \autoref{eq:shakespeare}, the clear appropriateness of the complete monotone model for the word frequencies in the Shakespeare data can be complemented by a more applied interpretation, its underyling assumption being that words in any language belong to different categories depending on the context in which they are used. As there is a finite number of words, this justifies the appropriateness of fitting a finite mixture model, whose components would correspond to the aforementioned categories. With the $i$-th component distribution given by $g(x;\theta_i) = (1-\theta_i)^{x-1}  \theta_i,\ x = 1,2,\dots$, this expression can be seen as the probability of a word belonging to category $i$ not appearing (in some new work) after having previously been used $x$ times.
+
+The `datMix` object corresponding to the Shakespeare dataset is generated as follows: 
+
+```
+shakespeare.obs <- unlist(shakespeare) - 1
+# define the MLE function:
+MLE.geom <- function(dat) 1 / (mean(dat) + 1)
+
+Shakespeare.dM <- datMix(shakespeare.obs, dist = "geom", discrete = TRUE, 
+MLE.function = MLE.geom, theta.bound.list = list(prob = c(0, 1)))
+
+# estimate the number of components and plot the results:
+set.seed(0)
+res <- hellinger.boot.disc(Shakespeare.dM, B = 50, ql = 0.025, qu = 0.975)
+plot(res)
+```
+
+<img src="https://github.com/yuliadm/mixComp/blob/main/images/hell-boot-geom.png">
+
+`hellinger.boot.disc` estimates that the data comes from a 3-component geometric mixture (thus clustering the english words Shakespeare used into three categories).
+
+
 
 # Mathematics
 
