@@ -1,5 +1,5 @@
 ---
-title: 'Estimating the Complexity of a Finite Mixture with the \proglang{R} Package \pkg{mixComp}'
+title: 'Estimating the Complexity of a Finite Mixture with the **R** Package **mixComp**'
 tags:
   - R
   - mixture complexity estimation
