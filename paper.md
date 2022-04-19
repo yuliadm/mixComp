@@ -757,7 +757,7 @@ with kernel $K$, bandwidth $c_{n, j}$ and weights (positive and summing to $1$) 
 	
 Let $\textbf{X} = \{X_1, \dots, X_n\}$ be an i.i.d. sample of size $n$ from some discrete distribution with unknown probability mass function $f$. Its *empirical probability mass function* is defined as
 
-$$\tilde{f}_n(x) := \frac{1}{n}\sum_{i=1}^n \mathbbm{1}_{\{X_i = x\}}.$$	
+$$\tilde{f}_n(x) := \frac{1}{n}\sum_{i=1}^n \mathbf{1}_{\{X_i = x\}}.$$	
 
 Let $g, f$ be two probability mass functions defined on $\mathcal{X}$.
 The squared $L_2$ distance between $g$ and $f$ is given by
