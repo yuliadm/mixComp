@@ -589,7 +589,7 @@ res <- hellinger.cont(faithful.dM, bandwidth = kdensity(faithful.obs)$bw,
 plot(res)
 ```
 
-![hell-cont-norm](https://github.com/yuliadm/mixComp/blob/main/images/hell-cont-norm.png)
+
 
 At this point, it is worth having a closer look at the thresholds. They each satisfy $t(j,n) \rightarrow 0$ as $n \rightarrow \infty$, the sole condition the authors require. Now, the consistency proofs for estimators defined via Equation \autoref{eq:distances} all rely on the fact that, as $n \rightarrow \infty$,
 
@@ -633,7 +633,7 @@ res <- hellinger.boot.disc(Shakespeare.dM, B = 50, ql = 0.025, qu = 0.975)
 plot(res)
 ```
 
-![hell-boot-geom](https://github.com/yuliadm/mixComp/blob/main/images/hell-boot-geom.png)
+
 
 
 `hellinger.boot.disc` estimates that the data comes from a 3-component geometric mixture (thus clustering the english words Shakespeare used into three categories).
@@ -666,7 +666,7 @@ res <- mix.lrt(acidity.dM, B = 50, quantile = 0.95)
 plot(res)
 ```
 
-![lrt-norm](https://github.com/yuliadm/mixComp/blob/main/images/lrt-norm.png)
+
 
 
 # Section 6. Non-standard mixtures
@@ -717,7 +717,7 @@ res <- mix.lrt(norm0.5.dM, B = 50, quantile = 0.95)
 plot(res)
 ```
 
-![est-norm0.5](https://github.com/yuliadm/mixComp/blob/main/images/est-norm0.5.png)
+
 
 
 # Section 7. Computational nuance for mixComp functions using the solnp() solver
