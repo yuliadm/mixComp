@@ -583,11 +583,7 @@ For a real-world example, refer back to the `faithful` dataset and the correspon
 The following figures illustrate the above point by showing the KDE of the Old Faithful data with bandwidths 1, 4 and 8. Here, 4 seems to be an appropriate choice.
 
 
-![bandwidth=1](images/bandwidth1.png)
-
-![bandwidth=4](images/bandwidth4.png)
-
-![bandwidth=8](images/bandwidth8.png)
+![bandwidths equal to 1,4 and 8](images/bandwidths.png)
 
 
 `hellinger.cont` fits a 2-component mixture to the data, which fits the data well and comprises similar parameter estimates to those found in the literature.
