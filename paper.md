@@ -2,10 +2,8 @@
 title: 'mixComp: An R package for estimating complexity of a mixture mixture'
 tags:
   - R
-  - astronomy
-  - dynamics
-  - galactic dynamics
-  - milky way
+  - mixture distribution
+  - complexity
 authors:
   - name: Anja Weigel^[Co-first author] # note this makes a footnote saying 'Co-first author'
     affiliation: 2 # (Multiple affiliations must be quoted)
