@@ -34,11 +34,13 @@ aas-journal: Astrophysical Journal <- The name of the AAS journal.
 # Summary
 
 The **mixComp** package provides a number of methods for obtaining a consistent estimate of the complexity of a finite mixture (the focus is made on the univariate case). The considered approaches can be loosely grouped into three categories:
-<ul>
-  <li> methods built upon the determinants of the Hankel matrix of moments of the mixing distribution; </li>
-  <li> methods based on penalized minimum distance between the unknown probability density and a consistent estimator thereof. The distances considered in this survey are the Hellinger and the $L_2$-distances; </li>
-  <li> likelihood ratio test (LRT) - based techniques. </li>
-</ul>
+
+  - methods built upon the determinants of the Hankel matrix of moments of the mixing distribution; 
+  
+  - methods based on penalized minimum distance between the unknown probability density and a consistent estimator thereof (the distances considered in this survey are the Hellinger and the $L_2$-distances);
+   
+  - likelihood ratio test (LRT) - based techniques. 
+
 While not the primary goal, most methods simultaneously estimate the component weights and parameters. In this document, we give a brief overview of the methodology, and demonstrate the package's functionality in both real world examples and synthetically generated data. Moreover, we show how the package can be used on virtually any parametric mixture as long as functions generating random variates and evaluating the density are provided for the component distribution.
 
 # Statement of need
@@ -133,10 +135,10 @@ poisMix <- Mix("pois", discrete = TRUE, w = c(0.45, 0.45, 0.1), lambda = c(1, 5,
 plot(normLocMix, main = "3-component normal mixture", cex.main = 0.9)
 plot(poisMix, main = "3-component poisson mixture", cex.main = 0.9)
 ```
-<p float="left">
-  <img src="https://github.com/yuliadm/mixComp/blob/main/images/normMix.png" />
-  <img src="https://github.com/yuliadm/mixComp/blob/main/images/poisMix.png" />
-</p>
+
+  <img src="https://github.com/yuliadm/mixComp/blob/main/images/normMix.png" >
+  <img src="https://github.com/yuliadm/mixComp/blob/main/images/poisMix.png" >
+
 
 If required, random samples can be generated from these mixtures.
 ```{r rmix}
@@ -147,10 +149,9 @@ poisRMix <- rMix(1000, obj = poisMix)
 plot(normLocRMix, main = "Three component normal mixture", cex.main = 0.9)
 plot(poisRMix, main = "Three component poisson mixture", cex.main = 0.9)
 ```
-<p float="left">
-<img src="https://github.com/yuliadm/mixComp/blob/main/images/normRMix.png" />
-<img src="https://github.com/yuliadm/mixComp/blob/main/images/poisRMix.png" />
-</p>
+
+<img src="https://github.com/yuliadm/mixComp/blob/main/images/normRMix.png" >
+<img src="https://github.com/yuliadm/mixComp/blob/main/images/poisRMix.png" >
   
 The third object class shown in Table 1, called `datMix`, represents the data vector $\mathbf{X}$ based on which the mixture complexity is supposed to be estimated. These objects are most central to the package, as every procedure estimating the order of a mixture takes a `datMix` object as input. Apart from $\mathbf{X}$, it contains other "static" information needed for the estimation procedure (in contrast to "tuning parameters", which can be changed with every function call. An example of such a tuning parameter is the number of bootstrap replicates for a function employing a bootstrap procedure). A brief overview of which "static" attributes need to be supplied for each complexity estimation routine is given in Table 2. 
 
@@ -410,10 +411,10 @@ par(mar = c(5, 5, 1, 1))
 plot(poisdets_sca_pen, main = "3-component Poisson mixture", cex.main = 0.9)
 plot(normdets_sca_pen, main = "3-component Normal mixture", cex.main = 0.9)
 ```
-<p float="left">
-<img src="https://github.com/yuliadm/mixComp/blob/main/images/np_art_1.png" />
-<img src="https://github.com/yuliadm/mixComp/blob/main/images/np_art_2.png" />
-</p>
+
+<img src="https://github.com/yuliadm/mixComp/blob/main/images/np_art_1.png" >
+<img src="https://github.com/yuliadm/mixComp/blob/main/images/np_art_2.png" >
+
 
 Having created the data ourselves, we know that it comes from a 3-component Poisson mixture and a 3-component Gaussian mixture respectively. The resulting plots indicate that while theoretically sound, the scaled version of the Hankel method can struggle to correctly identify the number of components in practice.
 
@@ -433,10 +434,10 @@ par(mar=c(5, 5, 1, 1))
 plot(pois_sca_pen,)
 plot(norm_sca_pen)
 ```
-<p float="left">
-<img src="https://github.com/yuliadm/mixComp/blob/main/images/p_art_1.png" />
-<img src="https://github.com/yuliadm/mixComp/blob/main/images/p_art_2.png" />
-</p>
+
+<img src="https://github.com/yuliadm/mixComp/blob/main/images/p_art_1.png" >
+<img src="https://github.com/yuliadm/mixComp/blob/main/images/p_art_2.png" >
+
 
 Consider now, as a real-world example, the Children dataset whose content was taken from the Annual Report of the pension fund S.P.P. of 1952. The dataset initially appeared in work of [@thisted] and was subsequently analysed by many authors. It entails data on 4075 widows who recieved pension from the fund, with their number of children being our variable of interest. For example, there are 3062 widows without children, 587 widows with one child, etc. Many authors have noted that this data is not consistent with being a random sample from a Poisson distribution since the number of zeros found in the data is too large. Thisted approached this by fitting a mixture of two populations, one which is always zero and one which follows a Poisson distribution. **mixComp** includes this data stored as a dataframe. Here, we want to investigate 
 how the Hankel matrix methods compare when fitting the data to a mixture of Poissons.
@@ -479,10 +480,10 @@ param_sca <- paramHankel.scaled(children.dM, j.max = 5, B = 1000, ql = 0.025,
                           qu = 0.975)
 plot(param_sca, breaks = 8, ylim = c(0, 0.8))
 ```
-<p float="left">
-<img src="https://github.com/yuliadm/mixComp/blob/main/images/np_real.png" />
-<img src="https://github.com/yuliadm/mixComp/blob/main/images/p_real.png" />
-</p>
+
+<img src="https://github.com/yuliadm/mixComp/blob/main/images/np_real.png" >
+<img src="https://github.com/yuliadm/mixComp/blob/main/images/p_real.png" >
+
 
 
 # Section 4. Functions using distances
@@ -569,20 +570,20 @@ par(mar = c(5, 5, 1, 1))
 plot(h_disc_pois)
 plot(h_cont_norm)
 ```
-<p float="left">
-<img src="https://github.com/yuliadm/mixComp/blob/main/images/dist_art_1.png" />
-<img src="https://github.com/yuliadm/mixComp/blob/main/images/dist_art_2.png" />
-</p>
+
+<img src="https://github.com/yuliadm/mixComp/blob/main/images/dist_art_1.png" >
+<img src="https://github.com/yuliadm/mixComp/blob/main/images/dist_art_2.png" >
+
 
 For a real-world example, refer back to the `faithful` dataset and the corresponding `datMix` object which was created in Section 1. Fitting the distance methods to a continuous density requires a choice of bandwidth. While using the adaptive bandwidth is an option, if the user does not want to do so, it is recommended to use the function `kdensity` from the package **kdensity** [@kdensity] which automatically selects an optimal bandwidth (can be accessed via `kdensity(data)$bw`). If the user wants to compare different bandwidth values, it is advisable to look at the plots of the respective kernel density estimates using `kdensity` and to choose one that captures the shape of the data well without fitting to noise.
 
 The following figures illustrate the above point by showing the KDE of the Old Faithful data with bandwidths 1, 4 and 8. Here, 4 seems to be an appropriate choice.
 
-<p float="left">
-<img src="https://github.com/yuliadm/mixComp/blob/main/images/bandwidth1.png" />
-<img src="https://github.com/yuliadm/mixComp/blob/main/images/bandwidth4.png" />
-<img src="https://github.com/yuliadm/mixComp/blob/main/images/bandwidth8.png" />
-</p>
+
+<img src="https://github.com/yuliadm/mixComp/blob/main/images/bandwidth1.png" >
+<img src="https://github.com/yuliadm/mixComp/blob/main/images/bandwidth4.png" >
+<img src="https://github.com/yuliadm/mixComp/blob/main/images/bandwidth8.png" >
+
 
 `hellinger.cont` fits a 2-component mixture to the data, which fits the data well and comprises similar parameter estimates to those found in the literature.
 
@@ -653,7 +654,7 @@ $$L_0 = L_{\textbf{X}}(\hat{\mathbf{w}}^{j}, \hat{\bm{\theta}}^{j}) \quad\quad \
 
 $L_{\textbf{X}}$ being the likelihood function given the data ${\textbf{X}}$.
 
-Next, a parametric bootstrap is used to generate `B` samples of size <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649977745.jpg"> from a <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649975639.jpg">-component mixture given the previously calculated MLE $(\hat{\mathbf{w}}^{j}, \hat{\bm{\theta}}^{j})$. For each of the bootstrap samples, the MLEs corresponding to the mixture densities with $j$ and $j+1$ components are calculated, as well as the LRTS. The null hypothesis $H_0: p = j$ is rejected and $j$ increased by $1$ if the LRTS based on the original data vector $\textbf{X}$ is larger than the chosen `quantile` of its bootstrapped counterparts. Otherwise, $j$ is returned as the order estimate $\hat{p}$. For further details, the reader is referred to [@lrt].
+Next, a parametric bootstrap is used to generate `B` samples of size $n$ from a $j$-component mixture given the previously calculated MLE $(\hat{\mathbf{w}}^{j}, \hat{\bm{\theta}}^{j})$. For each of the bootstrap samples, the MLEs corresponding to the mixture densities with $j$ and $j+1$ components are calculated, as well as the LRTS. The null hypothesis $H_0: p = j$ is rejected and $j$ increased by $1$ if the LRTS based on the original data vector $\textbf{X}$ is larger than the chosen `quantile` of its bootstrapped counterparts. Otherwise, $j$ is returned as the order estimate $\hat{p}$. For further details, the reader is referred to [@lrt].
 
 For the two artificial datasets, this method estimates 3-component mixtures with very similar parameters to the distance methods, so we go straight to a real-world example. Consider the Acidity dataset which comprises measurements of the acid neutralizing capacity (ANC) taken from 155 lakes in North-Central Wisconsin. The ANC indicates a lakes' capability to absorb acid, with low values potentially leading to a loss of biological resources. This dataset has been analysed as a mixture of normal distributions on the log scale by [@acidity1], [@acidity2] and [@acidity3]. While the former papers suggest the number of components to equal 2 (with 3 also being considered), the latter estimates $p$ to lie between 3 and 5. The `mix.lrt` method agrees with [@acidity1] and [@acidity2], returning a 2-component mixture with reasonable estimates for the component weights and parameters.
 
@@ -694,10 +695,10 @@ norm0.5RMix <- rMix(1000, obj = norm0.5Mix)
 plot(norm0.5Mix)
 plot(norm0.5RMix)
 ```
-<p float="left">
-<img src="https://github.com/yuliadm/mixComp/blob/main/images/norm0.5Mix.png" />
-<img src="https://github.com/yuliadm/mixComp/blob/main/images/norm0.5RMix.png" />
-</p>
+
+<img src="https://github.com/yuliadm/mixComp/blob/main/images/norm0.5Mix.png" >
+<img src="https://github.com/yuliadm/mixComp/blob/main/images/norm0.5RMix.png" >
+
 
 Below we will estimate of the mixture density using `mix.lrt` given a sample from the considered above 3-component normal mixture. We start by creating all necessary inputs:
 ```{r}
