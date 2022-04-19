@@ -360,13 +360,13 @@ mom.std.norm <- function(j){
 
 #### 3. `Hankel.method = "scale"`
 
-Similarly, example 3.2. in [@hankel, p.285] describes how <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650018010.jpg"> can be estimated if the family of component distributions <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650023420.jpg"> is given by <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650024662.jpg">, where <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650023535.jpg"> is a known probability distribution whose moments can be given explicitly. Likewise, a triangular linear system can be solved for <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650018121.jpg">, using the empirical moments of the mixture distribution and the known moments of <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650023535.jpg">. `Hankel.function` contains a function of <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650023535.jpg"> returning the <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649975639.jpg">-th moment of <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650023535.jpg">. Note that squares have to be taken everywhere if for some integer <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649975639.jpg">, <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650024922.jpg"> (compare with [@hankel, p.285]).
+Similarly, in Example 3.2. [@hankel, p.285] describe how $\textbf{c}^{2j+1}$ can be estimated if the family of component distributions $(G_\theta)$ is given by \linebreak $\text{d}G_\theta(x) = \text{d}G(\frac{x}{\theta})$, where $G$ is a known probability distribution whose moments can be given explicitly. Likewise, a triangular linear system can be solved for $\hat{\textbf{c}}^{2j+1}$, using the empirical moments of the mixture distribution and the known moments of $G$. `Hankel.function` contains a function of $j$ returning the $j$-th moment of $G$. Note that squares have to be taken everywhere if for some integer $j$, $m_j = 0$ (compare with [@hankel, p.285]).
 
-As an example, consider a mixture of normal distributions with zero mean and unknown variance. Then <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650023535.jpg"> is again the standard normal distribution, and its <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649975639.jpg">-th moment is defined as above.
+As an example, consider a mixture of normal distributions with zero mean and unknown variance. Then $G$ is again the standard normal distribution, and its $j$-th moment is defined as above.
 
-Coming back to the overall goal of complexity estimation, the function `nonparamHankel` returns all estimated determinant values corresponding to complexities up to `j.max`, so that the user can pick the lowest <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649975639.jpg"> generating a sufficiently small determinant. The function allows the inclusion of a penalty term as a function of the sample size `n` and the currently assumed complexity `j` which will be added to the determinant value (by supplying `pen.function`), and/or scaling of the determinants (by setting `scaled  = TRUE`). For scaling, a nonparametric bootstrap is used to calculate the covariance of the estimated determinants, with `B` being the size of the bootstrap sample. The inverse of the square root (i.e. the matrix <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650031611.jpg"> such that <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650031632.jpg">, where <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650031644.jpg"> is the (square) covariance matrix. The procedure uses **expm**'s `sqrtm` [@expm]) of this covariance matrix is then multiplied with the estimated determinant vector to get the scaled determinant vector.
+Coming back to the overall goal of complexity estimation, the function `nonparamHankel` returns all estimated determinant values corresponding to complexities up to `j.max`, so that the user can pick the lowest $j$ generating a sufficiently small determinant. The function allows the inclusion of a penalty term as a function of the sample size `n` and the currently assumed complexity `j` which will be added to the determinant value (by supplying `pen.function`), and/or scaling of the determinants (by setting `scaled  = TRUE`). For scaling, a nonparametric bootstrap is used to calculate the covariance of the estimated determinants, with `B` being the size of the bootstrap sample. The inverse of the square root (i.e. the matrix $S$ such that $A = SS$, where $A$ is the (square) covariance matrix. The procedure uses **expm**'s `sqrtm` [@expm]) of this covariance matrix is then multiplied with the estimated determinant vector to get the scaled determinant vector.
 
-We will initially apply this method to the two already generated datasets of 3-component Poisson and normal mixtures using the penalty <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650025161.jpg"> and scaling the determinants as described above.
+We will initially apply this method to the two already generated datasets of 3-component Poisson and normal mixtures using the penalty $A(j)l(n) = \frac{j\log(n)}{\sqrt{n}}$ and scaling the determinants according to Equation \autoref{eq:scaled}.
 
 First, for converting the previously simulated samples from 3-component Poisson and normal mixtures yielding the objects of class `rMix` to objects of class `datMix` one should apply the `RtoDat` function as follows:
 ```{r rtodat}
@@ -383,7 +383,7 @@ normLoc.dM <- RtoDat(normLocRMix, theta.bound.list = norm.bound.list,
                      Hankel.function = mom.std.norm)
 ```
 
-In the case of the scaled version of the method, the penalty should be multiplied by <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649973529.jpg"> as mentioned earlier. 
+In the case of the scaled version of the method, the penalty should be multiplied by $\sqrt{n}$ as mentioned earlier. 
 ```{r nonph}
 # define the penalty function:
 pen <- function(j, n){
@@ -413,11 +413,11 @@ plot(normdets_sca_pen, main = "3-component Normal mixture", cex.main = 0.9)
 <img src="https://github.com/yuliadm/mixComp/blob/main/images/np_art_2.png" />
 </p>
 
-The resulting plots indicate that while theoretically sound, the scaled version of the Hankel method can struggle to correctly identify the number of components in practice.
+Having created the data ourselves, we know that it comes from a 3-component Poisson mixture and a 3-component Gaussian mixture respectively. The resulting plots indicate that while theoretically sound, the scaled version of the Hankel method can struggle to correctly identify the number of components in practice.
 
-As the preceding example shows, it can be quite difficult to determine the order estimate from the vector of estimated determinants alone. Thus, the package includes another option of estimating <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649977354.jpg"> based on Hankel matrices, however, using a more "parametric" approach which goes hand in hand with estimating <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649979158.jpg"> and <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649979228.jpg">. The `paramHankel` procedure initially assumes the mixture to only contain a single component, setting <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650022011.jpg">, and then sequentially tests <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650025663.jpg"> versus <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650025642.jpg"> for <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650025687.jpg">, until the algorithm terminates. To do so, it determines the MLE for a <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649975639.jpg">-component mixture <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650025877.jpg">, generates `B` parametric bootstrap samples of size <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649977745.jpg"> from the distribution corresponding to <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650030786.jpg"> and calculates `B` determinants of the corresponding <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650017103.jpg"> Hankel matrices. The null hypothesis <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650026196.jpg"> is rejected and <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649975639.jpg"> increased by 1 if the determinant value based on the original data vector <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649977791.jpg"> lies outside of the interval <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650026269.jpg">, a range specified by the `ql` and `qu` empirical quantiles of the bootstrapped determinants. Otherwise, <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649975639.jpg"> is returned as the order estimate <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650014579.jpg">, that is <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650014579.jpg"> is the first order for which the null hypothesis is not rejected. 
+As the preceding example shows, it can be quite difficult to determine the order estimate from the vector of estimated determinants alone. Thus, the package includes another option of estimating $p$ based on Hankel matrices, however, using a more "parametric" approach which goes hand in hand with estimating$\mathbf{w}$ and $\mathbf{\theta}$. The `paramHankel` procedure initially assumes the mixture to only contain a single component, setting $j = 1$, and then sequentially tests $p = j$ versus $p = j+1$ for $j = 1,2, \dots$, until the algorithm terminates. To do so, it determines the MLE for a $j$-component mixture $(\hat{\mathbf{w}}^j, \hat{\bm{\theta}}^j) = (\hat{w}_1, \dots, \hat{w}_j, \hat{\theta}_1, \dots, \hat{\theta}_j) \in W_j \times \Theta_j$, generates `B` parametric bootstrap samples of size $n$ from the distribution corresponding to $(\hat{\mathbf{w}}^j, \hat{\bm{\theta}}^j)$ and calculates `B` determinants of the corresponding $(j+1) \times (j+1)$ Hankel matrices. The null hypothesis $H_0: p = j$ is rejected and $j$ is increased by $1$ if the determinant value based on the original data vector $\textbf{X}$ lies outside of the interval $[ql, qu]$, a range specified by the `ql` and `qu` empirical quantiles of the bootstrapped determinants. Otherwise, $j$ is returned as the order estimate $\hat{p}$, that is $\hat p$ is the first order for which the null hypothesis is not rejected.  
 
-`paramHankel.scaled` functions similarly to `paramHankel` with the exception that the bootstrapped determinants are scaled by the empirical standard deviation of the bootstrap sample. To scale the original determinant, `B` nonparametric bootstrap samples of size <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649977745.jpg"> are generated from the data, the corresponding determinants are calculated and their empirical standard deviation is used.
+`paramHankel.scaled` functions similarly to `paramHankel` with the exception that the bootstrapped determinants are scaled by the empirical standard deviation of the bootstrap sample. To scale the original determinant, `B` nonparametric bootstrap samples of size $n$ are generated from the data, the corresponding determinants are calculated and their empirical standard deviation is used.
 
 Applying `paramHankel.scaled` to the same Poisson and Normal mixtures results in the correct identification of the mixture complexity in both cases as can be seen in the plot:
 
@@ -435,28 +435,6 @@ plot(norm_sca_pen)
 <img src="https://github.com/yuliadm/mixComp/blob/main/images/p_art_1.png" />
 <img src="https://github.com/yuliadm/mixComp/blob/main/images/p_art_2.png" />
 </p>
-
-As another example, consider data generated from a three component geometric mixture, with <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650026503.jpg"> and <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650026570.jpg">. 
-
-```{r geomex}
-set.seed(1)
-# define the geometric mixture:
-geomMix <- Mix("geom", discrete=TRUE, w = c(0.1, 0.6, 0.3), prob = c(0.8, 0.2, 0.4))
-# generate a random sample from the mixture:
-geomRMix <- rMix(1000, obj = geomMix)
-# construct the corresponding datMis object:
-MLE.geom <- function(dat){
-  1/(mean(dat)+1)
-}
-geom.dM <- RtoDat(geomRMix, Hankel.method = "explicit", 
-                  Hankel.function = explicit.geom, 
-                  theta.bound.list = list(prob = c(0, 1)), 
-                  MLE.function = MLE.geom)
-# etimate the number of components using paramHankel function:
-(res <- paramHankel(geom.dM, j.max = 5, B = 1000, ql = 0.025, qu = 0.975))
-```
-
-Again, `paramHankel` correctly identifies the data as having been generated by a 3-component mixture.
 
 Consider now, as a real-world example, the Children dataset whose content was taken from the Annual Report of the pension fund S.P.P. of 1952. The dataset initially appeared in work of [@thisted] and was subsequently analysed by many authors. It entails data on 4075 widows who recieved pension from the fund, with their number of children being our variable of interest. For example, there are 3062 widows without children, 587 widows with one child, etc. Many authors have noted that this data is not consistent with being a random sample from a Poisson distribution since the number of zeros found in the data is too large. Thisted approached this by fitting a mixture of two populations, one which is always zero and one which follows a Poisson distribution. **mixComp** includes this data stored as a dataframe. Here, we want to investigate 
 how the Hankel matrix methods compare when fitting the data to a mixture of Poissons.
@@ -477,7 +455,7 @@ children.dM <- datMix(children.obs, dist = "pois", discrete = TRUE,
 ```
 
 
-First, we check the nonparametric method. We define the penalty <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650026704.jpg"> as <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650026758.jpg"> (by multiplying <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650026849.jpg"> by <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649973529.jpg">). The result suggests that the data comes from a 2-component mixture.
+First, we check the nonparametric method. We define the penalty $A(j)l(n)$ as $\frac{j\log(n)}{\sqrt{n}}$ and scale the determinants according to Equation \autoref{eq:scaled} (by multiplying the penalty by $\sqrt{n}$). The result suggests that the data comes from a 2-component mixture.
 
 ```{r childplotnph, fig.width = 5, fig.height = 4}
 # define the penalty:
@@ -491,7 +469,7 @@ plot(det_sca_pen, main = "Non-parametric Hankel method for Children dataset",
      cex.main = 0.9)
 ```
 
-Next, we check the fit of the parametric version. The printed result of `paramHankel.scaled` shows that this method also suggests 2 to be the number of components, with the first component corresponding to a Poisson distribution with <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650026963.jpg">. Note that the limit case <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650027021.jpg"> results in a point mass at 0, and that this fit therefore nicely lines up with the idea of a component accounting for only the zero observations. The plot shows that this method yields a sensible fit overall.
+Next, we check the fit of the parametric version. The printed result of `paramHankel.scaled` shows that this method also suggests 2 to be the number of components, with the first component corresponding to a Poisson distribution with$\lambda = 0.0306$. Note that the limit case $\lambda = 0$ results in a point mass at 0, and that this fit therefore nicely lines up with the idea of a component accounting for only the zero observations. The plot shows that this method yields a sensible fit overall.
 
 ```{r childplotph, fig.width = 5, fig.height = 4}
 set.seed(0)
