@@ -726,7 +726,7 @@ res <- mix.lrt(norm0.5.dM, B = 50, quantile = 0.95)
 plot(res)
 ```
 
-![LRT method applied to the non-standard normal mixture](images/est-norm0.5.png)
+![LRT method applied to the non-standard normal mixture](figures/est-norm0.5.pdf)
 
 
 # Section 7. Computational nuance for mixComp functions using the solnp() solver
