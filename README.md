@@ -131,8 +131,10 @@ poisMix <- Mix("pois", discrete = TRUE, w = c(0.45, 0.45, 0.1), lambda = c(1, 5,
 plot(normLocMix, main = "3-component normal mixture", cex.main = 0.9)
 plot(poisMix, main = "3-component poisson mixture", cex.main = 0.9)
 ```
-<img src="https://github.com/yuliadm/mixComp/blob/main/images/normMix.png">
-<img src="https://github.com/yuliadm/mixComp/blob/main/images/poisMix.png">
+<p float="left">
+  <img src="https://github.com/yuliadm/mixComp/blob/main/images/normMix.png" />
+  <img src="https://github.com/yuliadm/mixComp/blob/main/images/poisMix.pn" />
+</p>
 
 If required, random samples can be generated from these mixtures.
 ```{r rmix}
@@ -143,9 +145,11 @@ poisRMix <- rMix(1000, obj = poisMix)
 plot(normLocRMix, main = "Three component normal mixture", cex.main = 0.9)
 plot(poisRMix, main = "Three component poisson mixture", cex.main = 0.9)
 ```
-<img src="https://github.com/yuliadm/mixComp/blob/main/images/normRMix.png">
-<img src="https://github.com/yuliadm/mixComp/blob/main/images/poisRMix.png">
-
+<p float="left">
+<img src="https://github.com/yuliadm/mixComp/blob/main/images/normRMix.png" />
+<img src="https://github.com/yuliadm/mixComp/blob/main/images/poisRMix.png" />
+</p>
+  
 The third object class shown in Table 1, called `datMix`, represents the data vector $\mathbf{X}$ based on which the mixture complexity is supposed to be estimated. These objects are most central to the package, as every procedure estimating the order of a mixture takes a `datMix` object as input. Apart from $\mathbf{X}$, it contains other "static" information needed for the estimation procedure (in contrast to "tuning parameters", which can be changed with every function call. An example of such a tuning parameter is the number of bootstrap replicates for a function employing a bootstrap procedure). A brief overview of which "static" attributes need to be supplied for each complexity estimation routine is given in Table 2. 
 
 #### Table 2: Inputs needed for different functions contained in mixComp
@@ -333,7 +337,6 @@ explicit.pois <- function(dat, j){
 }
 ```
 
-
 #### 2. `Hankel.method = "translation"`
  
 In Example 3.1., [@hankel, p.284] describe how $\textbf{c}^{2j+1}$ can be estimated if the family of component distributions $(G_\theta)$ is given by $\text{d}G_\theta(x) = \text{d}G(x-\theta)$, where $G$ is a known probability distribution whose moments can be given explicitly. In this case, a triangular linear system can be solved for the estimated moments of the mixing distribution $\hat{\textbf{c}}^{2j+1}$ using the empirical moments of the mixture distribution and the known moments of $G$. The former can be estimated from the data vector $\textbf{X}$ whereas the latter has to be supplied by the user. Thus, `Hankel.function` contains a function of $j$ returning the $j$-th (raw) moment of $G$.
@@ -405,8 +408,10 @@ par(mar = c(5, 5, 1, 1))
 plot(poisdets_sca_pen, main = "3-component Poisson mixture", cex.main = 0.9)
 plot(normdets_sca_pen, main = "3-component Normal mixture", cex.main = 0.9)
 ```
-<img src="https://github.com/yuliadm/mixComp/blob/main/images/np_art_1.png">
-<img src="https://github.com/yuliadm/mixComp/blob/main/images/np_art_2.png">
+<p float="left">
+<img src="https://github.com/yuliadm/mixComp/blob/main/images/np_art_1.png" />
+<img src="https://github.com/yuliadm/mixComp/blob/main/images/np_art_2.png" />
+</p>
 
 The resulting plots indicate that while theoretically sound, the scaled version of the Hankel method can struggle to correctly identify the number of components in practice.
 
