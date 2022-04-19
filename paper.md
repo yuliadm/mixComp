@@ -553,7 +553,7 @@ Unlike the two preceding functions, this procedure is applicable to *continuous*
 = \text{argmax}_{(\mathbf{w}, \mathbf{\theta})} \int \sqrt{f_{j, \mathbf{w}, \mathbf{\theta}}(x)\tilde{f}_n(x)}\ dx.
 \end{equation}
 
-Since the computational burden of optimizing over an integral to find the 'best' weights and component parameters is immense, the algorithm approximates the objective function \autoref{eq:hellcont} by sampling $n_s = $ `sample.n` observations $Y_i$ from $\tilde{f}_n(x)$ and setting
+Since the computational burden of optimizing over an integral to find the 'best' weights and component parameters is immense, the algorithm approximates the objective function given by \autoref{eq:hellcont} by sampling $n_s = $ `sample.n` observations $Y_i$ from $\tilde{f}_n(x)$ and setting
 
 $$
 (\hat{\mathbf{w}}^j, \hat{\mathbf{\theta}}^j) = \text{argmax}_{(\mathbf{w}, \mathbf{\theta})} \sum_{i = 1}^{n_s} \sqrt{\frac{f_{j, \mathbf{w}, \mathbf{\theta}}(Y_i)}{\tilde{f}_n(Y_i)}}.
