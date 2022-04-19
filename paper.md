@@ -129,8 +129,9 @@ poisMix <- Mix("pois", discrete = TRUE, w = c(0.45, 0.45, 0.1), lambda = c(1, 5,
 plot(normLocMix, main = "3-component normal mixture", cex.main = 0.9)
 plot(poisMix, main = "3-component poisson mixture", cex.main = 0.9)
 ```
-![normMix](https://github.com/yuliadm/mixComp/blob/main/images/normMix.png)
-![poisMix](https://github.com/yuliadm/mixComp/blob/main/images/poisMix.png)
+
+
+
 
 If required, random samples can be generated from these mixtures.
 ```{r rmix}
@@ -142,8 +143,9 @@ plot(normLocRMix, main = "Three component normal mixture", cex.main = 0.9)
 plot(poisRMix, main = "Three component poisson mixture", cex.main = 0.9)
 ```
 
-![normRMix](https://github.com/yuliadm/mixComp/blob/main/images/normRMix.png)
-![poisRMix](https://github.com/yuliadm/mixComp/blob/main/images/poisRMix.png)
+
+
+
   
 The third object class shown in Table 1, called `datMix`, represents the data vector $\mathbf{X}$ based on which the mixture complexity is supposed to be estimated. These objects are most central to the package, as every procedure estimating the order of a mixture takes a `datMix` object as input. Apart from $\mathbf{X}$, it contains other "static" information needed for the estimation procedure (in contrast to "tuning parameters", which can be changed with every function call. An example of such a tuning parameter is the number of bootstrap replicates for a function employing a bootstrap procedure). A brief overview of which "static" attributes need to be supplied for each complexity estimation routine is given in Table 2. 
 
@@ -404,8 +406,9 @@ plot(poisdets_sca_pen, main = "3-component Poisson mixture", cex.main = 0.9)
 plot(normdets_sca_pen, main = "3-component Normal mixture", cex.main = 0.9)
 ```
 
-![np_art_1](https://github.com/yuliadm/mixComp/blob/main/images/np_art_1.png)
-![np_art_2](https://github.com/yuliadm/mixComp/blob/main/images/np_art_2.png)
+
+
+
 
 Having created the data ourselves, we know that it comes from a 3-component Poisson mixture and a 3-component Gaussian mixture respectively. The resulting plots indicate that while theoretically sound, the scaled version of the Hankel method can struggle to correctly identify the number of components in practice.
 
@@ -426,8 +429,9 @@ plot(pois_sca_pen,)
 plot(norm_sca_pen)
 ```
 
-![p_art_1](https://github.com/yuliadm/mixComp/blob/main/images/p_art_1.png)
-![p_art_2](https://github.com/yuliadm/mixComp/blob/main/images/p_art_2.png)
+
+
+
 
 
 Consider now, as a real-world example, the Children dataset whose content was taken from the Annual Report of the pension fund S.P.P. of 1952. The dataset initially appeared in work of [@thisted] and was subsequently analysed by many authors. It entails data on 4075 widows who recieved pension from the fund, with their number of children being our variable of interest. For example, there are 3062 widows without children, 587 widows with one child, etc. Many authors have noted that this data is not consistent with being a random sample from a Poisson distribution since the number of zeros found in the data is too large. Thisted approached this by fitting a mixture of two populations, one which is always zero and one which follows a Poisson distribution. **mixComp** includes this data stored as a dataframe. Here, we want to investigate 
@@ -472,8 +476,9 @@ param_sca <- paramHankel.scaled(children.dM, j.max = 5, B = 1000, ql = 0.025,
 plot(param_sca, breaks = 8, ylim = c(0, 0.8))
 ```
 
-![np_real](https://github.com/yuliadm/mixComp/blob/main/images/np_real.png)
-![p_real](https://github.com/yuliadm/mixComp/blob/main/images/p_real.png)
+
+
+
 
 
 # Section 4. Functions using distances
@@ -561,8 +566,9 @@ plot(h_disc_pois)
 plot(h_cont_norm)
 ```
 
-![dist_art_1](https://github.com/yuliadm/mixComp/blob/main/images/dist_art_1.png)
-![dist_art_2](https://github.com/yuliadm/mixComp/blob/main/images/dist_art_2.png)
+
+
+
 
 
 For a real-world example, refer back to the `faithful` dataset and the corresponding `datMix` object which was created in Section 1. Fitting the distance methods to a continuous density requires a choice of bandwidth. While using the adaptive bandwidth is an option, if the user does not want to do so, it is recommended to use the function `kdensity` from the package **kdensity** [@kdensity] which automatically selects an optimal bandwidth (can be accessed via `kdensity(data)$bw`). If the user wants to compare different bandwidth values, it is advisable to look at the plots of the respective kernel density estimates using `kdensity` and to choose one that captures the shape of the data well without fitting to noise.
@@ -570,9 +576,9 @@ For a real-world example, refer back to the `faithful` dataset and the correspon
 The following figures illustrate the above point by showing the KDE of the Old Faithful data with bandwidths 1, 4 and 8. Here, 4 seems to be an appropriate choice.
 
 
-![bandwidth1](https://github.com/yuliadm/mixComp/blob/main/images/bandwidth1.png)
-![bandwidth4](https://github.com/yuliadm/mixComp/blob/main/images/bandwidth4.png)
-![bandwidth8](https://github.com/yuliadm/mixComp/blob/main/images/bandwidth8.png)
+
+
+
 
 `hellinger.cont` fits a 2-component mixture to the data, which fits the data well and comprises similar parameter estimates to those found in the literature.
 
@@ -584,7 +590,8 @@ res <- hellinger.cont(faithful.dM, bandwidth = kdensity(faithful.obs)$bw,
 plot(res)
 ```
 
-![hell-cont-norm](https://github.com/yuliadm/mixComp/blob/main/images/hell-cont-norm.png)
+
+
 
 At this point, it is worth having a closer look at the thresholds. They each satisfy $t(j,n) \rightarrow 0$ as $n \rightarrow \infty$, the sole condition the authors require. Now, the consistency proofs for estimators defined via Equation \autoref{eq:distances} all rely on the fact that, as $n \rightarrow \infty$,
 
@@ -628,7 +635,8 @@ res <- hellinger.boot.disc(Shakespeare.dM, B = 50, ql = 0.025, qu = 0.975)
 plot(res)
 ```
 
-![hell-boot-geom](https://github.com/yuliadm/mixComp/blob/main/images/hell-boot-geom.png)
+
+
 
 `hellinger.boot.disc` estimates that the data comes from a 3-component geometric mixture (thus clustering the english words Shakespeare used into three categories).
 
@@ -660,7 +668,9 @@ res <- mix.lrt(acidity.dM, B = 50, quantile = 0.95)
 plot(res)
 ```
 
-![lrt-norm](https://github.com/yuliadm/mixComp/blob/main/images/lrt-norm.png)
+
+
+
 
 # Section 6. Non-standard mixtures
 
@@ -687,8 +697,9 @@ plot(norm0.5Mix)
 plot(norm0.5RMix)
 ```
 
-![norm0.5Mix](https://github.com/yuliadm/mixComp/blob/main/images/norm0.5Mix.png)
-![norm0.5RMix](https://github.com/yuliadm/mixComp/blob/main/images/norm0.5RMix.png)
+
+
+
 
 
 Below we will estimate of the mixture density using `mix.lrt` given a sample from the considered above 3-component normal mixture. We start by creating all necessary inputs:
@@ -710,7 +721,9 @@ res <- mix.lrt(norm0.5.dM, B = 50, quantile = 0.95)
 print(res)
 plot(res)
 ```
-![est-norm0.5](https://github.com/yuliadm/mixComp/blob/main/images/est-norm0.5.png)
+
+
+
 
 # Section 7. Computational nuance for mixComp functions using the solnp() solver
 
