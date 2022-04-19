@@ -773,7 +773,7 @@ in the continuous case.
 
 ### Further results on the real-world datasets
 
-The Table below showcases the results of all complexity estimation procedures when applied to the four real-world datasets that were discussed in this paper. The table also includes the results for the Shakespeare dataset borrowed from [@shakespeare]. It was not mentioned in the vignette but is included in the **mixComp** package. The following settings were used to calculate these results (default setting were used unless indicated otherwise):
+The Table below showcases the results of all complexity estimation procedures when applied to the four real-world datasets that were discussed in this paper. The table also includes the results for the Shakespeare dataset borrowed from [@Efron1976]. It was not mentioned in the vignette but is included in the **mixComp** package. The following settings were used to calculate these results (default setting were used unless indicated otherwise):
 
 * `set.seed(1)` was used for all complexity calculations,
 * for `hellinger.cont` and `hellinger.boot.cont` the bandwidths suggested by **kdensity** were used,
