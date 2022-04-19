@@ -236,7 +236,7 @@ Making use of this fact, the first approach to estimating the order of a mixture
 $$J_n(j) := \lvert \det H(\hat{\textbf{c}}^{2j+1}) \rvert + A(j)l(n),$$
 
 with $l(n)$ being a positive function converging to $0$ as $n\to\infty$ and $A(j)$ being positive and strictly increasing. 
-$$\hat{p} := \argmin_{j \in \mathbb{N}} J_n(j)$$
+$$\hat{p} := \text{argmin}_{j \in \mathbb{N}} J_n(j)$$
 is then a consistent estimator of $p$.
 
 As an extension to simply adding a penalty term to the determinant, a scaling approach was considered by \citet{lilian}. Let $\hat{d}_j = \det H(\hat{\textbf{c}}^{2j+1})$, $d_j = \det H(\textbf{c}^{2j+1})$ and $j_m \geq p, j_m \in \mathbb{N}$. Since the estimated moments $\hat{\textbf{c}}^{2j+1}$ are asymptotically normal, one can apply the delta method giving
@@ -514,8 +514,8 @@ The preceding notation was held as broad as possible, since different distance m
 `L2.disc` employs the squared $L_2$ distance as the distance measure $D$ and is only to be used for discrete mixtures since the nonparametric estimate $\tilde{f}_n$ is defined as the empirical probability mass function. In this setting, the 'best' estimate $(\hat{\mathbf{w}}^j, \hat{\bm{\theta}}^j) \in W_j \times \Theta_j$ for a given $j$ corresponds to
 
 
-$$(\hat{\mathbf{w}}^j, \hat{\bm{\theta}}^j) = \argmin_{(\mathbf{w}, \bm{\theta})} L_2^2(f_{j, \mathbf{w}, \bm{\theta}}, \tilde{f_n}) 
-= \argmin_{(\mathbf{w}, \bm{\theta})} \left\{ \sum_{x=0}^{\infty} f_{j, \mathbf{w}, \bm{\theta}}^2(x) - \frac{2}{n} \sum_{i=1}^{n}f_{j, \mathbf{w}, \bm{\theta}}(X_i)\right\}.$$
+$$(\hat{\mathbf{w}}^j, \hat{\bm{\theta}}^j) = \text{argmin}_{(\mathbf{w}, \bm{\theta})} L_2^2(f_{j, \mathbf{w}, \bm{\theta}}, \tilde{f_n}) 
+= \text{argmin}_{(\mathbf{w}, \bm{\theta})} \left\{ \sum_{x=0}^{\infty} f_{j, \mathbf{w}, \bm{\theta}}^2(x) - \frac{2}{n} \sum_{i=1}^{n}f_{j, \mathbf{w}, \bm{\theta}}(X_i)\right\}.$$
 
 
 As the squared $L_2$ distance might involve an infinite sum (for distributions with infinite support), the user has the option to determine the cut-off value using the `n.inf` argument, which is set to 1000 by default. The parameters $(\hat{\mathbf{w}}^{j+1}, \hat{\bm{\theta}}^{j+1})$ are obtained analogously. Once both parameter sets have been determined, the difference in their respective squared $L_2$ distances to $\tilde{f}_n$ is compared to a `threshold` (equaling $t(j,n)$ defined above. The threshold function can be entered directly or one of the predefined thresholds, called `LIC` or `SBC` and given respectively by
@@ -528,8 +528,8 @@ can be used. Note that, if a customized function is to be used, its arguments ha
 
 This second function presents an alternative estimation procedure for *discrete* mixtures, working much the same as `L2.disc`, however, using a different measure of distance and different thresholds. As the name suggests, it is based on the square of the Hellinger distance, causing the 'best' estimate $(\hat{\mathbf{w}}^j, \hat{\bm{\theta}}^j) \in W_j \times \Theta_j$ for a given $j$ to equal
 
-$$(\hat{\mathbf{w}}^j, \hat{\bm{\theta}}^j) = \argmin_{(\mathbf{w}, \bm{\theta})} H^2(f_{j, \mathbf{w}, \bm{\theta}}, \tilde{f_n}) 
-= \argmax_{(\mathbf{w}, \bm{\theta})} \sum_{x=0}^{X_{(n)}} \sqrt{f_{j, \mathbf{w}, \bm{\theta}}(x) \tilde{f}_n(x)},$$
+$$(\hat{\mathbf{w}}^j, \hat{\bm{\theta}}^j) = \text{argmin}_{(\mathbf{w}, \bm{\theta})} H^2(f_{j, \mathbf{w}, \bm{\theta}}, \tilde{f_n}) 
+= \text{argmax}_{(\mathbf{w}, \bm{\theta})} \sum_{x=0}^{X_{(n)}} \sqrt{f_{j, \mathbf{w}, \bm{\theta}}(x) \tilde{f}_n(x)},$$
 
 with $X_{(n)} = \max_{i = 1}^n (X_i)$. The relevant theory can be found in [@hell]. In accordance with their work, the two predefined thresholds are given by
 
@@ -542,14 +542,14 @@ $$\text{AIC} = \frac{d+1}{n} \quad \quad \text{and} \quad \quad \text{SBC} = \fr
 Unlike the two preceding functions, this procedure is applicable to *continuous* mixture models and uses a kernel density estimator (KDE) as $\tilde{f}_n$. Its `bandwidth` can be chosen by the user, or the adaptive KDE found in [@adap, p. 1720, equation (2)] may be used by specifying `bandwidth = "adaptive"`. The calculations are based on the continuous version of the squared Hellinger distance, where the 'best' estimate $(\hat{\mathbf{w}}^j, \hat{\bm{\theta}}^j) \in W_j \times \Theta_j$ for a given $j$ corresponds to
 
 \begin{equation}\label{eq:hellcont}
-(\hat{\mathbf{w}}^j, \hat{\bm{\theta}}^j) = \argmin_{(\mathbf{w}, \bm{\theta})} H^2(f_{j, \mathbf{w}, \bm{\theta}}, \tilde{f_n}) 
-= \argmax_{(\mathbf{w}, \bm{\theta})} \int \sqrt{f_{j, \mathbf{w}, \bm{\theta}}(x)\tilde{f}_n(x)}\ dx.
+(\hat{\mathbf{w}}^j, \hat{\bm{\theta}}^j) = \text{argmin}_{(\mathbf{w}, \bm{\theta})} H^2(f_{j, \mathbf{w}, \bm{\theta}}, \tilde{f_n}) 
+= \text{argmax}_{(\mathbf{w}, \bm{\theta})} \int \sqrt{f_{j, \mathbf{w}, \bm{\theta}}(x)\tilde{f}_n(x)}\ dx.
 \end{equation}
 
 Since the computational burden of optimizing over an integral to find the 'best' weights and component parameters is immense, the algorithm approximates the objective function \autoref{eq:hellcont} by sampling $n_s = $ `sample.n` observations $Y_i$ from $\tilde{f}_n(x)$ and setting
 
 $$
-(\hat{\mathbf{w}}^j, \hat{\bm{\theta}}^j) = \argmax_{(\mathbf{w}, \bm{\theta})} \sum_{i = 1}^{n_s} \sqrt{\frac{f_{j, \mathbf{w}, \bm{\theta}}(Y_i)}{\tilde{f}_n(Y_i)}}.
+(\hat{\mathbf{w}}^j, \hat{\bm{\theta}}^j) = \text{argmax}_{(\mathbf{w}, \bm{\theta})} \sum_{i = 1}^{n_s} \sqrt{\frac{f_{j, \mathbf{w}, \bm{\theta}}(Y_i)}{\tilde{f}_n(Y_i)}}.
 $$
 
 This procedure uses the same thresholds as `hellinger.disc`.
