@@ -133,7 +133,7 @@ plot(poisMix, main = "3-component poisson mixture", cex.main = 0.9)
 ```
 <p float="left">
   <img src="https://github.com/yuliadm/mixComp/blob/main/images/normMix.png" />
-  <img src="https://github.com/yuliadm/mixComp/blob/main/images/poisMix.pn" />
+  <img src="https://github.com/yuliadm/mixComp/blob/main/images/poisMix.png" />
 </p>
 
 If required, random samples can be generated from these mixtures.
@@ -431,8 +431,10 @@ par(mar=c(5, 5, 1, 1))
 plot(pois_sca_pen,)
 plot(norm_sca_pen)
 ```
-<img src="https://github.com/yuliadm/mixComp/blob/main/images/p_art_1.png">
-<img src="https://github.com/yuliadm/mixComp/blob/main/images/p_art_2.png">
+<p float="left">
+<img src="https://github.com/yuliadm/mixComp/blob/main/images/p_art_1.png" />
+<img src="https://github.com/yuliadm/mixComp/blob/main/images/p_art_2.png" />
+</p>
 
 As another example, consider data generated from a three component geometric mixture, with <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650026503.jpg"> and <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650026570.jpg">. 
 
@@ -497,10 +499,10 @@ param_sca <- paramHankel.scaled(children.dM, j.max = 5, B = 1000, ql = 0.025,
                           qu = 0.975)
 plot(param_sca, breaks = 8, ylim = c(0, 0.8))
 ```
-<img src="https://github.com/yuliadm/mixComp/blob/main/images/np_real.png">
-<img src="https://github.com/yuliadm/mixComp/blob/main/images/p_real.png">
-
-
+<p float="left">
+<img src="https://github.com/yuliadm/mixComp/blob/main/images/np_real.png" />
+<img src="https://github.com/yuliadm/mixComp/blob/main/images/p_real.png" />
+</p>
 
 # Mathematics
 
