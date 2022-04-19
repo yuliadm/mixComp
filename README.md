@@ -8,11 +8,11 @@ tags:
   - minimum distance
   - likelihood-rato test
 authors:
-  - name: Anja Weigel^[author] # note this makes a footnote 
+  - name: Anja Weigel^[author] 
     affiliation: 2  
-  - name: Fadoua Balabdaoui^[co-author] # note this makes a footnote 
+  - name: Fadoua Balabdaoui^[co-author]  
     affiliation: 1 
-  - name: Yulia Kulagina^[co-author, maintainer] # note this makes a footnote 
+  - name: Yulia Kulagina^[co-author, maintainer] 
     affiliation: 1
   - name: Lilian Mueller^[contributor]
     affiliation: 2
