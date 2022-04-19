@@ -1,31 +1,33 @@
 ---
-title: 'Estimating the Complexity of a Finite Mixture with the R Package mixComp'
+title: 'Gala: A Python package for galactic dynamics'
 tags:
-  - R
-  - mixture complexity estimation
-  - mixture models
-  - Hankel matrix
-  - minimum distance
-  - likelihood-rato test
+  - Python
+  - astronomy
+  - dynamics
+  - galactic dynamics
+  - milky way
 authors:
-  - name: Anja Weigel^[author] 
-    affiliation: 2  
-  - name: Fadoua Balabdaoui^[co-author]  
-    affiliation: 1 
-  - name: Yulia Kulagina^[co-author, maintainer] 
-    affiliation: 1
-  - name: Lilian Mueller^[contributor]
+  - name: Adrian M. Price-Whelan^[Co-first author] # note this makes a footnote saying 'Co-first author'
+    orcid: 0000-0000-0000-0000
+    affiliation: "1, 2" # (Multiple affiliations must be quoted)
+  - name: Author Without ORCID^[Co-first author] # note this makes a footnote saying 'Co-first author'
     affiliation: 2
-  - name: Martin Maechler^[contributor]
-    affiliation: 1  
+  - name: Author with no affiliation^[Corresponding author]
+    affiliation: 3
 affiliations:
-  - name: ETH Zurich, Seminar for Statistics, Switzerland
+ - name: Lyman Spitzer, Jr. Fellow, Princeton University, USA
    index: 1
-  - name: ETH Zurich, Switzerland
+ - name: Institution Name, Country
    index: 2
-date: 17 April 2022
-bibliography: refs.bib
+ - name: Independent Researcher, Country
+   index: 3
+date: 13 August 2017
+bibliography: paper.bib
 
+# Optional fields if submitting to a AAS journal too, see this blog post:
+# https://blog.joss.theoj.org/2018/12/a-new-collaboration-with-aas-publishing
+aas-doi: 10.3847/xxxxx <- update this with the DOI from AAS once you know it.
+aas-journal: Astrophysical Journal <- The name of the AAS journal.
 ---
 
 # Summary
