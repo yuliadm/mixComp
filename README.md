@@ -17,7 +17,6 @@ authors:
   - name: Lilian Mueller^[contributor]
     affiliation: 2
   - name: Martin Maechler^[contributor]
-    (package 'nor1mix' as model, <https://orcid.org/0000-0002-8685-9910>)
     affiliation: 1  
 affiliations:
   - name: ETH Zurich, Seminar for Statistics, Switzerland
