@@ -466,6 +466,7 @@ set.seed(0)
 plot(det_sca_pen, main = "Non-parametric Hankel method for Children dataset",
      cex.main = 0.9)
 ```
+![np_real](images/np_real.png)
 
 Next, we check the fit of the parametric version. The printed result of `paramHankel.scaled` shows that this method also suggests 2 to be the number of components, with the first component corresponding to a Poisson distribution with$\lambda = 0.0306$. Note that the limit case $\lambda = 0$ results in a point mass at 0, and that this fit therefore nicely lines up with the idea of a component accounting for only the zero observations. The plot shows that this method yields a sensible fit overall.
 
@@ -476,7 +477,6 @@ param_sca <- paramHankel.scaled(children.dM, j.max = 5, B = 1000, ql = 0.025,
 plot(param_sca, breaks = 8, ylim = c(0, 0.8))
 ```
 
-![np_real](images/np_real.png)
 ![p_real](images/p_real.png)
 
 
@@ -589,7 +589,7 @@ res <- hellinger.cont(faithful.dM, bandwidth = kdensity(faithful.obs)$bw,
 plot(res)
 ```
 
-
+![hell-cont-norm](images/hell-cont-norm.png)
 
 At this point, it is worth having a closer look at the thresholds. They each satisfy $t(j,n) \rightarrow 0$ as $n \rightarrow \infty$, the sole condition the authors require. Now, the consistency proofs for estimators defined via Equation \autoref{eq:distances} all rely on the fact that, as $n \rightarrow \infty$,
 
@@ -633,7 +633,7 @@ res <- hellinger.boot.disc(Shakespeare.dM, B = 50, ql = 0.025, qu = 0.975)
 plot(res)
 ```
 
-
+![hell-boot-geom](images/hell-boot-geom.png)
 
 
 `hellinger.boot.disc` estimates that the data comes from a 3-component geometric mixture (thus clustering the english words Shakespeare used into three categories).
@@ -666,7 +666,7 @@ res <- mix.lrt(acidity.dM, B = 50, quantile = 0.95)
 plot(res)
 ```
 
-
+![lrt-norm](images/lrt-norm.png)
 
 
 # Section 6. Non-standard mixtures
@@ -717,7 +717,7 @@ res <- mix.lrt(norm0.5.dM, B = 50, quantile = 0.95)
 plot(res)
 ```
 
-
+![est-norm0.5](images/est-norm0.5.png)
 
 
 # Section 7. Computational nuance for mixComp functions using the solnp() solver
