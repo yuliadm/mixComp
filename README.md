@@ -231,33 +231,25 @@ Then, for all <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Im
 
 <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650017845.jpg">
 
-Making use of this fact, the first approach to estimating the order of a mixture that is implemented in **mixComp** relies on initially finding a consistent estimator of $\textbf{c}^{2j+1}$ based on $\textbf{X}$, say $\hat{\textbf{c}}^{2j+1}$, to then iteratively calculate the applicable Hankel matrix while increasing the assumed order $j$ until a sufficiently small value of $\det H(\hat{\textbf{c}}^{2j+1})$ is attained. However, since $\det H(\hat{\textbf{c}}^{2j+1})$ should be close to 0 for all $j \geq p$, this would lead to choosing $\hat{p}$ rather larger than the true value and it seems natural to introduce a penalty term. Therefore [@hankel] define the empirical penalized objective function as
+Making use of this fact, the first approach to estimating the order of a mixture that is implemented in **mixComp** relies on initially finding a consistent estimator of <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650018010.jpg"> based on <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649977791.jpg">, say <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650018121.jpg">, to then iteratively calculate the applicable Hankel matrix while increasing the assumed order <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649975639.jpg"> until a sufficiently small value of <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650018289.jpg"> is attained. However, since <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650018289.jpg">  should be close to 0 for all <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650017206.jpg">, this would lead to choosing <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650014579.jpg"> rather larger than the true value and it seems natural to introduce a penalty term. Therefore [[10]](#10) define the empirical penalized objective function as
 
-$$J_n(j) \coloneqq \lvert \det H(\hat{\textbf{c}}^{2j+1}) \rvert + A(j)l(n),$$
+<img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650018549.jpg">
 
-with $l(n)$ being a positive function converging to $0$ as $n\to\infty$ and $A(j)$ being positive and strictly increasing. 
-$$\hat{p} \coloneqq \argmin_{j \in \mathbb{N}} J_n(j)$$
-is then a consistent estimator of $p$.
+with <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650018991.jpg"> being a positive function converging to 0 as <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650019043.jpg"> and <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650019115.jpg"> being positive and strictly increasing. 
 
-As an extension to simply adding a penalty term to the determinant, a scaling approach was considered by \citet{lilian}. Let $\hat{d}_j = \det H(\hat{\textbf{c}}^{2j+1})$, $d_j = \det H(\textbf{c}^{2j+1})$ and $j_m \geq p, j_m \in \mathbb{N}$. Since the estimated moments $\hat{\textbf{c}}^{2j+1}$ are asymptotically normal, one can apply the delta method giving
+<img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650019176.jpg">
 
-$$
-\sqrt{n} \cdot
-  \big(
-    \hat{d}_1-d_1,
-    \dots,
-    \hat{d}_{p-1}-d_{p-1},
-    \hat{d}_p-0,
-    \dots,
-    \hat{d}_{j_m}-0
-  \big)^\top \quad \overset{\mathcal{D}}{\longrightarrow} \quad \mathcal{N}(0_{j_m \times 1}, \Sigma_ {j_m \times j_m}).
-$$
+is then a consistent estimator of <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649977354.jpg">.
 
-Instead of inspecting the vector $(\hat{d}_1, \dots, \hat{d}_{j_m})$, one could therefore also base the complexity analysis on a vector of scaled determinants employing a nonparametric bootstrap procedure on $\textbf{X}$. 
+As an extension to simply adding a penalty term to the determinant, a scaling approach was considered by [[27]](#27). Let <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650019301.jpg">, <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650019380.jpg"> and <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650019564.jpg">. Since the estimated moments <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650018121.jpg"> are asymptotically normal, one can apply the delta method giving
 
-To this end, let $\tilde{\Sigma} \in \mathbb{R}^{j_m \times j_m}$ denote the covariance matrix of the determinants $\hat{d}^{*b}_{j}$ calculated on the $b^{\text{th}}$ bootstrap sample for $b=1, \dots, B$ and $j = 1, \dots j_m$. Note that 
+<img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650019736.jpg">
 
-$$\tilde{\Sigma} \approx \frac{\Sigma}{n} \quad \text{ as }B \to \infty, n \to \infty$$
+Instead of inspecting the vector <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650019799.jpg">, one could therefore also base the complexity analysis on a vector of scaled determinants employing a nonparametric bootstrap procedure on <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649977791.jpg">. 
+
+To this end, let <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650019902.jpg">denote the covariance matrix of the determinants <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650021468.jpg"> calculated on the <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650021576.jpg">-th bootstrap sample for <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650021631.jpg"> and <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650021686.jpg">. Note that 
+
+<img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650021736.jpg"> 
 
 
 and write $\tilde{\Sigma}^{-1/2} = \sqrt{n} \cdot \hat{\Sigma}^{-1/2}$. Define the rescaled vector 
