@@ -269,17 +269,17 @@ With this general framework in place, the computation now merely hinges on calcu
 
 #### 1. `Hankel.method = "explicit"`
 
-This method can be applied when a closed form expression for estimates of the moments of the mixing distribution exists. `Hankel.function` then contains the function explicitly estimating $\textbf{c}^{2j+1}$. 
+This method can be applied when a closed form expression for estimates of the moments of the mixing distribution exists. `Hankel.function` then contains the function explicitly estimating <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650018010.jpg">. 
 
 As an example, consider a mixture of geometric distributions, where it can be shown that
 
-$$c^{2j+1}_j = 1 - \sum_{l = 0}^{j-1} f(l) = 1 - F(j-1),$$
+<img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650022531.jpg">
 
 with $F$ the true cumulative distribution function. Hence one may take
 
-$$\hat{c}^{2j+1}_j = 1 - \hat{F}(j-1)$$
+<img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650022746.jpg">
 
-as an estimator, with $\hat{F}$ being the empirical distribution function.
+as an estimator, with <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650022798.jpg"> being the empirical distribution function.
 
 ```{r geommom}
 # define the function for computing the moments:
@@ -288,25 +288,21 @@ explicit.geom <- function(dat, j){
 }
 ```
 
-As a second example, consider what [@hankel, p. 283, equation (3)] called the "natural" estimator, i.e. using
+As a second example, consider what ([[10]](#10), p. 283, equation 3) called the "natural" estimator, i.e. using
 
-\begin{equation}\label{eq:1}
-\hat{c}^{2j+1}_j = f_j\left(\frac{1}{n} \sum_{i=1}^n \psi_j(X_i)\right)
-\end{equation}
+<img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650022851.jpg">
 
 when
 
-\begin{equation}\label{eq:2}
-c^{2j+1}_j = f_j(\E[\psi_j(X_i)]).
-\end{equation}
+<img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650022913.jpg">
 
-Note that the estimators of this form may also be supplied as `Hankel.method = "explicit"` with `Hankel.function` equal to the right-hand side of Equation \autoref{eq:1}. For example, the "natural" estimator is applicable in the case of Poisson mixtures. If $Y \sim Pois(\lambda)$, it is a well known fact that
+Note that the estimators of this form may also be supplied as `Hankel.method = "explicit"` with `Hankel.function` equal to the right-hand side of the first above equation . For example, the "natural" estimator is applicable in the case of Poisson mixtures. If <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650022964.jpg">, it is a well known fact that
 
-$$\lambda^j = \E[Y(Y-1)\dots(Y-j+1)],$$
+<img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650023020.jpg">
 
-which, in combination with \autoref{eq:1} and \autoref{eq:2} suggests using
+which, in combination with the two above equations suggests using
 
-$$\hat{c}^{2j+1}_j = \frac{1}{n} \sum_{i=1}^n X_i(X_i-1)\dots(X_i-j+1)$$
+<img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650023088.jpg">
 
 as an estimator.
 
