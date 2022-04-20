@@ -481,7 +481,7 @@ with a non-parametric density/probability mass estimate <img src="https://github
 
 <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650030958.jpg">
 
-then <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649975639.jpg"> is taken as the estimate <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650014579.jpg">. If the inequality is not fulfilled, <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649975639.jpg"> is increased by 1 and the procedure is repeated. Consistency of estimators defined this way has been shown in a number of cases, amongst them those used by the **mixComp** algorithms, and the reader is referred to [@l2; @hell; @hellcont] for the proofs relevant to the results implemented in the package.
+then <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649975639.jpg"> is taken as the estimate <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650014579.jpg">. If the inequality is not fulfilled, <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649975639.jpg"> is increased by 1 and the procedure is repeated. Consistency of estimators defined this way has been shown in a number of cases, amongst them those used by the **mixComp** algorithms, and the reader is referred to [[37]](#37), [[39]](#39), [[40]](#40) for the proofs relevant to the results implemented in the package.
 
 The preceding notation was held as broad as possible, since different distance measures <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650028687.jpg"> and non-parametric estimators <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650030450.jpg"> can be used. Those relevant to the package are mostly well-known, still, definitions can be found in the Appendix. Three procedures are implemented in **mixComp** based on the foregoing methodology: `L2.disc`, `hellinger.disc` and `hellinger.cont`.
 
@@ -499,7 +499,7 @@ As the squared <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2I
 
 <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650032536.jpg">
 
-can be used. Note that, if a customized function is to be used, its arguments have to be named `j` and `n`. If the difference in squared distances is smaller than the selected threshold, the algorithm terminates and the true order is estimated as <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649975639.jpg">, otherwise <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649975639.jpg"> is increased by 1 and the procedure starts over. The reader is invited to consult [@l2] for further details.
+can be used. Note that, if a customized function is to be used, its arguments have to be named `j` and `n`. If the difference in squared distances is smaller than the selected threshold, the algorithm terminates and the true order is estimated as <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649975639.jpg">, otherwise <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649975639.jpg"> is increased by 1 and the procedure starts over. The reader is invited to consult [[37]](#37) for further details.
 
 #### 2. `hellinger.disc`
 
