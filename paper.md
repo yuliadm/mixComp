@@ -51,7 +51,7 @@ The packages **mixtools** [see @mixtools] and **flexmix** [see @flexmix1; @flexm
 **mixComp** can be used on virtually any parametric mixture as long as functions generating random variates and evaluating the density are provided for the component distribution. It is applicable to parametric mixtures well beyond those whose component distributions are included in the **R** package **stats**, making it more customizable than most packages for model-based clustering. The estimation results can be printed and plotted for further analysis. The package is aimed at practitioners studying phenomena that can be effectively modelled using mixture distributions. In particular, it can be used to identify settings and conditions, under which a certain method provides more accurate estimates than the others.
 
 
-# Notation 
+# General Framework
 
 A distribution $F$ is called a *finite mixture* if its density (we write density throughout and keep in mind that it may be taken with respect to the Lebesgue or the counting measure) is of the form
 $$f(x) = \sum_{i=1}^p w_i g_i(x),$$
