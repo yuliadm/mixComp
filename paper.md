@@ -131,11 +131,7 @@ when
 c^{2j+1}_j = f_j(\mathbb{E}[\psi_j(X_i)]).
 \end{equation}
 
-The estimators of this form may be supplied as `Hankel.method = "explicit"` with `Hankel.function` equal to the right-hand side of \autoref{eq:1}. For example, if $Y \sim Pois(\lambda)$, it is known that
-$$\lambda^j = \mathbb{E}[Y(Y-1)\dots(Y-j+1)],$$
-which, in combination with \autoref{eq:1} and \autoref{eq:2} suggests using
-$$\hat{c}^{2j+1}_j = \frac{1}{n} \sum_{i=1}^n X_i(X_i-1)\dots(X_i-j+1)$$
-as an estimator.
+The estimators of this form may be supplied as `Hankel.method = "explicit"` with `Hankel.function` equal to the right-hand side of \autoref{eq:1}. See the Examples Section for more details.
 
 #### (ii) `Hankel.method = "translation"`
  
@@ -374,7 +370,7 @@ plot(pois_sca_pen)
 The estimation result is correct in this case.
 
 
-Now consider a real-world example. The Acidity dataset which comprises measurements of the acid neutralizing capacity (ANC) taken from 155 lakes in North-Central Wisconsin, analysed as a mixture of normal distributions on the log scale by [@acidity1], [@acidity2] and [@acidity3]. While the former papers suggest the number of components to equal 2 (with 3 also being considered), the latter estimates $p$ to lie between 3 and 5. The `mix.lrt` method agrees with [@acidity1] and [@acidity2], returning a 2-component mixture with reasonable estimates for the component weights and parameters.
+Now consider a real-world data, to which we will apply the LRT-based approach. The Acidity dataset comprises measurements of the acid neutralizing capacity (ANC) taken from 155 lakes in North-Central Wisconsin, analysed as a mixture of normal distributions on the log scale by [@acidity1], [@acidity2] and [@acidity3]. While the former papers suggest the number of components to equal 2 (with 3 also being considered), the latter estimates $p$ to lie between 3 and 5. The `mix.lrt` method agrees with [@acidity1] and [@acidity2], returning a 2-component mixture with reasonable estimates for the component weights and parameters.
 
 ``` r
 acidity.obs <- unlist(acidity)
@@ -396,12 +392,10 @@ The reader is referred to the package documentation for more examples.
 
 In all preceding examples, the families of component densities $\{g(x;\theta):\theta \in \Theta \}$ belonged to one of the 'standard' probability distributions included in the **stats** package, which provides the density/mass function, cumulative distribution function, quantile function and random variate generation for selected distributions. The function names are of the form `dxxx`, `pxxx`, `qxxx` and `rxxx` respectively. With some additional effort, it is possible to use the **mixComp** package on 'non-standard' distributions: the user has to provide functions evaluating the density and generating random numbers for the component distribution. In accordance with **R** conventions, the user-generated function `dxxx` has to take `x` and the distribution parameters as input and returns the value of the density function specified by the parameters at the point `x`. Likewise, `rxxx` requires `n` and the distribution parameters as input and returns `n` random numbers based on the distribution specified by the aforementioned parameters. The examples of using **mixComp** functions for estimating the non-standard mixtures can be found in the package documentation.
 
-
 # Computational details
 
 All computations and graphics in this paper have been done using **R** version 4.0.0 with the packages **boot** 1.3-24, **cluster** 2.1.0, **expm** 0.999-4, **matrixcalc** 1.0-3, **Rsolnp** 1.16 and **kdensity** 1.0.1. **R** itself
 and all packages used are available from the Comprehensive **R** Archive Network (CRAN) at https://CRAN.R-project.org/.
-
 
 # Appendix 
 ### Distance and non-parametric estimator definitions
