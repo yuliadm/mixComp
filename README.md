@@ -13,8 +13,6 @@ authors:
     affiliation: 1
   - name: Lilian Mueller^[Contributor]
     affiliation: 2
-  - name: Martin Maechler^[Contributor] 
-    affiliation: 1
 affiliations:
  - name: ETH Zurich, Seminar for Statistics, Switzerland
    index: 1
