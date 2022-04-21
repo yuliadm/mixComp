@@ -94,7 +94,7 @@ Table 1 depicts five object classes defined in **mixComp**. The first two respec
 
 While the creation of `Mix` objects is straightforward, two things should be noted. First, **mixComp** procedures search for functions called `rdist` and `ddist` in the accessible namespaces. For most 'standard' distributions, these functions are contained in the **stats** package and do not need to be user-written (compare with the Section 6). To make use of these functions, it is essential that the string `dist` is named correctly (e.g. to create a gaussian mixture on the basis of the **stats** package, `dist` has to be specified as `norm` instead of `normal`, `gaussian` etc. for the package to find the functions `dnorm` and `rnorm`). Second, the names of the list elements of `theta.list`(for the names of the `...` arguments) have to match the names of the formal arguments of the functions `ddist` and `rdist` exactly (e.g. for a gaussian mixture, the list elements have to be named `mean` and `sd`).
 
-The following example creates two `Mix` objects, 3-component mixtures of normal and Poisson distributions. 
+The following example creates `Mix` objects for 3-component mixtures of normal and Poisson distributions. 
 
 ``` r
 set.seed(0)
@@ -113,7 +113,7 @@ plot(poisMix, main = "3-component poisson mixture", cex.main = 0.9)
 ![3-component poisson mixture](figures/poisMix.png) 
 
 
-If required, random samples can be generated from these mixtures.
+from these mixtures random samples can be generated.
 ``` r
 # generate random samples:
 normLocRMix <- rMix(1000, obj = normLocMix)
@@ -185,7 +185,7 @@ faithful.dM <- datMix(faithful.obs, dist = norm.dist, discrete = norm.discrete,
                       MLE.function = MLE.norm.list, Hankel.method = method,
                       Hankel.function = mom.std.norm)
 ```
-In the preceding example, the data vector $\mathbf{X}$ was taken from an existing dataset. As seen before, the `rMix` function can be used to generate a $n$-sized sample from a specific mixture. If this synthesized data is to be used in simulations (i.e. passed to one of the functions estimating the mixture complexity) an `rMix` object can be converted to a `datMix` object via the `RtoDat` function. Apart from `dist` and `discrete`, all `datMix` arguments have to be supplied to `RtoDat` likewise. 
+In the preceding example, the data vector $\mathbf{X}$ was taken from an existing dataset. The `rMix` function can be used to generate a $n$-sized sample from a specific mixture. If this synthesized data is to be used in simulations (i.e. passed to one of the functions estimating the mixture complexity) an `rMix` object can be converted to a `datMix` object via the `RtoDat` function. Apart from `dist` and `discrete`, all `datMix` arguments have to be supplied to `RtoDat` likewise. 
 
 Unlike the above mentioned objects whose creation precedes any type of mixture complexity estimation, objects of the bottom two classes (see Table 1) contain the results of the estimation procedures. Generally, the functions estimating the number of components differ in the types of families of component densities $\{g(x;\theta):\theta \in \Theta \}$ for which they allow and in whether they provide estimates of the weights $\hat{w}_i$ and the component parameters $\hat{\theta}_i, i \in 1, \dots, \hat{p}$, the latter determining the object class of the estimation result. These differences are shown in Table 3. The function `nonparamHankel` returns an object of class `hankDet`, which is a vector of determinants (scaled and/or penalized), each entry belonging to a certain complexity estimate. The link between these determinants and $p$ will be discussed in the Section 3. `paramEst` objects arise when using any other function estimating the mixture complexity, all of which additionally return estimates of the component weights and parameters. For both object classes, print and plot methods are available to summarize and visualize the estimation results. 
 
@@ -635,7 +635,7 @@ plot(norm0.5RMix)
 ![Non-standard normal mixture](figures/norm0.5RMix.png)
 
 
-Below we will estimate of the mixture density using `mix.lrt` given a sample from the considered above 3-component normal mixture. We start by creating all necessary inputs:
+Below we estimate of the mixture density using `mix.lrt` given a sample from the considered above mixture:
 ``` r
 norm0.5.list <- vector(mode = "list", length = 1)
 names(norm0.5.list) <- c("mean")
