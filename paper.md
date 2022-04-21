@@ -289,7 +289,6 @@ For converting the previously simulated samples from 3-component Poisson and nor
 
 ``` r
 MLE.pois <- function(dat) mean(dat)
-
 # create datMix objects:
 pois.dM <- RtoDat(poisRMix, theta.bound.list = list(lambda = c(0, Inf)), 
                   MLE.function = MLE.pois, Hankel.method = "explicit",
@@ -304,7 +303,6 @@ Now we define the penalty $A(j)l(n) = j \cdot log(n)$ (for the scaled version, t
 pen <- function(j, n){
   j * log(n)
 }
-
 # apply the nonparamHankel function to the datMix objects:
 set.seed(1)
 poisdets_sca_pen <- nonparamHankel(pois.dM, j.max = 5, scaled = TRUE, 
