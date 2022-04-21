@@ -26,5 +26,6 @@ bibliography: refs.bib
 # Installation
 
 To install from `CRAN`, use:
-```
+``` r
 install.packages("mixComp")
+```
