@@ -152,7 +152,7 @@ normLoc.dM <- RtoDat(normLocRMix, theta.bound.list = norm.bound.list,
 ```
 
 In the case of the scaled version of the method, the penalty should be scaled accordingly as well as mentioned earlier. 
-```{r nonph}
+``` r
 # define the penalty function:
 pen <- function(j, n){
   j * log(n)
@@ -168,7 +168,7 @@ normdets_sca_pen <- nonparamHankel(normLoc.dM, j.max = 5, scaled = TRUE,
 
 We can print and plot the results as suggested below.
 
-```{r plotnonph, figures-side, fig.show="hold", out.width="50%"}
+``` r
 # print the results (for the Poisson mixture)
 print(poisdets_sca_pen)
 # plot results for both mixtures:
@@ -188,20 +188,20 @@ Having created the data ourselves, we know that it comes from a 3-component Pois
 
 As a simple example of a given dataset to which mixture models have been applied extensively, take the Old Faithful dataset [[29]](#29), [[1]](#1), [[18]](#18). In the context of mixture model estimation, the variable `waiting`, which gives the time in minutes between eruptions of the Old Faithful geyser in the Yellowstone National Park, is often considered to be the variable of interest. To estimate the number of components of the mixture distribution that provides a suitable approximation to the `waiting` data via **mixComp**, the raw data vector of observations has to be converted to a `datMix` object first. For the sake of exposition we specify all arguments of  the `datMix` function. As has often been done in the relevant literature, we assume that the data comes from a normal mixture.
 
-```{r faithopts}
+``` r
 faithful.obs <- faithful$waiting
 norm.dist <- "norm"
 norm.discrete <- FALSE
 ```
 Now a named list containing the bounds for the component parameters (the mean and standard deviation) has to be created:
 
-```{r normlist}
+``` r
 # define the range for parameter values:
 norm.bound.list <- list("mean" = c(-Inf, Inf), "sd" = c(0, Inf))
 ```
 Next, the argument `MLE.function` for the mean and for the standard deviation have to be defined:
 
-```{r normfun}
+``` r
 # define the MLE functions for the mean and sd: 
 MLE.norm.mean <- function(dat) mean(dat)
 MLE.norm.sd <- function(dat){
@@ -211,7 +211,7 @@ MLE.norm.list <- list("MLE.norm.mean" = MLE.norm.mean, "MLE.norm.sd" = MLE.norm.
 ```
 The last two arguments, `Hankel.method` and `Hankel.function`, need to be supplied if the mixture complexity is to be estimated based on the Hankel matrix of the moments of the mixing distribution. The reader is referred to the Section 3 for further information on how these arguments are to be specified (in this case, the simplifying assumption of unit variance is made. This would be a poor choice for the `waiting` data, so number of mixture components should not be estimated with one of the methods using these arguments, namely `nonparamHankel`, `paramHankel` and `paramHankel.scaled`, see Table 2). 
 
-```{r normmom}
+``` r
 method <- "translation"
 # define the function for computing the moments:
 mom.std.norm <- function(j){
@@ -221,10 +221,89 @@ mom.std.norm <- function(j){
 
 Finally, all previously generated objects are combined to a `datMix` object.
 
-```{r faithdatmix}
+``` r
 # construct a datMix object that summarizes all the necessary information:
 faithful.dM <- datMix(faithful.obs, dist = norm.dist, discrete = norm.discrete,
                       theta.bound.list = norm.bound.list,
                       MLE.function = MLE.norm.list, Hankel.method = method,
                       Hankel.function = mom.std.norm)
 ```
+
+
+
+
+
+
+
+As another a real-world example, we take the Children dataset whose content was taken from the Annual Report of the pension fund S.P.P. of 1952. The dataset initially appeared in work of [[12]](#12) and was subsequently analysed by many authors. It entails data on 4075 widows who recieved pension from the fund, with their number of children being our variable of interest. For example, there are 3062 widows without children, 587 widows with one child, etc. Many authors have noted that this data is not consistent with being a random sample from a Poisson distribution since the number of zeros found in the data is too large. Thisted approached this by fitting a mixture of two populations, one which is always zero and one which follows a Poisson distribution. **mixComp** includes this data stored as a dataframe. Here, we want to investigate 
+how the Hankel matrix methods compare when fitting the data to a mixture of Poissons.
+
+The estimation process starts with defining the MLE function and constructing of the `datMix` object.
+
+``` r
+# convert the data to vector:
+children.obs <- unlist(children)
+# define the MLE function:
+MLE.pois <- function(dat) mean(dat)
+# construct a datMix object:
+children.dM <- datMix(children.obs, dist = "pois", discrete = TRUE, 
+                      Hankel.method = "explicit", 
+                      Hankel.function = explicit.pois,
+                      theta.bound.list = list(lambda = c(0, Inf)), 
+                      MLE.function = MLE.pois)
+```
+
+
+First, we define the penalty term and check the nonparametric method. The result suggests that the data comes from a 2-component mixture.
+
+```{r childplotnph, fig.width = 5, fig.height = 4}
+# define the penalty:
+pen <- function(j, n) j * log(n)
+# estimate the number of components:
+set.seed(0)
+(det_sca_pen <- nonparamHankel(children.dM, j.max = 5, scaled = TRUE, 
+                              B = 1000, pen.function = pen))
+#< 
+#< Estimation of the scaled and penalized determinants for a 'pois' mixture model:
+#<  Number of components Determinant
+#<                     1    21.61041
+#<                     2    17.15443
+#<                     3    25.60157
+#<                     4    33.67663
+#<                     5    41.79636
+#plot the results:                              
+#plot the results:
+plot(det_sca_pen, main = "Non-parametric Hankel method for Children dataset",
+     cex.main = 0.9)
+```
+
+Next, we check the fit of the parametric version. The printed result of `paramHankel.scaled` shows that this method also suggests 2 to be the number of components, with the first component corresponding to a Poisson distribution with the rate of 0.0306. Note that the limit case proposed by [[12]](#12) results in a point mass at 0, and that this fit therefore nicely lines up with the idea of a component accounting for only the zero observations. The plot shows that this method yields a sensible fit overall.
+
+```{r childplotph, fig.width = 5, fig.height = 4}
+set.seed(0)
+param_sca <- paramHankel.scaled(children.dM, j.max = 5, B = 1000, ql = 0.025, 
+                          qu = 0.975)
+#< 
+#< Parameter estimation for a 1 component 'pois' mixture model:
+#< Function value: 3640.3094
+#<              w lambda
+#< Component 1: 1 0.3995
+#< Optimization via user entered MLE-function.
+#< ----------------------------------------------------------------------
+#< 
+#< Parameter estimation for a 2 component 'pois' mixture model:
+#< Function value: 3350.9289
+#<                    w lambda
+#< Component 1: 0.65959 0.0306
+#< Component 2: 0.34041 1.1143
+#< Converged in 3 iterations.
+#< ----------------------------------------------------------------------
+#< 
+#< The estimated order is 2.
+plot(param_sca, breaks = 8, ylim = c(0, 0.8))
+```
+
+<p float="left">
+<img src="https://github.com/yuliadm/mixComp/blob/main/images/np_real.png" />
+<img src="https://github.com/yuliadm/mixComp/blob/main/images/p_real.png" />
+</p>
