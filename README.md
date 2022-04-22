@@ -283,7 +283,7 @@ plot(res)
 
 ### The Children dataset
 
-As another a real-world example, we look at the Children dataset whose content was taken from the Annual Report of the pension fund S.P.P. of 1952. The dataset initially appeared in work of [[12]](#12) and was subsequently analysed by many authors. It entails data on 4075 widows who recieved pension from the fund, with their number of children being our variable of interest. For example, there are 3062 widows without children, 587 widows with one child, etc. Many authors have noted that this data is not consistent with being a random sample from a Poisson distribution since the number of zeros found in the data is too large. Thisted approached this by fitting a mixture of two populations, one which is always zero and one which follows a Poisson distribution. **mixComp** includes this data stored as a dataframe. Here, we want to investigate 
+As another a real-world example, we look at the Children dataset whose content was taken from the Annual Report of the pension fund S.P.P. of 1952. The dataset initially appeared in work of [[35]](#35) and was subsequently analysed by many authors. It entails data on 4075 widows who recieved pension from the fund, with their number of children being our variable of interest. For example, there are 3062 widows without children, 587 widows with one child, etc. Many authors have noted that this data is not consistent with being a random sample from a Poisson distribution since the number of zeros found in the data is too large. Thisted approached this by fitting a mixture of two populations, one which is always zero and one which follows a Poisson distribution. **mixComp** includes this data stored as a dataframe. Here, we want to investigate 
 how the Hankel matrix methods compare when fitting the data to a mixture of Poissons.
 
 The estimation process starts with defining the MLE function and constructing of the `datMix` object.
@@ -325,7 +325,7 @@ plot(det_sca_pen, main = "Non-parametric Hankel method for Children dataset",
      cex.main = 0.9)
 ```
 
-Next, we check the fit of the parametric version. The printed result of `paramHankel.scaled` shows that this method also suggests 2 to be the number of components, with the first component corresponding to a Poisson distribution with the rate of 0.0306. Note that the limit case proposed by [[12]](#12) results in a point mass at 0, and that this fit therefore nicely lines up with the idea of a component accounting for only the zero observations. The plot shows that this method yields a sensible fit overall.
+Next, we check the fit of the parametric version. The printed result of `paramHankel.scaled` shows that this method also suggests 2 to be the number of components, with the first component corresponding to a Poisson distribution with the rate of 0.0306. Note that the limit case proposed by [[35]](#35) results in a point mass at 0, and that this fit therefore nicely lines up with the idea of a component accounting for only the zero observations. The plot shows that this method yields a sensible fit overall.
 
 ``` r
 set.seed(0)
@@ -364,4 +364,137 @@ Several functions in the **mixComp** package (namely, `nonparamHankel`, `paramHa
 # Further details
 
 For more information on the functions used in **mixComp** and for further examples see the vignette or the documentation.md file.
+
+# References
+
+<a id="1">[1]</a> 
+Azzalini A, Bowman A (1990). “A Look at Some Data on the Old Faithful Geyser.” Journal
+of the Royal Statistical Society C, 39(3), 357–365. doi:10.2307/2347385. URL https:
+//www.jstor.org/stable/2347385.
+
+<a id="4">[4]</a> 
+Benaglia T, Chauveau D, Hunter DR, Young D (2009). “mixtools: An R Package for
+Analyzing Finite Mixture Models.” Journal of Statistical Software, 32(6), 1–29. URL
+http://www.jstatsoft.org/v32/i06/.
+
+<a id="6">[6]</a> 
+Chen J, Kalbfleisch J (1996). “Penalized Minimum-Distance Estimates in Finite Mixture
+Models.” Canadian Journal of Statistics, 24(2), 167–175.
+
+<a id="9">[9]</a> 
+Cutler A, Cordero-Braña OI (1996). “Minimum Hellinger Distance Estimation for Finite
+Mixture Models.” Journal of the American Statistical Association, 91(436), 1716–1723.
+ISSN 01621459. doi:10.2307/2291601. URL http://www.jstor.org/stable/2291601.
+
+<a id="10">[10]</a> 
+Dacunha-Castelle D, Gassiat E (1997). “The Estimation of the Order of a Mixture Model.”
+Bernoulli, 3(3), 279–299. doi:10.2307/3318593. URL https://www.jstor.org/stable/
+3318593.
+
+<a id="11">[11]</a> 
+Dempster AP, Laird NM, Rubin DB (1977). “Maximum Likelihood from Incomplete Data
+via the EM Algorithm.” Journal of the Royal Statistical Society B, 39(1), 1–38. ISSN
+0035-9246. With discussion, URL http://www.jstor.org/stable/2984875.
+
+<a id="13">[13]</a> 
+Figueiredo MAT, Jain AK (2002). “Unsupervised Learning of Finite Mixture Models.” IEEE
+Transactions on Pattern Analysis and Machine Intelligence, 24(3), 381–396.
+
+<a id="16">[16]</a> 
+Grün B, Leisch F (2007). “Fitting Finite Mixtures of Generalized Linear Regressions in
+R.” Computational Statistics & Data Analysis, 51(11), 5247–5252. doi:10.1016/j.csda.
+2006.08.014.
+
+<a id="17">[17]</a> 
+Grün B, Leisch F (2008). “FlexMix Version 2: Finite Mixtures with Concomitant Variables
+and Varying and Constant Parameters.” Journal of Statistical Software, 28(4), 1–35. doi:
+10.18637/jss.v028.i04. URL http://www.jstatsoft.org/v28/i04/.
+
+<a id="18">[18]</a> 
+Härdle W (1991). Smoothing Techniques : With Implementation in S. Springer-Verlag New
+York, New York, NY, USA. doi:10.1007/978-1-4612-4432-5.
+
+<a id="19">[19]</a> 
+Leisch F (2004). “FlexMix: A General Framework for Finite Mixture Models and Latent
+Class Regression in R.” Journal of Statistical Software, 11(8), 1–18. doi:10.18637/jss.
+v011.i08. URL http://www.jstatsoft.org/v11/i08/.
+
+<a id="20">[20]</a> 
+Lindsay BG (1983a). “The Geometry of Mixture Likelihoods: A General Theory.” The Annals
+of Statistics, 11(1), 86–94. ISSN 0090-5364. doi:10.1214/aos/1176346059.30
+
+<a id="21">[21]</a> 
+Lindsay BG (1983b). “The Geometry of Mixture Likelihoods: The Exponential Family.” The
+Annals of Statistics, 11(3), 783–792. ISSN 0090-5364. doi:10.1214/aos/1176346245.
+
+<a id="22">[22]</a> 
+Macdonald P, Du J (2018). mixdist: Finite Mixture Distribution Models. R package version
+0.5-5, URL https://CRAN.R-project.org/package=mixdist.
+
+<a id="24">[24]</a> 
+McLachlan G, Peel D (2000). Finite Mixture Models. Wiley Series in Probability and Statis-
+tics: Applied Probability and Statistics. John Wiley & Sons. ISBN 0-471-00626-2. doi:
+10.1002/0471721182.
+
+<a id="25">[25]</a> 
+Melnykov V, Chen WC, Maitra R (2012). “MixSim: An R Package for Simulating Data
+to Study Performance of Clustering Algorithms.” Journal of Statistical Software, 51(12),
+1–25. URL http://www.jstatsoft.org/v51/i12/.
+
+<a id="26">[26]</a> 
+Miller JW, Harrison MT (2018). “Mixture Models with a Prior on the Number of Compo-
+nents.” Journal of the American Statistical Association, 113(521), 340–356.
+
+<a id="28">[28]</a> 
+Moss J, Tveten M (2019). kdensity: Kernel Density Estimation with Parametric Starts
+and Asymmetric Kernels. R package version 1.0.1, URL https://CRAN.R-project.org/
+package=kdensity.
+
+<a id="29">[29]</a> 
+R Core Team (2020). R: A Language and Environment for Statistical Computing. R Foun-
+dation for Statistical Computing, Vienna, Austria. URL https://www.R-project.org/.
+
+<a id="31">[31]</a> 
+Scrucca L, Fop M, Murphy TB, Raftery AE (2016). “mclust 5: Clustering, Classification and
+Density Estimation Using Gaussian Finite Mixture Models.” The R Journal, 8(1), 289–317.
+URL 10.32614/RJ-2016-021.
+
+<a id="34">[34]</a> 
+Teicher H (1963). “Identifiability of Finite Mixtures.” The Annals of Mathematical Statistics,
+34, 1265–1269. ISSN 0003-4851. doi:10.1214/aoms/1177703862.
+
+<a id="35">[35]</a> 
+Thisted RA (1988). Elements of Statistical Computing: Numerical Computation. Chapman
+& Hall, Ltd., GBR. ISBN 0412013711.
+
+<a id="36">[36]</a> 
+Titterington DM, Smith AFM, Makov UE (1985). Statistical Analysis of Finite Mixture
+Distributions. Wiley Series in Probability and Mathematical Statistics: Applied Probability
+and Statistics. John Wiley & Sons. ISBN 0-471-90763-4.
+
+<a id="37">[37]</a> 
+Umashanger T, Sriram T (2009). “L2E Estimation of Mixture Complexity for Count Data.”
+Computational Statistics & Data Analysis, 53(12), 4243 – 4254. ISSN 0167-9473. doi:10.
+1016/j.csda.2009.05.013. URL http://www.sciencedirect.com/science/article/
+pii/S0167947309002023.
+
+<a id="38">[38]</a> 
+Wang HX, Luo B, Zhang QB, Wei S (2004). “Estimation for the Number of Components
+in a Mixture Model Using Stepwise Split-and-Merge EM Algorithm.” Pattern Recognition
+Letters, 25(16), 1799–1809. ISSN 0167-8655.
+
+<a id="39">[39]</a> 
+Woo MJ, Sriram T (2007). “Robust Estimation of Mixture Complexity for Count Data.”
+Computational Statistics & Data Analysis, 51(9), 4379 – 4392. ISSN 0167-9473. doi:10.
+1016/j.csda.2006.06.006. URL http://www.sciencedirect.com/science/article/
+pii/S0167947306001964.
+
+<a id="40">[40]</a> 
+Woo MJ, Sriram TN (2006). “Robust Estimation of Mixture Complexity.” Journal of the 
+American Statistical Association, 101(476), 1475–1486. doi:10.1198/016214506000000555.
+
+<a id="41">[41]</a> 
+Xekalaki E, Karlis D (1999). “On Testing for the Number of Components in a Mixed Poisson
+Model.” The Annals of the Institute of Statistical Mathematics, 51, 149–162. doi:10.1023/
+A:1003839420071.
 
