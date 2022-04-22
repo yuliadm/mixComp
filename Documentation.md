@@ -60,7 +60,7 @@ method provides more accurate estimates than the others.
 # Installation
 
 To install from `CRAN`, use:
-```
+``` r
 install.packages("mixComp")
 ```
 # Section 1. Introduction to finite mixture models and mixComp
@@ -115,7 +115,7 @@ The generation of an object of class `Mix` hinges on four central arguments: a s
 
 The following example creates two `Mix` objects, a 3-component mixture of normal distributions and a 3-component mixture of Poisson distributions. 
 
-```{r mixobj}
+``` r
 set.seed(0)
 # construct a Nix object:
 normLocMix <- Mix("norm", discrete = FALSE, w = c(0.3, 0.4, 0.3), mean = c(10, 13, 17), sd = c(1, 1, 1))
@@ -130,7 +130,8 @@ plot(poisMix, main = "3-component poisson mixture", cex.main = 0.9)
 </p>
 
 If required, random samples can be generated from these mixtures.
-```{r rmix}
+
+``` r
 # generate random samples:
 normLocRMix <- rMix(1000, obj = normLocMix)
 poisRMix <- rMix(1000, obj = poisMix)
@@ -159,14 +160,14 @@ In the table, "o" and "i" respectively stand for input used during optimization 
 
 As a simple example of a given dataset to which mixture models have been applied extensively, take the Old Faithful dataset [[29]](#29), [[1]](#1), [[18]](#18). In the context of mixture model estimation, the variable `waiting`, which gives the time in minutes between eruptions of the Old Faithful geyser in the Yellowstone National Park, is often considered to be the variable of interest. To estimate the number of components of the mixture distribution that provides a suitable approximation to the `waiting` data via **mixComp**, the raw data vector of observations has to be converted to a `datMix` object first. For the sake of exposition we specify all arguments of  the `datMix` function, starting with the vector of observations <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649977791.jpg"> and the string `dist`, specifying <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650014854.jpg"> and the boolean `discrete`. As has often been done in the relevant literature, we assume that the data comes from a normal mixture.
 
-```{r faithopts}
+``` r
 faithful.obs <- faithful$waiting
 norm.dist <- "norm"
 norm.discrete <- FALSE
 ```
 Second, a named list of length <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649976201.jpg"> containing the bounds of <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650015725.jpg"> has to be created. In this example, <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650015826.jpg">.
 
-```{r normlist}
+``` r
 # define the range for parameter values:
 norm.bound.list <- list("mean" = c(-Inf, Inf), "sd" = c(0, Inf))
 ```
@@ -174,7 +175,7 @@ Next, the argument `MLE.function` contains a single function if <img src="https:
 
 Presuming a normal mixture, one specifies 2 functions, namely the MLE of the mean <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650015978.jpg"> and the MLE of the standard deviation <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650016036.jpg">.
 
-```{r normfun}
+``` r
 # define the MLE functions for the mean and sd: 
 MLE.norm.mean <- function(dat) mean(dat)
 MLE.norm.sd <- function(dat){
@@ -184,7 +185,7 @@ MLE.norm.list <- list("MLE.norm.mean" = MLE.norm.mean, "MLE.norm.sd" = MLE.norm.
 ```
 The last two arguments, `Hankel.method` and `Hankel.function`, need to be supplied if the mixture complexity is to be estimated based on the Hankel matrix of the moments of the mixing distribution. The reader is referred to the Section 3 for further information on how these arguments are to be specified (in this case, the simplifying assumption of unit variance is made. This would be a poor choice for the `waiting` data, so <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649977354.jpg"> should not be estimated with one of the methods using these arguments, namely `nonparamHankel`, `paramHankel` and `paramHankel.scaled`, see Table 2). 
 
-```{r normmom}
+``` r
 method <- "translation"
 # define the function for computing the moments:
 mom.std.norm <- function(j){
@@ -193,13 +194,14 @@ mom.std.norm <- function(j){
 ```
 Finally, all previously generated objects are combined to a `datMix` object.
 
-```{r faithdatmix}
+``` r
 # construct a datMix object that summarizes all the necessary information:
 faithful.dM <- datMix(faithful.obs, dist = norm.dist, discrete = norm.discrete,
                       theta.bound.list = norm.bound.list,
                       MLE.function = MLE.norm.list, Hankel.method = method,
                       Hankel.function = mom.std.norm)
 ```
+
 In the preceding example, the data vector <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649977791.jpg"> was taken from an already existing dataset. As seen before, the `rMix` function can be used to generate a <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649977745.jpg">-sized sample from a specific mixture. If this synthesized data is to be used in simulations (i.e. passed to one of the functions estimating the mixture complexity) an `rMix` object can be converted to a `datMix` object via the `RtoDat` function. Apart from `dist` and `discrete`, all `datMix` arguments have to be supplied to `RtoDat` likewise. 
 
 Unlike the above mentioned objects whose creation precedes any type of mixture complexity estimation, objects of the bottom two classes (see Table 1) contain the results of the estimation procedures. Generally, the functions estimating the number of components differ in the types of families of component densities <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649976784.jpg"> for which they allow and in whether they provide estimates of the weights <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650016317.jpg"> and the component parameters <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650016699.jpg">, the latter determining the object class of the estimation result. These differences are shown in Table 3. The function `nonparamHankel` returns an object of class `hankDet`, which is a vector of determinants (scaled and/or penalized), each entry belonging to a certain complexity estimate. The link between these determinants and <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649977354.jpg"> will be discussed in the Section 3. `paramEst` objects arise when using any other function estimating the mixture complexity, all of which additionally return estimates of the component weights and parameters. For both object classes, print and plot methods are available to summarize and visualize the estimation results. 
@@ -279,7 +281,7 @@ with $F$ the true cumulative distribution function. Hence one may take
 
 as an estimator, with <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650022798.jpg"> being the empirical distribution function.
 
-```{r geommom}
+``` r
 # define the function for computing the moments:
 explicit.geom <- function(dat, j){
   1 - ecdf(dat)(j - 1)
@@ -304,7 +306,7 @@ which, in combination with the two above equations suggests using
 
 as an estimator.
 
-```{r geompois}
+``` r
 # define the function for computing the moments:
 explicit.pois <- function(dat, j){
   mat <- matrix(dat, nrow = length(dat), ncol = j) - 
@@ -321,7 +323,7 @@ As an example, consider a mixture of normal distributions with unknown mean and 
 
 <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650024444.jpg">
 
-```{r}
+``` r
 # define the function for computing the moments:
 mom.std.norm <- function(j){
   ifelse(j %% 2 == 0, prod(seq(1, j - 1, by = 2)), 0)
@@ -340,7 +342,7 @@ Coming back to the overall goal of complexity estimation, the function `nonparam
 We will initially apply this method to the two already generated datasets of 3-component Poisson and normal mixtures using the penalty <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650025161.jpg"> and scaling the determinants as described above.
 
 First, for converting the previously simulated samples from 3-component Poisson and normal mixtures yielding the objects of class `rMix` to objects of class `datMix` one should apply the `RtoDat` function as follows:
-```{r rtodat}
+``` r
 MLE.pois <- function(dat) mean(dat)
 
 # create datMix objects:
@@ -355,7 +357,7 @@ normLoc.dM <- RtoDat(normLocRMix, theta.bound.list = norm.bound.list,
 ```
 
 In the case of the scaled version of the method, the penalty should be multiplied by <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649973529.jpg"> as mentioned earlier. 
-```{r nonph}
+``` r
 # define the penalty function:
 pen <- function(j, n){
   j * log(n)
@@ -371,7 +373,7 @@ normdets_sca_pen <- nonparamHankel(normLoc.dM, j.max = 5, scaled = TRUE,
 
 We can print and plot the results as suggested below.
 
-```{r plotnonph, figures-side, fig.show="hold", out.width="50%"}
+``` r
 # print the results (for the Poisson mixture)
 print(poisdets_sca_pen)
 # plot results for both mixtures:
@@ -393,7 +395,7 @@ As the preceding example shows, it can be quite difficult to determine the order
 
 Applying `paramHankel.scaled` to the same Poisson and Normal mixtures results in the correct identification of the mixture complexity in both cases as can be seen in the plot:
 
-```{r plotph, figures-side, fig.show="hold", out.width="50%"}
+``` r
 # apply papamHankel.scaled to datMix objects:
 set.seed(1)
 pois_sca_pen <- paramHankel.scaled(pois.dM)
@@ -409,12 +411,12 @@ plot(norm_sca_pen)
 <img src="https://github.com/yuliadm/mixComp/blob/main/images/p_art_2.png" />
 </p>
 
-Consider now, as a real-world example, the Children dataset whose content was taken from the Annual Report of the pension fund S.P.P. of 1952. The dataset initially appeared in work of [[12]](#12) and was subsequently analysed by many authors. It entails data on 4075 widows who recieved pension from the fund, with their number of children being our variable of interest. For example, there are 3062 widows without children, 587 widows with one child, etc. Many authors have noted that this data is not consistent with being a random sample from a Poisson distribution since the number of zeros found in the data is too large. Thisted approached this by fitting a mixture of two populations, one which is always zero and one which follows a Poisson distribution. **mixComp** includes this data stored as a dataframe. Here, we want to investigate 
+Consider now, as a real-world example, the Children dataset whose content was taken from the Annual Report of the pension fund S.P.P. of 1952. The dataset initially appeared in work of [[35]](#35) and was subsequently analysed by many authors. It entails data on 4075 widows who recieved pension from the fund, with their number of children being our variable of interest. For example, there are 3062 widows without children, 587 widows with one child, etc. Many authors have noted that this data is not consistent with being a random sample from a Poisson distribution since the number of zeros found in the data is too large. Thisted approached this by fitting a mixture of two populations, one which is always zero and one which follows a Poisson distribution. **mixComp** includes this data stored as a dataframe. Here, we want to investigate 
 how the Hankel matrix methods compare when fitting the data to a mixture of Poissons.
 
 The estimation process starts with the construction of the `datMix` object.
 
-```{r childex}
+``` r
 # convert the data to vector:
 children.obs <- unlist(children)
 # define the MLE function:
@@ -430,7 +432,7 @@ children.dM <- datMix(children.obs, dist = "pois", discrete = TRUE,
 
 First, we check the nonparametric method. We define the penalty <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650026704.jpg"> as <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650026758.jpg"> (by multiplying <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650026849.jpg"> by <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649973529.jpg">). The result suggests that the data comes from a 2-component mixture.
 
-```{r childplotnph, fig.width = 5, fig.height = 4}
+``` r
 # define the penalty:
 pen <- function(j, n) j * log(n)
 # estimate the number of components:
@@ -444,7 +446,7 @@ plot(det_sca_pen, main = "Non-parametric Hankel method for Children dataset",
 
 Next, we check the fit of the parametric version. The printed result of `paramHankel.scaled` shows that this method also suggests 2 to be the number of components, with the first component corresponding to a Poisson distribution with <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650026963.jpg">. Note that the limit case <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650027021.jpg"> results in a point mass at 0, and that this fit therefore nicely lines up with the idea of a component accounting for only the zero observations. The plot shows that this method yields a sensible fit overall.
 
-```{r childplotph, fig.width = 5, fig.height = 4}
+``` r
 set.seed(0)
 param_sca <- paramHankel.scaled(children.dM, j.max = 5, B = 1000, ql = 0.025, 
                           qu = 0.975)
@@ -524,7 +526,7 @@ Since the computational burden of optimizing over an integral to find the "best"
 Consider again the artificially created samples from the 3-component normal mixture with <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650048978.jpg">, <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650049033.jpg"> and <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650049112.jpg"> and the Poisson mixture with <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650049280.jpg">, <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650049280.jpg">.
 This procedure `hellinger.cont` uses the same thresholds as `hellinger.disc`.
 
-```{r plothel, figures-side, fig.show="hold", out.width="50%"}
+``` r
 set.seed(0)
 h_disc_pois <- hellinger.disc(pois.dM, threshold = "AIC")
 h_cont_norm <- hellinger.cont(normLoc.dM, bandwidth = 0.5, sample.n = 5000, 
@@ -551,7 +553,7 @@ The following figures illustrate the above point by showing the KDE of the Old F
 
 `hellinger.cont` fits a 2-component mixture to the data, which fits the data well and comprises similar parameter estimates to those found in the literature.
 
-```{r faithplothel, fig.width = 5, fig.height = 4}
+``` r
 # estimate the number of components:
 library(kdensity)
 res <- hellinger.cont(faithful.dM, bandwidth = kdensity(faithful.obs)$bw,
@@ -588,7 +590,7 @@ In accordance with the **R**-function `dgeom`, the parametrization we use for th
 The `datMix` object corresponding to the Shakespeare dataset is generated as follows: 
 
 
-```
+``` r
 shakespeare.obs <- unlist(shakespeare) - 1
 # define the MLE function:
 MLE.geom <- function(dat) 1 / (mean(dat) + 1)
@@ -624,7 +626,7 @@ Next, a parametric bootstrap is used to generate `B` samples of size <img src="h
 
 For the two artificial datasets, this method estimates 3-component mixtures with very similar parameters to the distance methods, so we go straight to a real-world example. Consider the Acidity dataset which comprises measurements of the acid neutralizing capacity (ANC) taken from 155 lakes in North-Central Wisconsin. The ANC indicates a lakes' capability to absorb acid, with low values potentially leading to a loss of biological resources. This dataset has been analysed as a mixture of normal distributions on the log scale by [[7]](#7), [[8]](#8) and [[30]](#30). While the former papers suggest the number of components to equal 2 (with 3 also being considered), the latter estimates <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649977354.jpg"> to lie between 3 and 5. The `mix.lrt` method agrees with [[7]](#7) and [[8]](#8), returning a 2-component mixture with reasonable estimates for the component weights and parameters.
 
-```{r lrtacid, fig.width = 5, fig.height = 4, results='hide', message=FALSE, warning=FALSE}
+``` r
 acidity.obs <- unlist(acidity)
 
 acidity.dM <- datMix(acidity.obs, dist = "norm", discrete = FALSE, 
@@ -646,7 +648,7 @@ As an example, consider a sample <img src="https://github.com/yuliadm/mixComp/bl
 The following example creates the `Mix` and `rMix` objects
 based on the density of a normal mixture with <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650048978.jpg">, <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650052857.jpg"> and <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650052889.jpg"> and plots the obtained mixture density and the corresponding random sample. 
 
-```{r, figures-side, fig.show="hold", out.width="50%", results='hide', message=FALSE, warning=FALSE}
+``` r
 dnorm0.5 <- function(x, mean){
   dnorm(x, mean = mean,  sd = 0.5)
 }
@@ -661,14 +663,14 @@ norm0.5RMix <- rMix(1000, obj = norm0.5Mix)
 plot(norm0.5Mix)
 plot(norm0.5RMix)
 ```
-
 <p float="left">
 <img src="https://github.com/yuliadm/mixComp/blob/main/images/norm0.5Mix.png" />
 <img src="https://github.com/yuliadm/mixComp/blob/main/images/norm0.5RMix.png" />
 </p>
 
 Below we will estimate of the mixture density using `mix.lrt` given a sample from the considered above 3-component normal mixture. We start by creating all necessary inputs:
-```{r}
+
+``` r
 norm0.5.list <- vector(mode = "list", length = 1)
 names(norm0.5.list) <- c("mean")
 norm0.5.list$mean <- c(-Inf, Inf)
@@ -678,8 +680,10 @@ MLE.norm0.5 <- function(dat) mean(dat)
 norm0.5.dM <- RtoDat(norm0.5RMix, theta.bound.list = norm0.5.list,
                      MLE.function = MLE.norm0.5)
 ```
+
 Now the **mixComp** procedures can be used on the `datMix` object as usual. The results can be printed and plotted using `print` and `plot` functions.
-```{r, results='hide', message=FALSE, warning=FALSE}
+
+``` r
 set.seed(1)
 res <- mix.lrt(norm0.5.dM, B = 50, quantile = 0.95)
 
