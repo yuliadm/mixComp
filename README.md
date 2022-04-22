@@ -184,7 +184,28 @@ plot(normdets_sca_pen, main = "3-component Normal mixture", cex.main = 0.9)
 
 Having created the data ourselves, we know that it comes from a 3-component Poisson mixture and a 3-component Gaussian mixture respectively. The resulting plots indicate that while theoretically sound, the scaled version of the Hankel method can struggle to correctly identify the number of components in practice.
 
+Applying `paramHankel.scaled` to the same Poisson and Normal mixtures results in the correct identification of the mixture complexity in both cases as can be seen in the plot.
+
+``` r
+# apply papamHankel.scaled to datMix objects:
+set.seed(1)
+pois_sca_pen <- paramHankel.scaled(pois.dM)
+norm_sca_pen <- paramHankel.scaled(normLoc.dM)
+# plot the results for both mixtures:
+par(mar=c(5, 5, 1, 1))
+plot(pois_sca_pen,)
+plot(norm_sca_pen)
+```
+
+<p float="left">
+<img src="https://github.com/yuliadm/mixComp/blob/main/images/p_art_1.png" />
+<img src="https://github.com/yuliadm/mixComp/blob/main/images/p_art_2.png" />
+</p>
+
+
 # Examples using real-world data
+
+### The Old Faithful dataset
 
 As a simple example of a given dataset to which mixture models have been applied extensively, take the Old Faithful dataset [[29]](#29), [[1]](#1), [[18]](#18). In the context of mixture model estimation, the variable `waiting`, which gives the time in minutes between eruptions of the Old Faithful geyser in the Yellowstone National Park, is often considered to be the variable of interest. To estimate the number of components of the mixture distribution that provides a suitable approximation to the `waiting` data via **mixComp**, the raw data vector of observations has to be converted to a `datMix` object first. For the sake of exposition we specify all arguments of  the `datMix` function. As has often been done in the relevant literature, we assume that the data comes from a normal mixture.
 
@@ -209,7 +230,7 @@ sqrt((length(dat) - 1) / length(dat)) * sd(dat)
 } 
 MLE.norm.list <- list("MLE.norm.mean" = MLE.norm.mean, "MLE.norm.sd" = MLE.norm.sd)
 ```
-The last two arguments, `Hankel.method` and `Hankel.function`, need to be supplied if the mixture complexity is to be estimated based on the Hankel matrix of the moments of the mixing distribution. The reader is referred to the Section 3 for further information on how these arguments are to be specified (in this case, the simplifying assumption of unit variance is made. This would be a poor choice for the `waiting` data, so number of mixture components should not be estimated with one of the methods using these arguments, namely `nonparamHankel`, `paramHankel` and `paramHankel.scaled`, see Table 2). 
+The last two arguments, `Hankel.method` and `Hankel.function`, need to be supplied if the mixture complexity is to be estimated based on the Hankel matrix of the moments of the mixing distribution. 
 
 ``` r
 method <- "translation"
@@ -229,13 +250,22 @@ faithful.dM <- datMix(faithful.obs, dist = norm.dist, discrete = norm.discrete,
                       Hankel.function = mom.std.norm)
 ```
 
+We will now check how the minimum Hellinger distance method works for these data. Fitting the distance methods to a continuous density requires a choice of bandwidth. While using the adaptive bandwidth is an option, if the user does not want to do so, it is recommended to use the function `kdensity` from the package **kdensity** [[28]](#28) which automatically selects an optimal bandwidth (can be accessed via `kdensity(data)$bw`). 
 
+`hellinger.cont` fits a 2-component mixture to the data, which fits the data well and comprises similar parameter estimates to those found in the literature.
 
+```{r faithplothel, fig.width = 5, fig.height = 4}
+# estimate the number of components:
+library(kdensity)
+res <- hellinger.cont(faithful.dM, bandwidth = kdensity(faithful.obs)$bw,
+                      sample.n = 5000, threshold = "AIC")
+plot(res)
+```
+<img src="https://github.com/yuliadm/mixComp/blob/main/images/hell-cont-norm.png">
 
+### The Children dataset
 
-
-
-As another a real-world example, we take the Children dataset whose content was taken from the Annual Report of the pension fund S.P.P. of 1952. The dataset initially appeared in work of [[12]](#12) and was subsequently analysed by many authors. It entails data on 4075 widows who recieved pension from the fund, with their number of children being our variable of interest. For example, there are 3062 widows without children, 587 widows with one child, etc. Many authors have noted that this data is not consistent with being a random sample from a Poisson distribution since the number of zeros found in the data is too large. Thisted approached this by fitting a mixture of two populations, one which is always zero and one which follows a Poisson distribution. **mixComp** includes this data stored as a dataframe. Here, we want to investigate 
+As another a real-world example, we look at the Children dataset whose content was taken from the Annual Report of the pension fund S.P.P. of 1952. The dataset initially appeared in work of [[12]](#12) and was subsequently analysed by many authors. It entails data on 4075 widows who recieved pension from the fund, with their number of children being our variable of interest. For example, there are 3062 widows without children, 587 widows with one child, etc. Many authors have noted that this data is not consistent with being a random sample from a Poisson distribution since the number of zeros found in the data is too large. Thisted approached this by fitting a mixture of two populations, one which is always zero and one which follows a Poisson distribution. **mixComp** includes this data stored as a dataframe. Here, we want to investigate 
 how the Hankel matrix methods compare when fitting the data to a mixture of Poissons.
 
 The estimation process starts with defining the MLE function and constructing of the `datMix` object.
