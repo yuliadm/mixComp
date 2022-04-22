@@ -30,19 +30,19 @@ install.packages("mixComp")
 ```
 # **mixComp** for mixture complexity estimation 
 
-Mixture models have been used extensively in statistical applications and therefore have attracted a lot of attention from both theoretical and computational perspectives. Although the list of works on mixture models is too long to make an exhaustive inventory, we can refer to the following important papers and books: [[34]](#34), [[20]](#20),  [[21]](#21), [[36]](#36) and [[24]](#24).
+Mixture models have been used extensively in statistical applications and therefore have attracted a lot of attention from both theoretical and computational perspectives. Although the list of works on mixture models is too long to make an exhaustive inventory, we can refer to the following important papers and books: [[21]](#21), [[12]](#12),  [[13]](#13), [[23]](#23) and [[15]](#15).
 
-The popularity of such models stems from the fact that they allow for modeling heterogeneous data whose distribution cannot be captured by a single parametric distribution. To account for such heterogeneity, the (unknown) distribution is assumed to result from mixing over some latent parameter in the following sense: the latent parameter is viewed itself as a random variable drawn from some unknown mixing distribution. When this mixing distribution is only assumed to belong to the ensemble of all possible distribution functions, the mixture model is called *nonparametric* and estimation of the mixing distribution requires using some nonparametric estimation method. This includes the well-known nonparametric maximum likelihood estimator (NPMLE) whose fundamental properties were well studied in the seminal work of [[20]](#20), [[21]](#21). One remarkable property of the NPMLE of the mixing distribution is that it is, under some simple conditions, a discrete distribution function with at most *k* number of jumps, where *k* is the number of distinct observations in the random sample drawn from the mixture. This interesting feature is one reason, among others, for considering the smaller class of finite mixture models, i.e., mixture models with a discrete mixing distribution with a finite number of jumps. The model has the following simple interpretation: the population under study is assumed to consist of several homogeneous subpopulations. These subpopulations, typically referred to as the mixture's components, usually have a specific meaning depending on the problem at hand. In some very simple situations, the number of components could be known in advance, in which case the model is *fully parametric* and convergence of classical estimators such as the parametric maximum likelihood estimator (MLE) is known. Also, the well-known expectation-maximization (EM) algorithm can be used to find the MLE of all the unknown parameters; see for example [[11]](#11). However, in many statistical applications such knowledge is rarely available and the number of components has to be estimated from the data. Although the mixture is still finite and the distribution of each component is assumed to belong to some parametric family, the estimation framework in this case is much harder than in the fully parametric one, where the number of components is known. In this paper, the terms *order*, *complexity*  and *number of components*  will  be used interchangeably to refer to this unknown number. The main goal of the package **mixComp** is to estimate the unknown complexity using several methods known from the statistical literature. These methods, which are discussed below in more detail, all come with theoretical guarantees for consistency as the sample size gets larger. Of course, consistency in this case means that an estimator is able to exactly recover the unknown complexity for large sample sizes. As expected, the performance of the methods varies according to the underlying mixture distribution and the sample size.
+The popularity of such models stems from the fact that they allow for modeling heterogeneous data whose distribution cannot be captured by a single parametric distribution. To account for such heterogeneity, the (unknown) distribution is assumed to result from mixing over some latent parameter in the following sense: the latent parameter is viewed itself as a random variable drawn from some unknown mixing distribution. When this mixing distribution is only assumed to belong to the ensemble of all possible distribution functions, the mixture model is called *nonparametric* and estimation of the mixing distribution requires using some nonparametric estimation method. This includes the well-known nonparametric maximum likelihood estimator (NPMLE) whose fundamental properties were well studied in the seminal work of [[12]](#12), [[13]](#13). One remarkable property of the NPMLE of the mixing distribution is that it is, under some simple conditions, a discrete distribution function with at most *k* number of jumps, where *k* is the number of distinct observations in the random sample drawn from the mixture. This interesting feature is one reason, among others, for considering the smaller class of finite mixture models, i.e., mixture models with a discrete mixing distribution with a finite number of jumps. The model has the following simple interpretation: the population under study is assumed to consist of several homogeneous subpopulations. These subpopulations, typically referred to as the mixture's components, usually have a specific meaning depending on the problem at hand. In some very simple situations, the number of components could be known in advance, in which case the model is *fully parametric* and convergence of classical estimators such as the parametric maximum likelihood estimator (MLE) is known. Also, the well-known expectation-maximization (EM) algorithm can be used to find the MLE of all the unknown parameters; see for example [[6]](#6). However, in many statistical applications such knowledge is rarely available and the number of components has to be estimated from the data. Although the mixture is still finite and the distribution of each component is assumed to belong to some parametric family, the estimation framework in this case is much harder than in the fully parametric one, where the number of components is known. In this paper, the terms *order*, *complexity*  and *number of components*  will  be used interchangeably to refer to this unknown number. The main goal of the package **mixComp** is to estimate the unknown complexity using several methods known from the statistical literature. These methods, which are discussed below in more detail, all come with theoretical guarantees for consistency as the sample size gets larger. Of course, consistency in this case means that an estimator is able to exactly recover the unknown complexity for large sample sizes. As expected, the performance of the methods varies according to the underlying mixture distribution and the sample size.
 
-The methods that were included in the package can be roughly devided into three categories: methods based on Hankel matrices, following the theory as described in [[10]](#10) and selected because of the fact that computation of the mixture parameters is not required, a method based on the likelihood ratio test statistic (LRTS) following [[41]](#41) since a likelihood ratio test seems like a natural approach in this setting and methods employing minimum distance calculations based on several works and included as a computationally more efficient alternative to the LRTS method for certain distributions and distances; see [[39]](#39), [[40]](#40), [[37]](#37), [[9]](#9). For example, when the distance is taken to be the Hellinger distance, such an approach is especially fast for discrete distributions. For a more fluid reading, the relevant theory will be portrayed at the beginning of each of the respective sections. The examples depicted in these first chapters all contain mixtures of "standard" distributions for which evaluation of the density, cumulative distribution function and quantile function as well as random variate generation may be done by functions available from the **stats** package. The last chapter showcases how the **mixComp** package can be used to estimate the complexity of any mixture as long as the user provides functions generating random variates from the component distribution and evaluating the density thereof.
+The methods that were included in the package can be roughly devided into three categories: methods based on Hankel matrices, following the theory as described in [[5]](#5) and selected because of the fact that computation of the mixture parameters is not required, a method based on the likelihood ratio test statistic (LRTS) following [[28]](#28) since a likelihood ratio test seems like a natural approach in this setting and methods employing minimum distance calculations based on several works and included as a computationally more efficient alternative to the LRTS method for certain distributions and distances; see [[26]](#26), [[27]](#27), [[24]](#24), [[4]](#4). For example, when the distance is taken to be the Hellinger distance, such an approach is especially fast for discrete distributions. For a more fluid reading, the relevant theory will be portrayed at the beginning of each of the respective sections. The examples depicted in these first chapters all contain mixtures of "standard" distributions for which evaluation of the density, cumulative distribution function and quantile function as well as random variate generation may be done by functions available from the **stats** package. The last chapter showcases how the **mixComp** package can be used to estimate the complexity of any mixture as long as the user provides functions generating random variates from the component distribution and evaluating the density thereof.
 
 The mathematical details of each approached can be found in the `documentation.md` file. 
 
-Two main features distinguish this package from other mixture-related **R** [[29]](#29) packages: Firstly, it is focused on the estimation of the complexity rather than the component weights and parameters. While these are often estimated as a by-product, all methods contained in **mixComp** are based on theory specifically developed to consistently estimate the number of components in the mixture of interest. Secondly, it is applicable to parametric mixtures well beyond those whose component distributions are included in the **stats** package, making it more customizable than most packages for model-based clustering. 
+Two main features distinguish this package from other mixture-related **R** [[19]](#19) packages: Firstly, it is focused on the estimation of the complexity rather than the component weights and parameters. While these are often estimated as a by-product, all methods contained in **mixComp** are based on theory specifically developed to consistently estimate the number of components in the mixture of interest. Secondly, it is applicable to parametric mixtures well beyond those whose component distributions are included in the **stats** package, making it more customizable than most packages for model-based clustering. 
 
-The packages **mixtools** (see [[4]](#4)) and **flexmix** (see [[16]](#16), [[17]](#17), [[19]](#19)),   should both be mentioned at this point: aside from **mixtools**'s focus on mixture-of-regressions and non-parametric mixtures which are less relevant to this package, it is widely used to fit (multivariate) normal, multinomial or gamma mixtures with the EM algorithm. Notably, it also contains routines for selecting the number of components based on information criteria and parametric bootstrapping of the likelihood ratio test statistic values. However, they are limited to multinomial and (a variety of) normal mixtures as well as mixtures-of-regressions. Second, while **flexmix** was developed to deal with mixtures-of-regression, it sets itself apart from other packages by its extensibility, a design principle that we also aimed for when creating the  **mixComp** package. Other widely used packages dealing with mixture models are **mclust** [[31]](#31), which fits mixtures of Gaussians using the EM algorithm, **MixSim** [[25]](#25), which allows for simulation from mixtures and comparing the performance of clustering algorithms, and **mixdist** [[22]](#22), which is used for grouped conditional data. Interested readers can find a comprehensive list of mixture-related packages on the CRAN Task View: Cluster Analysis and Finite Mixture Models website.
+The packages **mixtools** (see [[2]](#2)) and **flexmix** (see [[8]](#8), [[9]](#9), [[11]](#11)), should both be mentioned at this point: aside from **mixtools**'s focus on mixture-of-regressions and non-parametric mixtures which are less relevant to this package, it is widely used to fit (multivariate) normal, multinomial or gamma mixtures with the EM algorithm. Notably, it also contains routines for selecting the number of components based on information criteria and parametric bootstrapping of the likelihood ratio test statistic values. However, they are limited to multinomial and (a variety of) normal mixtures as well as mixtures-of-regressions. Second, while **flexmix** was developed to deal with mixtures-of-regression, it sets itself apart from other packages by its extensibility, a design principle that we also aimed for when creating the  **mixComp** package. Other widely used packages dealing with mixture models are **mclust** [[20]](#20), which fits mixtures of Gaussians using the EM algorithm, **MixSim** [[16]](#16), which allows for simulation from mixtures and comparing the performance of clustering algorithms, and **mixdist** [[14]](#14), which is used for grouped conditional data. Interested readers can find a comprehensive list of mixture-related packages on the CRAN Task View: Cluster Analysis and Finite Mixture Models website.
 
-Before moving to the description of the different methods implemented in **mixComp** we would like to briefly mention other theoretical work on the estimation of mixture complexity not currently included in the package. [[6]](#6) propose a method that is reminiscent of the ones described in Section 4. The main difference is that the authors consider distribution functions instead densities, i.e. they consider minimizing a penalized distance between the distribution function of the mixture and the empirical distribution function. The approach of [[13]](#13) is based on a minimum message length-like criterion, however, their method struggles to deal with mixtures with very different weights. [[38]](#38) propose a procedure based on alternating between splitting and merging the components in an EM-algorithm. This algorithm requires selecting two thresholds, the choice of which is somewhat unclear when working with a specific dataset. [[26]](#26) follow a Bayesian approach, taking the usual finite mixture model with Dirichlet weights and putting a prior distribution on the unknown number of components. 
+Before moving to the description of the different methods implemented in **mixComp** we would like to briefly mention other theoretical work on the estimation of mixture complexity not currently included in the package. [[3]](#3) propose a method that is reminiscent of the ones described in Section 4. The main difference is that the authors consider distribution functions instead densities, i.e. they consider minimizing a penalized distance between the distribution function of the mixture and the empirical distribution function. The approach of [[7]](#7) is based on a minimum message length-like criterion, however, their method struggles to deal with mixtures with very different weights. [[25]](#25) propose a procedure based on alternating between splitting and merging the components in an EM-algorithm. This algorithm requires selecting two thresholds, the choice of which is somewhat unclear when working with a specific dataset. [[17]](#17) follow a Bayesian approach, taking the usual finite mixture model with Dirichlet weights and putting a prior distribution on the unknown number of components. 
 
 # Objects and functions defined in mixComp
 
@@ -225,7 +225,7 @@ plot(h_cont_norm)
 
 ### The Old Faithful dataset
 
-As a simple example of a given dataset to which mixture models have been applied extensively, take the Old Faithful dataset [[29]](#29), [[1]](#1), [[18]](#18). In the context of mixture model estimation, the variable `waiting`, which gives the time in minutes between eruptions of the Old Faithful geyser in the Yellowstone National Park, is often considered to be the variable of interest. To estimate the number of components of the mixture distribution that provides a suitable approximation to the `waiting` data via **mixComp**, the raw data vector of observations has to be converted to a `datMix` object first. For the sake of exposition we specify all arguments of  the `datMix` function. As has often been done in the relevant literature, we assume that the data comes from a normal mixture.
+As a simple example of a given dataset to which mixture models have been applied extensively, take the Old Faithful dataset [[19]](#19), [[1]](#1), [[10]](#10). In the context of mixture model estimation, the variable `waiting`, which gives the time in minutes between eruptions of the Old Faithful geyser in the Yellowstone National Park, is often considered to be the variable of interest. To estimate the number of components of the mixture distribution that provides a suitable approximation to the `waiting` data via **mixComp**, the raw data vector of observations has to be converted to a `datMix` object first. For the sake of exposition we specify all arguments of  the `datMix` function. As has often been done in the relevant literature, we assume that the data comes from a normal mixture.
 
 ``` r
 faithful.obs <- faithful$waiting
@@ -283,7 +283,7 @@ plot(res)
 
 ### The Children dataset
 
-As another a real-world example, we look at the Children dataset whose content was taken from the Annual Report of the pension fund S.P.P. of 1952. The dataset initially appeared in work of [[35]](#35) and was subsequently analysed by many authors. It entails data on 4075 widows who recieved pension from the fund, with their number of children being our variable of interest. For example, there are 3062 widows without children, 587 widows with one child, etc. Many authors have noted that this data is not consistent with being a random sample from a Poisson distribution since the number of zeros found in the data is too large. Thisted approached this by fitting a mixture of two populations, one which is always zero and one which follows a Poisson distribution. **mixComp** includes this data stored as a dataframe. Here, we want to investigate 
+As another a real-world example, we look at the Children dataset whose content was taken from the Annual Report of the pension fund S.P.P. of 1952. The dataset initially appeared in work of [[22]](#22) and was subsequently analysed by many authors. It entails data on 4075 widows who recieved pension from the fund, with their number of children being our variable of interest. For example, there are 3062 widows without children, 587 widows with one child, etc. Many authors have noted that this data is not consistent with being a random sample from a Poisson distribution since the number of zeros found in the data is too large. Thisted approached this by fitting a mixture of two populations, one which is always zero and one which follows a Poisson distribution. **mixComp** includes this data stored as a dataframe. Here, we want to investigate 
 how the Hankel matrix methods compare when fitting the data to a mixture of Poissons.
 
 The estimation process starts with defining the MLE function and constructing of the `datMix` object.
@@ -325,7 +325,7 @@ plot(det_sca_pen, main = "Non-parametric Hankel method for Children dataset",
      cex.main = 0.9)
 ```
 
-Next, we check the fit of the parametric version. The printed result of `paramHankel.scaled` shows that this method also suggests 2 to be the number of components, with the first component corresponding to a Poisson distribution with the rate of 0.0306. Note that the limit case proposed by [[35]](#35) results in a point mass at 0, and that this fit therefore nicely lines up with the idea of a component accounting for only the zero observations. The plot shows that this method yields a sensible fit overall.
+Next, we check the fit of the parametric version. The printed result of `paramHankel.scaled` shows that this method also suggests 2 to be the number of components, with the first component corresponding to a Poisson distribution with the rate of 0.0306. Note that the limit case proposed by [[22]](#22) results in a point mass at 0, and that this fit therefore nicely lines up with the idea of a component accounting for only the zero observations. The plot shows that this method yields a sensible fit overall.
 
 ``` r
 set.seed(0)
@@ -372,129 +372,128 @@ Azzalini A, Bowman A (1990). “A Look at Some Data on the Old Faithful Geyser.�
 of the Royal Statistical Society C, 39(3), 357–365. doi:10.2307/2347385. URL https:
 //www.jstor.org/stable/2347385.
 
-<a id="4">[4]</a> 
+<a id="2">[2]</a> 
 Benaglia T, Chauveau D, Hunter DR, Young D (2009). “mixtools: An R Package for
 Analyzing Finite Mixture Models.” Journal of Statistical Software, 32(6), 1–29. URL
 http://www.jstatsoft.org/v32/i06/.
 
-<a id="6">[6]</a> 
+<a id="3">[3]</a> 
 Chen J, Kalbfleisch J (1996). “Penalized Minimum-Distance Estimates in Finite Mixture
 Models.” Canadian Journal of Statistics, 24(2), 167–175.
 
-<a id="9">[9]</a> 
+<a id="4">[4]</a> 
 Cutler A, Cordero-Braña OI (1996). “Minimum Hellinger Distance Estimation for Finite
 Mixture Models.” Journal of the American Statistical Association, 91(436), 1716–1723.
 ISSN 01621459. doi:10.2307/2291601. URL http://www.jstor.org/stable/2291601.
 
-<a id="10">[10]</a> 
+<a id="5">[5]</a> 
 Dacunha-Castelle D, Gassiat E (1997). “The Estimation of the Order of a Mixture Model.”
 Bernoulli, 3(3), 279–299. doi:10.2307/3318593. URL https://www.jstor.org/stable/
 3318593.
 
-<a id="11">[11]</a> 
+<a id="6">[6]</a> 
 Dempster AP, Laird NM, Rubin DB (1977). “Maximum Likelihood from Incomplete Data
 via the EM Algorithm.” Journal of the Royal Statistical Society B, 39(1), 1–38. ISSN
 0035-9246. With discussion, URL http://www.jstor.org/stable/2984875.
 
-<a id="13">[13]</a> 
+<a id="7">[7]</a> 
 Figueiredo MAT, Jain AK (2002). “Unsupervised Learning of Finite Mixture Models.” IEEE
 Transactions on Pattern Analysis and Machine Intelligence, 24(3), 381–396.
 
-<a id="16">[16]</a> 
+<a id="8">[8]</a> 
 Grün B, Leisch F (2007). “Fitting Finite Mixtures of Generalized Linear Regressions in
 R.” Computational Statistics & Data Analysis, 51(11), 5247–5252. doi:10.1016/j.csda.
 2006.08.014.
 
-<a id="17">[17]</a> 
+<a id="9">[9]</a> 
 Grün B, Leisch F (2008). “FlexMix Version 2: Finite Mixtures with Concomitant Variables
 and Varying and Constant Parameters.” Journal of Statistical Software, 28(4), 1–35. doi:
 10.18637/jss.v028.i04. URL http://www.jstatsoft.org/v28/i04/.
 
-<a id="18">[18]</a> 
+<a id="10">[10]</a> 
 Härdle W (1991). Smoothing Techniques : With Implementation in S. Springer-Verlag New
 York, New York, NY, USA. doi:10.1007/978-1-4612-4432-5.
 
-<a id="19">[19]</a> 
+<a id="11">[11]</a> 
 Leisch F (2004). “FlexMix: A General Framework for Finite Mixture Models and Latent
 Class Regression in R.” Journal of Statistical Software, 11(8), 1–18. doi:10.18637/jss.
 v011.i08. URL http://www.jstatsoft.org/v11/i08/.
 
-<a id="20">[20]</a> 
+<a id="12">[12]</a> 
 Lindsay BG (1983a). “The Geometry of Mixture Likelihoods: A General Theory.” The Annals
 of Statistics, 11(1), 86–94. ISSN 0090-5364. doi:10.1214/aos/1176346059.30
 
-<a id="21">[21]</a> 
+<a id="13">[13]</a> 
 Lindsay BG (1983b). “The Geometry of Mixture Likelihoods: The Exponential Family.” The
 Annals of Statistics, 11(3), 783–792. ISSN 0090-5364. doi:10.1214/aos/1176346245.
 
-<a id="22">[22]</a> 
+<a id="14">[14]</a> 
 Macdonald P, Du J (2018). mixdist: Finite Mixture Distribution Models. R package version
 0.5-5, URL https://CRAN.R-project.org/package=mixdist.
 
-<a id="24">[24]</a> 
+<a id="15">[15]</a> 
 McLachlan G, Peel D (2000). Finite Mixture Models. Wiley Series in Probability and Statis-
 tics: Applied Probability and Statistics. John Wiley & Sons. ISBN 0-471-00626-2. doi:
 10.1002/0471721182.
 
-<a id="25">[25]</a> 
+<a id="16">[16]</a> 
 Melnykov V, Chen WC, Maitra R (2012). “MixSim: An R Package for Simulating Data
 to Study Performance of Clustering Algorithms.” Journal of Statistical Software, 51(12),
 1–25. URL http://www.jstatsoft.org/v51/i12/.
 
-<a id="26">[26]</a> 
+<a id="17">[17]</a> 
 Miller JW, Harrison MT (2018). “Mixture Models with a Prior on the Number of Compo-
 nents.” Journal of the American Statistical Association, 113(521), 340–356.
 
-<a id="28">[28]</a> 
+<a id="18">[18]</a> 
 Moss J, Tveten M (2019). kdensity: Kernel Density Estimation with Parametric Starts
 and Asymmetric Kernels. R package version 1.0.1, URL https://CRAN.R-project.org/
 package=kdensity.
 
-<a id="29">[29]</a> 
+<a id="19">[19]</a> 
 R Core Team (2020). R: A Language and Environment for Statistical Computing. R Foun-
 dation for Statistical Computing, Vienna, Austria. URL https://www.R-project.org/.
 
-<a id="31">[31]</a> 
+<a id="20">[20]</a> 
 Scrucca L, Fop M, Murphy TB, Raftery AE (2016). “mclust 5: Clustering, Classification and
 Density Estimation Using Gaussian Finite Mixture Models.” The R Journal, 8(1), 289–317.
 URL 10.32614/RJ-2016-021.
 
-<a id="34">[34]</a> 
+<a id="21">[21]</a> 
 Teicher H (1963). “Identifiability of Finite Mixtures.” The Annals of Mathematical Statistics,
 34, 1265–1269. ISSN 0003-4851. doi:10.1214/aoms/1177703862.
 
-<a id="35">[35]</a> 
+<a id="22">[22]</a> 
 Thisted RA (1988). Elements of Statistical Computing: Numerical Computation. Chapman
 & Hall, Ltd., GBR. ISBN 0412013711.
 
-<a id="36">[36]</a> 
+<a id="23">[23]</a> 
 Titterington DM, Smith AFM, Makov UE (1985). Statistical Analysis of Finite Mixture
 Distributions. Wiley Series in Probability and Mathematical Statistics: Applied Probability
 and Statistics. John Wiley & Sons. ISBN 0-471-90763-4.
 
-<a id="37">[37]</a> 
+<a id="24">[24]</a> 
 Umashanger T, Sriram T (2009). “L2E Estimation of Mixture Complexity for Count Data.”
 Computational Statistics & Data Analysis, 53(12), 4243 – 4254. ISSN 0167-9473. doi:10.
 1016/j.csda.2009.05.013. URL http://www.sciencedirect.com/science/article/
 pii/S0167947309002023.
 
-<a id="38">[38]</a> 
+<a id="25">[25]</a> 
 Wang HX, Luo B, Zhang QB, Wei S (2004). “Estimation for the Number of Components
 in a Mixture Model Using Stepwise Split-and-Merge EM Algorithm.” Pattern Recognition
 Letters, 25(16), 1799–1809. ISSN 0167-8655.
 
-<a id="39">[39]</a> 
+<a id="26">[26]</a> 
 Woo MJ, Sriram T (2007). “Robust Estimation of Mixture Complexity for Count Data.”
 Computational Statistics & Data Analysis, 51(9), 4379 – 4392. ISSN 0167-9473. doi:10.
 1016/j.csda.2006.06.006. URL http://www.sciencedirect.com/science/article/
 pii/S0167947306001964.
 
-<a id="40">[40]</a> 
+<a id="27">[27]</a> 
 Woo MJ, Sriram TN (2006). “Robust Estimation of Mixture Complexity.” Journal of the 
 American Statistical Association, 101(476), 1475–1486. doi:10.1198/016214506000000555.
 
-<a id="41">[41]</a> 
+<a id="28">[28]</a> 
 Xekalaki E, Karlis D (1999). “On Testing for the Number of Components in a Mixed Poisson
 Model.” The Annals of the Institute of Statistical Mathematics, 51, 149–162. doi:10.1023/
 A:1003839420071.
-
