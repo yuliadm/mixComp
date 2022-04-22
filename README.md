@@ -89,7 +89,7 @@ Unlike the above mentioned objects whose creation precedes any type of mixture c
 
 The following example creates two `Mix` objects, a 3-component mixture of normal distributions and a 3-component mixture of Poisson distributions. 
 
-```{r mixobj}
+``` r
 set.seed(0)
 # construct a Nix object:
 normLocMix <- Mix("norm", discrete = FALSE, w = c(0.3, 0.4, 0.3), mean = c(10, 13, 17), sd = c(1, 1, 1))
@@ -104,7 +104,7 @@ plot(poisMix, main = "3-component poisson mixture", cex.main = 0.9)
 </p>
 
 If required, random samples can be generated from these mixtures.
-```{r rmix}
+``` r
 # generate random samples:
 normLocRMix <- rMix(1000, obj = normLocMix)
 poisRMix <- rMix(1000, obj = poisMix)
