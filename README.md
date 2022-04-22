@@ -272,7 +272,7 @@ We will now check how the minimum Hellinger distance method works for these data
 
 `hellinger.cont` fits a 2-component mixture to the data, which fits the data well and comprises similar parameter estimates to those found in the literature.
 
-```{r faithplothel, fig.width = 5, fig.height = 4}
+``` r
 # estimate the number of components:
 library(kdensity)
 res <- hellinger.cont(faithful.dM, bandwidth = kdensity(faithful.obs)$bw,
@@ -304,7 +304,7 @@ children.dM <- datMix(children.obs, dist = "pois", discrete = TRUE,
 
 First, we define the penalty term and check the nonparametric method. The result suggests that the data comes from a 2-component mixture.
 
-```{r childplotnph, fig.width = 5, fig.height = 4}
+``` r
 # define the penalty:
 pen <- function(j, n) j * log(n)
 # estimate the number of components:
@@ -327,7 +327,7 @@ plot(det_sca_pen, main = "Non-parametric Hankel method for Children dataset",
 
 Next, we check the fit of the parametric version. The printed result of `paramHankel.scaled` shows that this method also suggests 2 to be the number of components, with the first component corresponding to a Poisson distribution with the rate of 0.0306. Note that the limit case proposed by [[12]](#12) results in a point mass at 0, and that this fit therefore nicely lines up with the idea of a component accounting for only the zero observations. The plot shows that this method yields a sensible fit overall.
 
-```{r childplotph, fig.width = 5, fig.height = 4}
+``` r
 set.seed(0)
 param_sca <- paramHankel.scaled(children.dM, j.max = 5, B = 1000, ql = 0.025, 
                           qu = 0.975)
