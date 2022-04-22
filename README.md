@@ -151,7 +151,7 @@ normLoc.dM <- RtoDat(normLocRMix, theta.bound.list = norm.bound.list,
                      Hankel.function = mom.std.norm)
 ```
 
-In the case of the scaled version of the method, the penalty should be scaled accordingly as well as mentioned earlier. 
+In the case of the scaled version of the method, the penalty should be scaled as well. 
 ``` r
 # define the penalty function:
 pen <- function(j, n){
@@ -337,3 +337,13 @@ plot(param_sca, breaks = 8, ylim = c(0, 0.8))
 <img src="https://github.com/yuliadm/mixComp/blob/main/images/np_real.png" />
 <img src="https://github.com/yuliadm/mixComp/blob/main/images/p_real.png" />
 </p>
+
+# Computational nuance for mixComp functions using the solnp() solver
+
+Several functions in the **mixComp** package (namely, `nonparamHankel`, `paramHankel`, `hellinger.cont`, `hellinger.disc`, `L2.disc`, `mix.lrt`) make use of `solnp()`  function (**Rsolnp** library), which is a solver for general nonlinear programming problems. The above mentioned **mixComp** functions attempt to generate good starting values by clustering the data via `clara` function prior to applying  `solnp()`, which lead to convergence of the algorithm in most of the cases. However when running multiple simulations, `solnp()` might not converge for particular initial values with default control values. This may happen when very few observations are assigned to some of the clusters have, in which case the solver can get "stuck", not even resulting in bad exit status (codes 1 and 2 in returned by `solnp()` convergence value). This issue can be overcome by specifying the control parameters in the functions using the `solnp()` solver (e.g. by defining `L2.boot.disc(geom.dM, j.max = 5, B = 500, ql = 0.025, qu = 0.975, control = list("rho" = 0.1, tol = 0.0000001, trace = 0))`, see description of the `solnp()` function for further details on setting the control parameters) or by setting a time limit for the function execution and going to the next iteration whenever the time limit is exceeded. 
+
+
+# Further details
+
+For more information on the functions used in **mixComp** and for further examples see the vignette or the documentation.md file.
+
