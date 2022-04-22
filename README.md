@@ -203,6 +203,24 @@ plot(norm_sca_pen)
 </p>
 
 
+We now apply the minimum Hellinger distance (with AIC-based penalty term) to the artificially created samples from the 3-component Poisson and normal mixtures using the procedures `hellinger.disc` for the former and `hellinger.cont` for the latter. 
+
+``` r
+set.seed(0)
+h_disc_pois <- hellinger.disc(pois.dM, threshold = "AIC")
+h_cont_norm <- hellinger.cont(normLoc.dM, bandwidth = 0.5, sample.n = 5000, 
+                      threshold = "AIC")
+par(mar = c(5, 5, 1, 1))
+plot(h_disc_pois)
+plot(h_cont_norm)
+```
+
+<p float="left">
+<img src="https://github.com/yuliadm/mixComp/blob/main/images/dist_art_1.png" />
+<img src="https://github.com/yuliadm/mixComp/blob/main/images/dist_art_2.png" />
+</p>
+
+
 # Examples using real-world data
 
 ### The Old Faithful dataset
