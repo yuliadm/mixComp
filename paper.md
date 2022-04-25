@@ -35,7 +35,7 @@ Mixture models, studied extensively in [@Teicher63; @LindsayI; @LindsayII; @Titt
    
   - likelihood ratio test (LRT) - based techniques. 
 
-All methods come with theoretical guarantees for consistency. Their performance varies according to the underlying mixture distribution and the sample size.
+All methods come with theoretical guarantees for consistency. 
 
 # Statement of need
 
