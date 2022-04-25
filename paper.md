@@ -90,7 +90,7 @@ Use a parametric bootstrap to generate `B` $n$-samples from a $j$-component mixt
 
 # Example
 
-Consider a Poisson mixture with $\mathbf{w}=(0.45,0.45,0.1), \textrm{ and } \mathbf{\lambda}=(1,5,10)$ and apply the `paramHankel` function with scaling. 
+Consider a Poisson mixture with $\mathbf{w}=(0.45,0.45,0.1), \textrm{ and } \mathbf{\lambda}=(1,5,10)$ and apply `paramHankel.scaled` function. 
 
 ``` r
 set.seed(0)
