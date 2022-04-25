@@ -66,7 +66,7 @@ $H(\mathbf{c_{2j+1}})$ - the Hankel matrix built on $\hat{\textbf{c}}_{2j+1}$, t
 
 ### 2. Functions using distances
 
-Consider the parametric family $\mathcal{F}_j = \{ f_{j, \mathbf{w},\mathbf{\theta}} : (\mathbf{w}, \mbox{\boldmath$\theta$}) \in W_j \times \Theta_j \},$
+Consider the parametric family $\mathcal{F}_j = \{ f_{j, \mathbf{w},\mathbf{\theta}} : (\mathbf{w}, \mathbf{\theta}) \in W_j \times \Theta_j \},$
 with $f_{j,\mathbf{w},\mathbf{\theta}}(x) = \sum_{i = 1}^j w_i g(x; \theta_i), \quad \{g(x;\theta): \theta \in \Theta \}.$ 
 Note: $\mathcal{F}_j \subseteq \mathcal{F}_{j+1}, \forall j = 1,2, \dots$.
 
