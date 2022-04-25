@@ -96,16 +96,15 @@ $$p_0 = \min\{j:f_0 \in \mathcal{F}_j\}.$$
 
 This suggests an estimation procedure based on initially finding the 'best' possible estimate (in a sense to be determined) $(\hat{\mathbf{w}}^j, \hat{\mathbf{\theta}}^j) \in W_j \times \Theta_j$ for a given value of $j$, in order to compare the thereby specified probability density/mass function 
 $$\hat{f}_j(x) = f_{j, \hat{\mathbf{w}}^j, \hat{\mathbf{\theta}}^j}(x),$$
-with a non-parametric density/probability mass estimate $\tilde{f}_n(x)$. As the classes $\mathcal{F}_j$ and $\mathcal{F}_{j+1}$ are nested, the distance $D$ between $\hat{f}_j$ and $\tilde{f}_n$ will only decrease with $j$. Thus, it makes sense to add some penalty term (increasing in $j$) to $D(\hat{f}_j, \tilde{f}_n)$ and find the first value of $j$ where the penalized distance for $j$ is smaller than that for $j+1$. Rearranging the terms gives rise to an algorithm starting at $j = 1$, involving some threshold $t(j,n)$ depending on the penalty, where, if $j$ is the first integer satisfying
+with a non-parametric density/probability mass estimate $\tilde{f}_n(x)$. As the classes $\mathcal{F}_j$ and $\mathcal{F}_{j+1}$ are nested, the distance $D$ between $\hat{f}_j$ and $\tilde{f}_n$ will only decrease with $j$. Thus, it makes sense to add some penalty term $t(j,n)$ (increasing in $j$) to $D(\hat{f}_j, \tilde{f}_n)$ and find the first value of $j$ where the penalized distance for $j$ is smaller than that for $j+1$. The algorithm starts at $j = 1$, if $j$ is the first integer satisfying
 \begin{equation}\label{eq:distances}
 D(\hat{f}_j, \tilde{f}_n) - D(\hat{f}_{j+1}, \tilde{f}_n) \leq t(j,n),
 \end{equation}
-then $j$ is taken as the estimate $\hat{p}$. If the inequality is not fulfilled, $j$ is increased by $1$ and the procedure is repeated. Consistency of these estimators has been shown in [@l2; @hell; @hellcont].
-Three procedures are implemented in **mixComp** based on the foregoing methodology: `L2.disc`, `hellinger.disc` and `hellinger.cont`.
+$j$ is taken as the estimate $\hat{p}$, otherwise $j$ is increased by $1$ and the procedure is repeated. Consistency of these estimators has been shown in [@l2; @hell; @hellcont]. **mixComp** includes 3 procedures based on the foregoing methodology: `L2.disc`, `hellinger.disc` and `hellinger.cont`.
 
 # 3. Functions using LRTS
 
-The algorithm based on the likelihood ratio test statistic (LRTS), sequentially tests $p = j$ versus $p = j+1$ for $j = 1,2, \dots$, until the algorithm terminates. As it is not possible to use the generalized likelihood ratio test in the context of mixture models directly as the standard way of obtaining the asymptotic distribution of the LRTS under $H_0$ cannot be applied. However, one can get estimates of the test's critical values by employing a bootstrap procedure.
+The algorithm based on the LRT statistic, sequentially tests $p = j$ versus $p = j+1$ for $j = 1,2, \dots$, until the algorithm terminates. It is not possible to use the generalized likelihood ratio test in the context of mixture models directly as the standard way of obtaining the asymptotic distribution of the LRTS under $H_0$ cannot be applied. However, one can get estimates of the test's critical values by employing a bootstrap procedure.
 
 The function `mix.lrt` iteratively increases the assumed order $j$ and finds the MLE for both, the density of a mixture with $j$ and $j+1$ components, giving $(\hat{\mathbf{w}}^{j}, \hat{\mathbf{\theta}}^{j}) \in W_j \times \Theta_j$ and $(\hat{\mathbf{w}}^{j+1}, \hat{\mathbf{\theta}}^{j+1}) \in W_{j+1} \times \Theta_{j+1}$. It then calculates the corresponding LRTS, defined as
 $$\text{LRTS}= -2\ln\left(\frac{L_0}{L_1}\right) \quad \text{, with}$$
@@ -113,8 +112,7 @@ $$\text{LRTS}= -2\ln\left(\frac{L_0}{L_1}\right) \quad \text{, with}$$
 $$L_0 = L_{\textbf{X}}(\hat{\mathbf{w}}^{j}, \hat{\mathbf{\theta}}^{j}) \quad\quad \text{and} \quad\quad L_1 = L_{\textbf{X}}(\hat{\mathbf{w}}^{j+1}, \hat{\mathbf{\theta}}^{j+1})\text{,}$$
 $L_{\textbf{X}}$ being the likelihood function given the data ${\textbf{X}}$.
 
-Next, a parametric bootstrap is used to generate `B` samples of size $n$ from a $j$-component mixture given the previously calculated MLE $(\hat{\mathbf{w}}^{j}, \hat{\mathbf{\theta}}^{j})$. For each of the bootstrap samples, the MLEs corresponding to the mixture densities with $j$ and $j+1$ components are calculated, as well as the LRTS. The null hypothesis $H_0: p = j$ is rejected and $j$ increased by $1$ if the LRTS based on the original data vector $\textbf{X}$ is larger than the chosen `quantile` of its bootstrapped counterparts. Otherwise, $j$ is returned as the order estimate $\hat{p}$. For further details, the reader is referred to [@lrt].
-
+Next, a parametric bootstrap is used to generate `B` $n$-samples from a $j$-component mixture given the previously calculated MLE $(\hat{\mathbf{w}}^{j}, \hat{\mathbf{\theta}}^{j})$. For each bootstrap sample, the MLEs and LRTS corresponding to the mixture densities with $j$ and $j+1$ components are calculated. $H_0: p = j$ is rejected and $j$ increased by $1$ if the LRTS based on the original data vector $\textbf{X}$ is larger than the chosen quantile of its bootstrapped counterparts. Otherwise, $j$ is returned as the order estimate $\hat{p}$. 
 
 # Examples
 
@@ -132,7 +130,7 @@ plot(poisMix, main = "3-component poisson mixture", cex.main = 0.9)
 ![3-component poisson mixture](figures/poisMix.png) 
 
 
-From the above mixture a random sample can be generated:
+A random sample can be generated:
 
 ``` r
 # generate a random sample:
@@ -143,13 +141,12 @@ plot(poisRMix, main = "3-component poisson mixture", cex.main = 0.9)
 
 ![3-component poisson mixture](figures/poisRMix.png) 
 
-We now apply the scaled Hankel matrix method to these simulated data.
+We now apply the Hankel matrix method to these simulated data.
 
 If $Y \sim Pois(\lambda)$, it is known that
-$$\lambda^j = \mathbb{E}[Y(Y-1)\dots(Y-j+1)],$$
-which, in combination with \autoref{eq:1} and \autoref{eq:2} suggests using
-$$\hat{c}^{2j+1}_j = \frac{1}{n} \sum_{i=1}^n X_i(X_i-1)\dots(X_i-j+1)$$
-as an estimator. 
+$$\lambda^j = \mathbb{E}[Y(Y-1)\dots(Y-j+1)].$$
+Thus
+$$\hat{c}^{2j+1}_j = \frac{1}{n} \sum_{i=1}^n X_i(X_i-1)\dots(X_i-j+1).$$
 
 ``` r
 # define the function for computing the moments:
@@ -160,7 +157,7 @@ explicit.pois <- function(dat, j){
 }
 ```
 
-For converting the previously simulated samples from 3-component Poisson and normal mixtures yielding the objects of class `rMix` to objects of class `datMix` one should apply the `RtoDat` function:
+First, convert the previously obtained samples yielding the objects of class `rMix` to objects of class `datMix`:
 
 ``` r
 MLE.pois <- function(dat) mean(dat)
@@ -171,7 +168,7 @@ pois.dM <- RtoDat(poisRMix, theta.bound.list = list(lambda = c(0, Inf)),
 
 ```
 
-Now we define the penalty $A(j)l(n) = j \cdot log(n)$ (for the scaled version, the original penalty should be multiplied by $\sqrt{n}$) and apply the nonparamHankel function with scaling option: 
+Define the penalty $A(j)l(n) = j \cdot log(n)$ (for the scaled version, the original penalty should be multiplied by $\sqrt{n}$), apply the paramHankel function with scaling and print and plot the results: 
 
 ``` r
 # define the penalty function:
@@ -180,34 +177,6 @@ pen <- function(j, n){
 }
 # apply the nonparamHankel function to the datMix objects:
 set.seed(1)
-poisdets_sca_pen <- nonparamHankel(pois.dM, j.max = 5, scaled = TRUE, 
-                                   B = 1000, pen.function = pen)
-```
-
-One can print and plot the results:
-
-``` r
-# print the results (for the Poisson mixture)
-print(poisdets_sca_pen)
-#< 
-#< Estimation of the scaled and penalized determinants for a 'pois' mixture model:
-#<  Number of components Determinant
-#<                     1    20.23365
-#<                     2    13.82135
-#<                     3    20.90053
-#<                     4    27.70596
-#<                     5    34.54453
-# plot results for both mixtures:
-par(mar = c(5, 5, 1, 1))
-plot(poisdets_sca_pen, main = "3-component poisson mixture", cex.main = 0.9)
-```
-
-![3-component poisson mixture](figures/np_art_1.png)
-
-The nonparamHankel function with scaling estimates the number of components as 2 instead of 3.
-Let us check whether the parametric Hankel method will be able to predict the number of components correctly.
-
-``` r
 pois_sca_pen <- paramHankel.scaled(pois.dM)
 #< 
 #< Parameter estimation for a 1 component 'pois' mixture model:
