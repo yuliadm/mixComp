@@ -51,7 +51,7 @@ Given some complexity $j$, the relevant parameter spaces are
 $$\Theta_j = \{\theta_1, \dots, \theta_j: \theta_i \in \Theta \subseteq \mathbb{R}^d, \quad d \in \mathbb{N}, \quad \text{ for } i = 1,\dots,j\}, \text { and }$$
 $$W_j = \{w_1, \dots, w_j: \sum_{i=1}^j w_i = 1, w_i \geq 0, \text{ for } i = 1,\dots,j\}.$$
 
-Assume the family of the component densities $\{g(x; \theta)\}$ is known, while $\textbf{\theta}=(\theta_1, \dots, \theta_p) \in \Theta_p$, $\textbf{w} = (w_1, \dots, w_p) \in W_p$ and $p \in \mathbb{N}$ are unknown. 
+Assume the family of the component densities $\{g(x; \theta)\}$ is known, while $\theta=(\theta_1, \dots, \theta_p) \in \Theta_p$, $\textbf{w} = (w_1, \dots, w_p) \in W_p$ and $p \in \mathbb{N}$ are unknown. 
 
 ### 1. Functions using Hankel matrices of moments of the mixing distribution
 
