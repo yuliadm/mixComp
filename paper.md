@@ -25,7 +25,7 @@ bibliography: refs.bib
 
 # Summary
 
-Mixture models, studied extensively in [@Teicher63; @LindsayI; @LindsayII; @Titterington; @McLachlan] etc., allow for modeling heterogeneous data whose distribution cannot be captured by a single parametric distribution. The (unknown) distribution is assumed to result from mixing over some latent parameter in the following sense: the latent parameter is viewed as a random variable drawn from some unknown mixing distribution. The number of mixture components could be known in advance, in which case the model is *fully parametric* and convergence of classical estimators such as the parametric MLE occurs at the rate $\sqrt{n}$ (given certain conditions). Also, the well-known expectation-maximization (EM) algorithm [@Dempster] can be used to find the MLE of the unknown parameters. However, in many applications the number of components is unknown and has to be estimated from the data. 
+Mixture models, studied extensively in [@Teicher63; @LindsayI; @LindsayII; @Titterington; @McLachlan] etc., allow for modeling heterogeneous data. The (unknown) distribution is assumed to result from mixing over some latent parameter in the following sense: the latent parameter is viewed as a random variable drawn from some unknown mixing distribution. The number of mixture components could be known in advance, in which case the model is *fully parametric* and the well-known expectation-maximization (EM) algorithm [@Dempster] can be used for finding the maximum likelihood estimates (MLE) of the unknown parameters. However, in many applications the number of components is unknown and has to be estimated from the data. 
 
 **mixComp** provides several categories of methods for estimating the unknown complexity of a (univariate) finite mixture:
 
@@ -61,7 +61,7 @@ Given some complexity $j$, the relevant parameter spaces are
 $$\Theta_j = \{\theta_1 \dots \theta_j: \theta_i \in \Theta \subseteq \mathbb{R}^d, \quad d \in \mathbb{N}, \quad \text{ for } i = 1,\dots,j\}, \text { and }$$
 $$W_j = \{w_1, \dots, w_j: \sum_{i=1}^j w_i = 1, w_i \geq 0, \text{ for } i = 1,\dots,j\}.$$
 
-Assume the family of the component densities $\{g(x; \theta):\theta \in \Theta\}$ is known, $\textbf{\theta}=(\theta_1, \dots, \theta_p) \in \Theta_p$, $\textbf{w} = (w_1, \dots, w_p) \in W_p$ and $p \in \mathbb{N}$ are unknown. **mixComp** selects the smallest $p$ yielding the 'best' fit of \autoref{eq:mix} (in one of the discussed below senses) to $\textbf{X} = \{X_1, \dots, X_n\}$, an i.i.d. $n$-sample from $F$.
+Assume the family of the component densities $\{g(x; \theta)$ is known, $\textbf{\theta}=(\theta_1, \dots, \theta_p) \in \Theta_p$ , $\textbf{w} = (w_1, \dots, w_p) \in W_p$ and $p \in \mathbb{N}$ are unknown. **mixComp** selects the smallest $p$ yielding the 'best' fit of \autoref{eq:mix} (in one of the discussed below senses) to $\textbf{X} = \{X_1, \dots, X_n\}$, an i.i.d. $n$-sample from $F$.
 
 ### 1. Functions using Hankel matrices
 
@@ -70,7 +70,7 @@ $$\hat{p} := \text{argmin}_{j \in \mathbb{N}} J_n(j),$$
 where 
 $$J_n(j) := \lvert \det H(\hat{\textbf{c}}_{2j+1}) \rvert + A(j)l(n),$$
 with $l(n)$ being a positive function converging to $0$ as $n\to\infty$, $A(j)$ - positive and strictly increasing function,
-$\hat{\textbf{c}}_{2j+1}$ - a consistent estimator of $\textbf{c}_{2j+1} = (c_0=1, c_1 \dots, c_{2k}) \in \mathbb{R}^{2k+1}$$, the first $2j+1$ moments of the mixing distribution, and $H(\mathbf{c_{2j+1}})$ - the corresponding Hankel matrix. 
+$H(\mathbf{c_{2j+1}})$ - the Hankel matrix built on $\hat{\textbf{c}}_{2j+1}$, the consistent estimator of the first $2j+1$ moments of the mixing distribution. 
 
 **mixComp** offers several methods for calculating $\hat{\textbf{c}}^{2j+1}$ and provides extensions of the basic approach.
 
@@ -85,10 +85,8 @@ Note: $\mathcal{F}_j \subseteq \mathcal{F}_{j+1}, \forall j = 1,2, \dots$
 
 Find the 'best' (e.g. in the ML sense) estimate $(\hat{\mathbf{w}}^j, \hat{\mathbf{\theta}}^j) \in W_j \times \Theta_j$ for a given $j$ and thereby specified probability density/mass function $\hat{f}_j(x) = f_{j, \hat{\mathbf{w}}^j, \hat{\mathbf{\theta}}^j}(x),$
 and the non-parametric probability density/mass estimate $\tilde{f}_n(x)$.  
-\begin{equation}\label{eq:distances}
-\hat{p} = min_j \big\{D(\hat{f}_j, \tilde{f}_n) - D(\hat{f}_{j+1}, \tilde{f}_n) \leq t(j,n) \big\},
-\end{equation} 
-where $D$ is the dustance measure between the distribution functions and $t(j,n)$ - the penalty term.
+$$\hat{p} = min_j \big\{D(\hat{f}_j, \tilde{f}_n) - D(\hat{f}_{j+1}, \tilde{f}_n) \leq t(j,n) \big\},$$ 
+where $D$ denotes the distance between the distributions and $t(j,n)$ - the penalty term.
 
 **mixComp** offers several distance-based procedures described in [@l2; @hell; @hellcont]. 
 
