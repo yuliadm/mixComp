@@ -104,8 +104,6 @@ $j$ is taken as the estimate $\hat{p}$, otherwise $j$ is increased by $1$ and th
 
 # 3. Functions using LRTS
 
-The algorithm based on the LRT statistic, sequentially tests $p = j$ versus $p = j+1$ for $j = 1,2, \dots$, until the algorithm terminates. It is not possible to use the generalized likelihood ratio test in the context of mixture models directly as the standard way of obtaining the asymptotic distribution of the LRTS under $H_0$ cannot be applied. However, one can get estimates of the test's critical values by employing a bootstrap procedure.
-
 The function `mix.lrt` iteratively increases the assumed order $j$ and finds the MLE for both, the density of a mixture with $j$ and $j+1$ components, giving $(\hat{\mathbf{w}}^{j}, \hat{\mathbf{\theta}}^{j}) \in W_j \times \Theta_j$ and $(\hat{\mathbf{w}}^{j+1}, \hat{\mathbf{\theta}}^{j+1}) \in W_{j+1} \times \Theta_{j+1}$. It then calculates the corresponding LRTS, defined as
 $$\text{LRTS}= -2\ln\left(\frac{L_0}{L_1}\right) \quad \text{, with}$$
 
@@ -116,7 +114,7 @@ Next, a parametric bootstrap is used to generate `B` $n$-samples from a $j$-comp
 
 # Examples
 
-The following example creates a `Mix` objects for a 3-component Poisson mixture and plots the mixture density with weights $\mathbf{w}=(0.45,0.45,0.1)$ and parameter vector $\mathbf{\lambda}=(1,5,10)$. 
+The following example creates a `Mix` objects for a 3-component Poisson mixture and plots the mixture density with $\mathbf{w}=(0.45,0.45,0.1), \mathbf{\lambda}=(1,5,10)$ and generates a random sample. 
 
 ``` r
 set.seed(0)
@@ -128,9 +126,6 @@ plot(poisMix, main = "3-component poisson mixture", cex.main = 0.9)
 ```
 
 ![3-component poisson mixture](figures/poisMix.png) 
-
-
-A random sample can be generated:
 
 ``` r
 # generate a random sample:
@@ -157,7 +152,7 @@ explicit.pois <- function(dat, j){
 }
 ```
 
-First, convert the previously obtained samples yielding the objects of class `rMix` to objects of class `datMix`:
+Convert the previously obtained samples yielding the objects of class `rMix` to objects of class `datMix`.
 
 ``` r
 MLE.pois <- function(dat) mean(dat)
@@ -168,7 +163,7 @@ pois.dM <- RtoDat(poisRMix, theta.bound.list = list(lambda = c(0, Inf)),
 
 ```
 
-Define the penalty $A(j)l(n) = j \cdot log(n)$ (for the scaled version, the original penalty should be multiplied by $\sqrt{n}$), apply the paramHankel function with scaling and print and plot the results: 
+Define the penalty $A(j)l(n) = j \cdot log(n)$ (for the scaled version, the original penalty should be multiplied by $\sqrt{n}$), apply the paramHankel function with scaling, print and plot the results: 
 
 ``` r
 # define the penalty function:
@@ -209,7 +204,6 @@ plot(pois_sca_pen)
 ```
 ![Scaled Hankel determinants for a poisson mixture](figures/p_art_1.png)
 
-The estimation result is correct in this case. 
 The reader is referred to consult the package documentation for more examples. 
 
 # References
