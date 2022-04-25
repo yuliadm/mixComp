@@ -77,4 +77,68 @@ where $D$ denotes the distance between the distributions and $t(j,n)$ - the pena
 
 **mixComp** offers several distance-based procedures described in [@l2; @hell; @hellcont]. 
 
+### 3. Functions using LRTS
+
+By iteratively increasing $j$, find the MLE for the density of a mixture with $j$ and $j+1$ components, yielding $(\hat{\mathbf{w}}^{j}, \hat{\mathbf{\theta}}^{j}) \in W_j \times \Theta_j$ and $(\hat{\mathbf{w}}^{j+1}, \hat{\mathbf{\theta}}^{j+1}) \in W_{j+1} \times \Theta_{j+1}$,
+$$\text{LRTS}= -2\ln\left(\frac{L_{\textbf{X}}(\hat{\mathbf{w}}^{j}, \hat{\mathbf{\theta}}^{j})}{L_{\textbf{X}}(\hat{\mathbf{w}}^{j+1}, \hat{\mathbf{\theta}}^{j+1})}\right) \quad \text{, with}$$
+
+$L_{\textbf{X}}$ being the likelihood function given ${\textbf{X}}$.
+
+Use a parametric bootstrap to generate `B` $n$-samples from a $j$-component mixture given the calculated MLE $(\hat{\mathbf{w}}^{j}, \hat{\mathbf{\theta}}^{j})$. For each bootstrap sample, compute the MLEs and LRTS corresponding to the mixture densities with $j$ and $j+1$ components. Reject $H_0: p = j$, setting $j \leftarrow j+1$ if the LRTS is larger than the specified quantile of its bootstrapped counterparts. Otherwise, $\hat{p} = j$. 
+
+# Example
+
+Consider a Poisson mixture with $\mathbf{w}=(0.45,0.45,0.1), \textrm{ and } \mathbf{\lambda}=(1,5,10)$ and apply `paramHankel.scaled` function. 
+
+``` r
+set.seed(0)
+# construct a Mix object:
+poisMix <- Mix("pois", discrete = TRUE, w = c(0.45, 0.45, 0.1), 
+		lambda = c(1, 5, 10))
+# plot the density:
+plot(poisMix, main = "3-component poisson mixture", cex.main = 0.9)
+```
+
+![3-component poisson mixture](figures/poisMix.png) 
+
+``` r
+# generate a random sample:
+poisRMix <- rMix(1000, obj = poisMix)
+# plot the histogram:
+plot(poisRMix, main = "3-component poisson mixture", cex.main = 0.9)
+```
+
+![3-component poisson mixture](figures/poisRMix.png) 
+
+Use that for $Y \sim Pois(\lambda)$,
+$$\lambda^j = \mathbb{E}[Y(Y-1)\dots(Y-j+1)] \quad \textrm{and}$$
+$$\hat{c}^{2j+1}_j = \frac{1}{n} \sum_{i=1}^n X_i(X_i-1)\dots(X_i-j+1).$$
+
+``` r
+# define the function for computing the moments:
+explicit.pois <- function(dat, j){
+  mat <- matrix(dat, nrow = length(dat), ncol = j) - 
+         matrix(0:(j-1), nrow = length(dat), ncol = j, byrow = TRUE)
+  return(mean(apply(mat, 1, prod)))
+}
+# define the MLE function:
+MLE.pois <- function(dat) mean(dat)
+# convert to datMix object:
+pois.dM <- RtoDat(poisRMix, theta.bound.list = list(lambda = c(0, Inf)), 
+                  MLE.function = MLE.pois, Hankel.method = "explicit",
+                  Hankel.function = explicit.pois)
+# define the penalty function:
+pen <- function(j, n){
+  j * log(n)
+}
+# apply the nonparamHankel function to the datMix objects:
+set.seed(1)
+pois_sca_pen <- paramHankel.scaled(pois.dM)
+# plot the results (estimated component densities & estimated mixture):
+plot(pois_sca_pen)
+```
+![Scaled Hankel determinants for a poisson mixture](figures/p_art_1.png)
+
+The reader is referred to **mixComp** documentation for more details and examples. 
+
 # References
