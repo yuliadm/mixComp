@@ -25,7 +25,7 @@ bibliography: refs.bib
 
 # Summary
 
-Mixture models, used in multiple statistical applications and studied extensively in [@Teicher63; @LindsayI; @LindsayII; @Titterington; @McLachlan] etc., allow for modeling heterogeneous data whose distribution cannot be captured by a single parametric distribution. The (unknown) distribution is assumed to result from mixing over some latent parameter in the following sense: the latent parameter is viewed as a random variable drawn from some unknown mixing distribution. The number of mixture components could be known in advance, in which case the model is *fully parametric* and convergence of classical estimators such as the parametric MLE occurs at the rate $\sqrt{n}$ (given certain conditions). Also, the well-known expectation-maximization (EM) algorithm [@Dempster] can be used to find the MLE of the unknown parameters. However, in many applications the number of components is unknown and has to be estimated from the data. 
+Mixture models, studied extensively in [@Teicher63; @LindsayI; @LindsayII; @Titterington; @McLachlan] etc., allow for modeling heterogeneous data whose distribution cannot be captured by a single parametric distribution. The (unknown) distribution is assumed to result from mixing over some latent parameter in the following sense: the latent parameter is viewed as a random variable drawn from some unknown mixing distribution. The number of mixture components could be known in advance, in which case the model is *fully parametric* and convergence of classical estimators such as the parametric MLE occurs at the rate $\sqrt{n}$ (given certain conditions). Also, the well-known expectation-maximization (EM) algorithm [@Dempster] can be used to find the MLE of the unknown parameters. However, in many applications the number of components is unknown and has to be estimated from the data. 
 
 **mixComp** provides several categories of methods for estimating the unknown complexity of a (univariate) finite mixture:
 
@@ -155,6 +155,6 @@ plot(pois_sca_pen)
 ```
 ![Scaled Hankel determinants for a poisson mixture](figures/p_art_1.png)
 
-The reader is referred to **mixComp** documentation for more technical details and examples. 
+The reader is referred to **mixComp** documentation for more details and examples. 
 
 # References
