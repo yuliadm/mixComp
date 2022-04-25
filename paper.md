@@ -25,17 +25,17 @@ bibliography: refs.bib
 
 # Summary
 
-Mixture models have been used broadly in statistical applications and studied extensively in [@Teicher63], [@LindsayI], [@LindsayII], [@Titterington], [@McLachlan], and other works. They allow for modeling heterogeneous data whose distribution cannot be captured by a single parametric distribution. The (unknown) distribution is assumed to result from mixing over some latent parameter in the following sense: the latent parameter is viewed itself as a random variable drawn from some unknown mixing distribution. When this mixing distribution is only assumed to belong to the ensemble of all possible distribution functions, the mixture model is called *nonparametric* and estimation of the mixing distribution requires using some nonparametric estimation method, such as the nonparametric maximum likelihood estimator (NPMLE) whose fundamental properties were scrutinized in [@LindsayI], [@LindsayII]. One remarkable property of the NPMLE of the mixing distribution is that, it is, under some conditions, a discrete distribution function with at most $k$ number of jumps, where $k$ is the number of distinct observations in the random sample drawn from the mixture. This allows for considering the smaller class of finite mixture models (characterized by a discrete mixing distribution with a finite number of jumps). In some very simple situations, the number of mixture components could be known in advance, in which case the model is *fully parametric* and convergence of classical estimators such as the parametric maximum likelihood estimator (MLE) occurs at the rate $\sqrt{n}$ (given certain conditions). Also, the well-known expectation-maximization (EM) algorithm [@Dempster] can be used to find the MLE of the unknown parameters. However, in many applications such knowledge is rarely available and the number of components has to be estimated from the data. The goal of **mixComp** is to estimate the unknown complexity using several methods. 
+Mixture models have been used broadly in statistical applications and studied extensively ([@Teicher63], [@LindsayI], [@LindsayII], [@Titterington], [@McLachlan], and other works). They allow for modeling heterogeneous data whose distribution cannot be captured by a single parametric distribution. The (unknown) distribution is assumed to result from mixing over some latent parameter in the following sense: the latent parameter is viewed as a random variable drawn from some unknown mixing distribution. When this mixing distribution is only assumed to belong to the ensemble of all possible distribution functions, the mixture model is called *nonparametric* and estimation of the mixing distribution requires using some nonparametric estimation method, such as the nonparametric maximum likelihood estimator (NPMLE) (see [@LindsayI], [@LindsayII]). One remarkable property of the NPMLE of the mixing distribution is that, it is, under some conditions, a discrete distribution with at most $k$ number of jumps, where $k$ is the number of distinct observations in the random sample drawn from the mixture. This allows for considering a smaller class of finite mixture models (characterized by a discrete mixing distribution with a finite number of jumps). In simple situations, the number of mixture components could be known in advance, in which case the model is *fully parametric* and convergence of classical estimators such as the parametric maximum likelihood estimator (MLE) occurs at the rate $\sqrt{n}$ (given certain conditions). Also, the well-known expectation-maximization (EM) algorithm ([@Dempster]) can be used to find the MLE of the unknown parameters. However, in many applications such knowledge is rarely available and the number of components has to be estimated from the data. The goal of **mixComp** is to estimate the unknown complexity using several methods. 
 
-The **mixComp** package provides several methods for estimating the unknown complexity of a (univariate) finite mixture that can be loosely grouped into 3 categories:
+The **mixComp** package provides several methods for estimating the unknown complexity of a (univariate) finite mixture that can be arranged into 3 categories:
 
   - methods built upon the determinants of the Hankel matrix of moments of the mixing distribution; 
   
-  - methods based on penalized minimum distance between the unknown probability density and a consistent estimator thereof;
+  - methods based on penalized minimum distance between the unknown probability density and its consistent estimator;
    
   - likelihood ratio test (LRT) - based techniques. 
 
-These methods all come with theoretical guarantees for consistency. The performance of the methods varies according to the underlying mixture distribution and the sample size. While not the primary goal, most methods simultaneously estimate the component weights and parameters. 
+All methods come with theoretical guarantees for consistency. Their performance varies according to the underlying mixture distribution and the sample size.
 
 # Statement of need
 
@@ -51,19 +51,19 @@ The packages **mixtools** [@mixtools] and **flexmix** [@flexmix1; @flexmix2; @fl
 
 # General Framework
 
-A distribution $F$ is called a *finite mixture* if its density (we write density throughout and keep in mind that it may be taken with respect to the Lebesgue or the counting measure) is of the form
+A distribution $F$ is called a *finite mixture* if its probability density/mass is of the form
 $$f(x) = \sum_{i=1}^p w_i g_i(x),$$
-where $p \in \mathbb{N}$ is the mixture complexity, $(w_1, \dots w_p : \sum_{i=1}^p w_i = 1$, $w_i \geq 0,$ for $i=1,\dots,p)$ are the component weights and the density $g_i(x)$ is the $i$-th component of the mixture. Assume the family of the component distributions is known and replace $g_i(x)$ by a parametric density $g(x; \theta_i)$ indexed by $\theta_i \in \Theta \subseteq \mathbb{R}^d$, $d\in \mathbb{N}$ denoting the number of dimensions.
+where $p \in \mathbb{N}$ is the mixture complexity, $(w_1, \dots w_p : \sum_{i=1}^p w_i = 1$, $w_i \geq 0,$ for $i=1,\dots,p)$ are the component weights and the density $g_i(x)$ is the $i$-th component of the mixture. Let the family of the component distributions be known and replace $g_i(x)$ by a parametric density/mass $g(x; \theta_i)$ indexed by $\theta_i \in \Theta \subseteq \mathbb{R}^d$, with $d\in \mathbb{N}$ dimensions.
 
 Given some complexity $j$, the two relevant parameter spaces can therefore be defined as
 $$\Theta_j = \{\theta_1 \dots \theta_j: \theta_i \in \Theta \subseteq \mathbb{R}^d, \text{ for } i = 1,\dots,j\},$$
 $$W_j = \{w_1, \dots, w_j: \sum_{i=1}^j w_i = 1, w_i \geq 0, \text{ for } i = 1,\dots,j\}.$$
 
-Assume that the family of the component densities $\{g(x; \theta):\theta \in \Theta\}$ is known, the component parameters $\textbf{\theta}= (\theta_1, \dots, \theta_p) \in \Theta_p$, weights $\textbf{w} = (w_1, \dots, w_p) \in W_p$ and the mixture complexity $p \in \mathbb{N}$ are unknown. **mixComp** selects the smallest $p$ (either on its own or by simultaneously estimating the weights $w_i$ and the component parameters $\theta_i$, $i \in 1, \dots, p$) that yields the 'best' (in one of the discussed below senses) fit to $\textbf{X} = \{X_1, \dots, X_n\}$, an i.i.d. sample of size $n$ from $F$.
+Assume that the family of the component densities $\{g(x; \theta):\theta \in \Theta\}$ is known, the component parameters $\textbf{\theta}= (\theta_1, \dots, \theta_p) \in \Theta_p$, weights $\textbf{w} = (w_1, \dots, w_p) \in W_p$ and mixture complexity $p \in \mathbb{N}$ are unknown. **mixComp** selects the smallest $p$ (either on its own or by simultaneously estimating $w_i$ and $\theta_i$, $i \in 1, \dots, p$) yielding the 'best' (in one of the discussed below senses) fit to $\textbf{X} = \{X_1, \dots, X_n\}$, an i.i.d. $n$-sample from $F$.
 
 # 1. Functions using Hankel matrices
 
-The basic approach (due to [@hankel]) estimates the mixture order as
+The basic approach (see [@hankel]) estimates the mixture order as
 $$\hat{p} := \text{argmin}_{j \in \mathbb{N}} J_n(j),$$
 where 
 $$J_n(j) := \lvert \det H(\hat{\textbf{c}}^{2j+1}) \rvert + A(j)l(n),$$
