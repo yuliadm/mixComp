@@ -148,7 +148,7 @@ pen <- function(j, n){
 # apply the nonparamHankel function to the datMix objects:
 set.seed(1)
 pois_sca_pen <- paramHankel.scaled(pois.dM)
-# plot the results
+# plot the results (estimated component densities & estimated mixture):
 plot(pois_sca_pen)
 ```
 ![Scaled Hankel determinants for a poisson mixture](figures/p_art_1.png)
