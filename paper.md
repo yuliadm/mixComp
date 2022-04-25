@@ -27,15 +27,7 @@ bibliography: refs.bib
 
 Mixture models, studied extensively in [@Teicher63; @LindsayI; @LindsayII; @Titterington; @McLachlan] etc., allow for modeling heterogeneous data. The (unknown) distribution is assumed to result from mixing over some latent parameter in the following sense: the latent parameter is viewed as a random variable drawn from some unknown mixing distribution. The number of mixture components could be known in advance, in which case the model is *fully parametric* and the well-known expectation-maximization (EM) algorithm [@Dempster] can be used for finding the maximum likelihood estimates (MLE) of the unknown parameters. However, in many applications the number of components is unknown and has to be estimated from the data. 
 
-**mixComp** provides several categories of methods for estimating the unknown complexity of a (univariate) finite mixture:
-
-  - methods built upon the determinants of the Hankel matrix of moments of the mixing distribution; 
-  
-  - methods based on penalized minimum distance between the unknown probability density and its consistent estimator;
-   
-  - likelihood ratio test (LRT) - based techniques. 
-
-All methods come with theoretical guarantees for consistency. Their performance varies according to the underlying mixture distribution and the sample size.
+**mixComp** provides three categories of methods for estimating the unknown complexity of a (univariate) finite mixture. All methods come with theoretical guarantees for consistency. Their performance varies according to the underlying mixture distribution and the sample size.
 
 # Statement of need
 
@@ -63,7 +55,7 @@ $$W_j = \{w_1, \dots, w_j: \sum_{i=1}^j w_i = 1, w_i \geq 0, \text{ for } i = 1,
 
 Assume the family of the component densities $\{g(x; \theta)$ is known, $\textbf{\theta}=(\theta_1, \dots, \theta_p) \in \Theta_p$ , $\textbf{w} = (w_1, \dots, w_p) \in W_p$ and $p \in \mathbb{N}$ are unknown. **mixComp** selects the smallest $p$ yielding the 'best' fit of \autoref{eq:mix} (in one of the discussed below senses) to $\textbf{X} = \{X_1, \dots, X_n\}$, an i.i.d. $n$-sample from $F$.
 
-### 1. Functions using Hankel matrices
+### 1. Functions using Hankel matrices of moments of the mixing distribution
 
 The basic approach [@hankel] estimates the mixture order as
 $$\hat{p} := \text{argmin}_{j \in \mathbb{N}} J_n(j),$$
