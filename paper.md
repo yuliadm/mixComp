@@ -101,11 +101,11 @@ $$\text{LRTS}= -2\ln\left(\frac{L_0}{L_1}\right) \quad \text{, with}$$
 $$L_0 = L_{\textbf{X}}(\hat{\mathbf{w}}^{j}, \hat{\mathbf{\theta}}^{j}) \quad\quad \text{and} \quad\quad L_1 = L_{\textbf{X}}(\hat{\mathbf{w}}^{j+1}, \hat{\mathbf{\theta}}^{j+1})\text{,}$$
 $L_{\textbf{X}}$ being the likelihood function given ${\textbf{X}}$.
 
-Next, a parametric bootstrap is used to generate `B` $n$-samples from a $j$-component mixture given the previously calculated MLE $(\hat{\mathbf{w}}^{j}, \hat{\mathbf{\theta}}^{j})$. For each bootstrap sample, the MLEs and LRTS corresponding to the mixture densities with $j$ and $j+1$ components are calculated. $H_0: p = j$ is rejected and $j$ increased by $1$ if the LRTS based on $\textbf{X}$ is larger than the specified quantile of its bootstrapped counterparts. Otherwise, $\hat{p} = j$. 
+A parametric bootstrap is used to generate `B` $n$-samples from a $j$-component mixture given the previously calculated MLE $(\hat{\mathbf{w}}^{j}, \hat{\mathbf{\theta}}^{j})$. For each bootstrap sample, the MLEs and LRTS corresponding to the mixture densities with $j$ and $j+1$ components are calculated. $H_0: p = j$ is rejected and $j$ increased by $1$ if the LRTS based on $\textbf{X}$ is larger than the specified quantile of its bootstrapped counterparts. Otherwise, $\hat{p} = j$. 
 
 # Examples
 
-The example creates a `Mix` object for a 3-component Poisson mixture with $\mathbf{w}=(0.45,0.45,0.1), \mathbf{\lambda}=(1,5,10)$, generates the corresponding random sample, then plots the mixture density and the random sample. 
+The following example creates a `Mix` object for a 3-component Poisson mixture with $\mathbf{w}=(0.45,0.45,0.1), \mathbf{\lambda}=(1,5,10)$, generates the corresponding random sample, then plots the mixture density and the random sample. 
 
 ``` r
 set.seed(0)
@@ -127,9 +127,8 @@ plot(poisRMix, main = "3-component poisson mixture", cex.main = 0.9)
 
 ![3-component poisson mixture](figures/poisRMix.png) 
 
-If $Y \sim Pois(\lambda)$, it is known that
-$$\lambda^j = \mathbb{E}[Y(Y-1)\dots(Y-j+1)].$$
-Thus
+For $Y \sim Pois(\lambda)$, we use that
+$$\lambda^j = \mathbb{E}[Y(Y-1)\dots(Y-j+1)] \quad \textrm{and}$$
 $$\hat{c}^{2j+1}_j = \frac{1}{n} \sum_{i=1}^n X_i(X_i-1)\dots(X_i-j+1).$$
 
 ``` r
@@ -139,20 +138,15 @@ explicit.pois <- function(dat, j){
          matrix(0:(j-1), nrow = length(dat), ncol = j, byrow = TRUE)
   return(mean(apply(mat, 1, prod)))
 }
-```
-
-Convert the sample yielding the objects of class `rMix` to objects of class `datMix`.
-
-``` r
 MLE.pois <- function(dat) mean(dat)
-# create datMix objects:
+# convert to datMix objects:
 pois.dM <- RtoDat(poisRMix, theta.bound.list = list(lambda = c(0, Inf)), 
                   MLE.function = MLE.pois, Hankel.method = "explicit",
                   Hankel.function = explicit.pois)
 
 ```
 
-Define the penalty, apply the paramHankel function with scaling, print and plot the results: 
+Define the penalty, apply the paramHankel function with scaling, plot the results: 
 
 ``` r
 # define the penalty function:
@@ -162,32 +156,6 @@ pen <- function(j, n){
 # apply the nonparamHankel function to the datMix objects:
 set.seed(1)
 pois_sca_pen <- paramHankel.scaled(pois.dM)
-#< 
-#< Parameter estimation for a 1 component 'pois' mixture model:
-#< Function value: 3008.6529
-#<              w lambda
-#< Component 1: 1  3.661
-#< Optimization via user entered MLE-function.
-#< ----------------------------------------------------------------------
-#< 
-#< Parameter estimation for a 2 component 'pois' mixture model:
-#< Function value: 2439.6581
-#<                    w lambda
-#< Component 1: 0.53139 1.1141
-#< Component 2: 0.46861 6.5491
-#< Converged in 3 iterations.
-#< ----------------------------------------------------------------------
-#< 
-#< Parameter estimation for a 3 component 'pois' mixture model:
-#< Function value: 2401.5429
-#<                     w  lambda
-#< Component 1: 0.455849  0.8742
-#< Component 2: 0.464642  5.1340
-#< Component 3: 0.079509 11.0305
-#< Converged in 3 iterations.
-#< ----------------------------------------------------------------------
-#< 
-#< The estimated order is 3.
 # plot the results
 plot(pois_sca_pen)
 ```
