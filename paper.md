@@ -25,7 +25,7 @@ bibliography: refs.bib
 
 # Summary
 
-Mixture models have been used broadly in statistical applications, and have been studied extensively in [@Teicher63], [@LindsayI], [@LindsayII], [@Titterington], [@McLachlan], and many other works. They allow for modeling heterogeneous data whose distribution cannot be captured by a single parametric distribution. The (unknown) distribution is assumed to result from mixing over some latent parameter in the following sense: the latent parameter is viewed itself as a random variable drawn from some unknown mixing distribution. When this mixing distribution is only assumed to belong to the ensemble of all possible distribution functions, the mixture model is called *nonparametric* and estimation of the mixing distribution requires using some nonparametric estimation method, such as the nonparametric maximum likelihood estimator (NPMLE) whose fundamental properties were scrutinized in [@LindsayI], [@LindsayII]. One remarkable property of the NPMLE of the mixing distribution is that, it is, under some conditions, a discrete distribution function with at most $k$ number of jumps, where $k$ is the number of distinct observations in the random sample drawn from the mixture. This allows for considering the smaller class of finite mixture models (characterized by a discrete mixing distribution with a finite number of jumps). In some very simple situations, the number of mixture components could be known in advance, in which case the model is *fully parametric* and convergence of classical estimators such as the parametric maximum likelihood estimator (MLE) occurs at the rate $\sqrt{n}$ (given certain conditions). Also, the well-known expectation-maximization (EM) algorithm [@Dempster] can be used to find the MLE of the unknown parameters. However, in many applications such knowledge is rarely available and the number of components has to be estimated from the data. The goal of **mixComp** is to estimate the unknown complexity using several methods. 
+Mixture models have been used broadly in statistical applications, and have been studied extensively in [@Teicher63], [@LindsayI], [@LindsayII], [@Titterington], [@McLachlan], and other works. They allow for modeling heterogeneous data whose distribution cannot be captured by a single parametric distribution. The (unknown) distribution is assumed to result from mixing over some latent parameter in the following sense: the latent parameter is viewed itself as a random variable drawn from some unknown mixing distribution. When this mixing distribution is only assumed to belong to the ensemble of all possible distribution functions, the mixture model is called *nonparametric* and estimation of the mixing distribution requires using some nonparametric estimation method, such as the nonparametric maximum likelihood estimator (NPMLE) whose fundamental properties were scrutinized in [@LindsayI], [@LindsayII]. One remarkable property of the NPMLE of the mixing distribution is that, it is, under some conditions, a discrete distribution function with at most $k$ number of jumps, where $k$ is the number of distinct observations in the random sample drawn from the mixture. This allows for considering the smaller class of finite mixture models (characterized by a discrete mixing distribution with a finite number of jumps). In some very simple situations, the number of mixture components could be known in advance, in which case the model is *fully parametric* and convergence of classical estimators such as the parametric maximum likelihood estimator (MLE) occurs at the rate $\sqrt{n}$ (given certain conditions). Also, the well-known expectation-maximization (EM) algorithm [@Dempster] can be used to find the MLE of the unknown parameters. However, in many applications such knowledge is rarely available and the number of components has to be estimated from the data. The goal of **mixComp** is to estimate the unknown complexity using several methods. 
 
 The **mixComp** package provides several methods for estimating the unknown complexity of a (univariate) finite mixture that can be loosely grouped into 3 categories:
 
@@ -62,26 +62,18 @@ $$W_j = \{w_1, \dots, w_j: \sum_{i=1}^j w_i = 1, w_i \geq 0, \text{ for } i = 1,
 
 Assume that the family of the component densities $\{g(x; \theta):\theta \in \Theta\}$ is known, the component parameters $\textbf{\theta}= (\theta_1, \dots, \theta_p) \in \Theta_p$, weights $\textbf{w} = (w_1, \dots, w_p) \in W_p$ and the mixture complexity $p \in \mathbb{N}$ are unknown. Suppose that $F$ is a finite mixture distribution with density $f(x) = \sum_{i=1}^p w_i g(x; \theta_i)$ and $\textbf{X} = \{X_1, \dots, X_n\}$ is an i.i.d. sample of size $n$ from $F$. **mixComp** selects the smallest such $p$, either on its own or by simultaneously estimating the weights $w_i$ and the component parameters $\theta_i$, $i \in 1, \dots, p$.
 
-
 # 1. Functions using Hankel matrices
 
-$p$ is characterized by the smallest integer $j$ such that the determinant of the $(j+1) \times (j+1)$ Hankel matrix of the first $2j$ moments of the mixing distribution equals 0. It can be shown that this determinant is 0 for all $j \geq p$. Formally, for any vector $\mathbf{c} = (c_0, \dots, c_{2k}) \in \mathbb{R}^{2k+1}$ with $c_0 = 1$, the Hankel matrix of $\mathbf{c}$ is defined as the $(k+1)\times(k+1)$ matrix:
+The basic approach (due to [@hankel]) estimates the mixture order as
+$$\hat{p} := \text{argmin}_{j \in \mathbb{N}} J_n(j),$$
+where 
+$$J_n(j) := \lvert \det H(\hat{\textbf{c}}^{2j+1}) \rvert + A(j)l(n),$$
+with $l(n)$ being a positive function converging to $0$ as $n\to\infty$, $A(j)$ positive and strictly increasing; 
+$\hat{\textbf{c}}^{2j+1}$ is a consistent estimator  of $\textbf{c}^{2j+1}$, the first $2j+1$ moments of the mixing distribution,
+and for any vector $\mathbf{c} = (c_0, \dots, c_{2k}) \in \mathbb{R}^{2k+1}$ with $c_0 = 1$, the Hankel matrix of $\mathbf{c}$ is defined as the $(k+1)\times(k+1)$ matrix:
 $$H(\mathbf{c})_{i,j} = c_{i+j-2}, \quad \quad 1 \leq i,j \leq k+1.$$
 
-Let $\textbf{c}^{2j+1} \in \mathbb{R}^{2j+1}$ be the vector containing the first $2j+1$ (raw) moments of the mixing distribution. For finite mixture models, 
-$$c^{2j+1}_k = \sum_{i=1}^p w_i \theta^k_i, \quad \text{ for } k \in \{0,\dots, 2j\} \text{ and } \theta_i \in \mathbb{R}, i \in \{1,\dots,p\}.$$
-
-Then, for all $j \geq 1$, $H(\textbf{c}^{2j+1})$ is non-negative and
-$$ p = \min\{j \geq 1 : \det H(\textbf{c}^{2j+1}) = 0\}. $$
-
-The first approach to estimating $p$ implemented in **mixComp** relies on finding a consistent estimator $\hat{\textbf{c}}^{2j+1}$ of $\textbf{c}^{2j+1}$, then iteratively calculating the applicable Hankel matrix while increasing the assumed order $j$ until a sufficiently small value of $\det H(\hat{\textbf{c}}^{2j+1})$ is attained. Since $\det H(\hat{\textbf{c}}^{2j+1})$ should be close to 0 for all $j \geq p$, this might lead to choosing $\hat{p}$ larger than the true value. Therefore [@hankel] define the empirical penalized objective function
-$$J_n(j) := \lvert \det H(\hat{\textbf{c}}^{2j+1}) \rvert + A(j)l(n),$$
-with $l(n)$ being a positive function converging to $0$ as $n\to\infty$ and $A(j)$ being positive and strictly increasing. 
-
-$$\hat{p} := \text{argmin}_{j \in \mathbb{N}} J_n(j)$$
-is then a consistent estimator of $p$.
-
-**mixComp** offers 3 methods (`explicit`, `translation` and `scale`) for calculating $\hat{\textbf{c}}^{2j+1}$ and also offers several extensions of the basic approach.
+**mixComp** offers 3 methods (`explicit`, `translation` and `scale`) for calculating the consistent moment estimates $\hat{\textbf{c}}^{2j+1}$ and also provides several extensions of the basic approach.
 
 # 2. Functions using distances
 
