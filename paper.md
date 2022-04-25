@@ -27,7 +27,15 @@ bibliography: refs.bib
 
 Mixture models, studied extensively in [@Teicher63; @LindsayI; @LindsayII; @Titterington; @McLachlan] etc., allow for modeling heterogeneous data. The (unknown) distribution is assumed to result from mixing over some latent parameter in the following sense: the latent parameter is viewed as a random variable drawn from some unknown mixing distribution. The number of mixture components could be known in advance, in which case the model is *fully parametric* and the well-known expectation-maximization (EM) algorithm [@Dempster] can be used for finding the maximum likelihood estimates (MLE) of the unknown parameters. However, in many applications the number of components is unknown and has to be estimated from the data. 
 
-**mixComp** provides three categories of methods for estimating the unknown complexity of a (univariate) finite mixture. All methods come with theoretical guarantees for consistency. Their performance varies according to the underlying mixture distribution and the sample size.
+**mixComp** provides three categories of methods for estimating the unknown complexity of a (univariate) finite mixture:
+
+  - methods built upon the determinants of the Hankel matrix of moments of the mixing distribution; 
+  
+  - methods based on penalized minimum distance between the unknown probability density and its consistent estimator;
+   
+  - likelihood ratio test (LRT) - based techniques. 
+
+All methods come with theoretical guarantees for consistency. Their performance varies according to the underlying mixture distribution and the sample size.
 
 # Statement of need
 
@@ -53,14 +61,14 @@ $$W_j = \{w_1, \dots, w_j: \sum_{i=1}^j w_i = 1, w_i \geq 0, \text{ for } i = 1,
 
 Assume the family of the component densities $\{g(x; \theta)\}$ is known, while $\theta=(\theta_1, \dots, \theta_p) \in \Theta_p$, $\textbf{w} = (w_1, \dots, w_p) \in W_p$ and $p \in \mathbb{N}$ are unknown. 
 
-### 1. Functions using Hankel matrices of moments of the mixing distribution
+### 1. Functions using Hankel matrices
 
 The basic approach [@hankel] estimates the mixture order (based on $\textbf{X} = \{X_1, \dots, X_n\}$, an i.i.d. $n$-sample from $F$) as
 $$\hat{p} := \text{argmin}_{j \in \mathbb{N}} J_n(j),$$
 where 
 $$J_n(j) := \lvert \det H(\hat{\textbf{c}}_{2j+1}) \rvert + A(j)l(n),$$
-with $l(n)$ being a positive function converging to $0$ as $n\to\infty$, $A(j)$ - positive and strictly increasing function,
-$H(\mathbf{c_{2j+1}})$ - the Hankel matrix built on $\hat{\textbf{c}}_{2j+1}$, the consistent estimator of the first $2j+1$ moments of the mixing distribution. 
+with positive function $l(n) \to 0 \text{ as } n \to \infty$, $A(j)$ - positive and strictly increasing function,
+$H(\hat{\textbf{c}}_{2j+1})$ - Hankel matrix built on $\hat{\textbf{c}}_{2j+1}$, the consistent estimator of the first $2j+1$ moments of the mixing distribution. 
 
 **mixComp** offers several methods for calculating $\hat{\textbf{c}}^{2j+1}$ and provides extensions of the basic approach.
 
@@ -79,12 +87,12 @@ where $D$ denotes the distance between the distributions and $t(j,n)$ - the pena
 
 ### 3. Functions using LRTS
 
-By iteratively increasing $j$, find the MLE for the density of a mixture with $j$ and $j+1$ components, yielding $(\hat{\mathbf{w}}^{j}, \hat{\mathbf{\theta}}^{j}) \in W_j \times \Theta_j$ and $(\hat{\mathbf{w}}^{j+1}, \hat{\mathbf{\theta}}^{j+1}) \in W_{j+1} \times \Theta_{j+1}$,
+Find the MLE for the density of a mixture with $j$ and $j+1$ components ($j=1,2,\dots$), yielding $(\hat{\mathbf{w}}^{j}, \hat{\mathbf{\theta}}^{j}) \in W_j \times \Theta_j$ and $(\hat{\mathbf{w}}^{j+1}, \hat{\mathbf{\theta}}^{j+1}) \in W_{j+1} \times \Theta_{j+1}$,
 $$\text{LRTS}= -2\ln\left(\frac{L_{\textbf{X}}(\hat{\mathbf{w}}^{j}, \hat{\mathbf{\theta}}^{j})}{L_{\textbf{X}}(\hat{\mathbf{w}}^{j+1}, \hat{\mathbf{\theta}}^{j+1})}\right) \quad \text{, with}$$
 
 $L_{\textbf{X}}$ being the likelihood function given ${\textbf{X}}$.
 
-Use a parametric bootstrap to generate `B` $n$-samples from a $j$-component mixture given the calculated MLE $(\hat{\mathbf{w}}^{j}, \hat{\mathbf{\theta}}^{j})$. For each bootstrap sample, compute the MLEs and LRTS corresponding to the mixture densities with $j$ and $j+1$ components. Reject $H_0: p = j$, setting $j \leftarrow j+1$ if the LRTS is larger than the specified quantile of its bootstrapped counterparts. Otherwise, $\hat{p} = j$. 
+Use a parametric bootstrap to generate `B` $n$-samples from a $j$-component mixture given the calculated MLE $(\hat{\mathbf{w}}^{j}, \hat{\mathbf{\theta}}^{j})$. For each bootstrap sample, compute the MLEs and LRTS corresponding to the mixture densities with $j$ and $j+1$ components. Reject $H_0: p = j$, set $j \leftarrow j+1$ if the LRTS is larger than the specified quantile of its bootstrapped counterparts; set $\hat{p} = j$ otherwise. 
 
 # Example
 
