@@ -25,11 +25,9 @@ bibliography: refs.bib
 
 # Summary
 
-Mixture models have been used extensively in statistical applications and have attracted much attention from theoretical and computational perspectives. The list of works on mixture models is extensive: [@Teicher63], [@LindsayI], [@LindsayII], [@Titterington], [@McLachlan], to name a few. 
+Mixture models have been used broadly in statistical applications, and have been studied extensively in [@Teicher63], [@LindsayI], [@LindsayII], [@Titterington], [@McLachlan], and many other works. They allow for modeling heterogeneous data whose distribution cannot be captured by a single parametric distribution. The (unknown) distribution is assumed to result from mixing over some latent parameter in the following sense: the latent parameter is viewed itself as a random variable drawn from some unknown mixing distribution. When this mixing distribution is only assumed to belong to the ensemble of all possible distribution functions, the mixture model is called *nonparametric* and estimation of the mixing distribution requires using some nonparametric estimation method, such as the nonparametric maximum likelihood estimator (NPMLE) whose fundamental properties were scrutinized in [@LindsayI], [@LindsayII]. One remarkable property of the NPMLE of the mixing distribution is that, it is, under some conditions, a discrete distribution function with at most $k$ number of jumps, where $k$ is the number of distinct observations in the random sample drawn from the mixture. This allows for considering the smaller class of finite mixture models (characterized by a discrete mixing distribution with a finite number of jumps). In some very simple situations, the number of mixture components could be known in advance, in which case the model is *fully parametric* and convergence of classical estimators such as the parametric maximum likelihood estimator (MLE) occurs at the rate $\sqrt{n}$ (given certain conditions). Also, the well-known expectation-maximization (EM) algorithm [@Dempster] can be used to find the MLE of the unknown parameters. However, in many applications such knowledge is rarely available and the number of components has to be estimated from the data. The goal of **mixComp** is to estimate the unknown complexity using several methods. 
 
-The popularity of such models stems from the fact that they allow for modeling heterogeneous data whose distribution cannot be captured by a single parametric distribution. The (unknown) distribution is assumed to result from mixing over some latent parameter in the following sense: the latent parameter is viewed itself as a random variable drawn from some unknown mixing distribution. When this mixing distribution is only assumed to belong to the ensemble of all possible distribution functions, the mixture model is called *nonparametric* and estimation of the mixing distribution requires using some nonparametric estimation method, such as the nonparametric maximum likelihood estimator (NPMLE) whose fundamental properties were scrutinized in [@LindsayI], [@LindsayII]. One remarkable property of the NPMLE of the mixing distribution is that it is, under some conditions, a discrete distribution function with at most $k$ number of jumps, where $k$ is the number of distinct observations in the random sample drawn from the mixture. This allows for considering the smaller class of finite mixture models (characterized by a discrete mixing distribution with a finite number of jumps). In some very simple situations, the number of mixture components could be known in advance, in which case the model is *fully parametric* and convergence of classical estimators such as the parametric maximum likelihood estimator (MLE) occurs at the rate $\sqrt{n}$ (given certain conditions). Also, the well-known expectation-maximization (EM) algorithm [@Dempster] can be used to find the MLE of the unknown parameters. However, in many applications such knowledge is rarely available and the number of components has to be estimated from the data. The goal of **mixComp** is to estimate the unknown complexity using several methods. 
-
-The **mixComp** package provides several methods known from the statistical literature for estimating the unknown complexity of a (univariate) finite mixture. The considered approaches can be loosely grouped into three categories:
+The **mixComp** package provides several methods for estimating the unknown complexity of a (univariate) finite mixture that can be loosely grouped into 3 categories:
 
   - methods built upon the determinants of the Hankel matrix of moments of the mixing distribution; 
   
@@ -39,19 +37,17 @@ The **mixComp** package provides several methods known from the statistical lite
 
 These methods all come with theoretical guarantees for consistency. The performance of the methods varies according to the underlying mixture distribution and the sample size. While not the primary goal, most methods simultaneously estimate the component weights and parameters. 
 
-
 # Statement of need
 
 Two main features distinguish **mixComp** from other mixture-related **R** [@R] packages: 
 
-- it is focused on the estimation of the complexity rather than the component weights and parameters (while these are often estimated as a by-product, all methods contained in **mixComp** are based on theory specifically developed to consistently estimate the number of components in the mixture); 
+- while mixture component weights and parameters are often estimated as a by-product, all methods contained in **mixComp** are based on theory specifically developed to consistently estimate the number of components in the mixture; 
 
 - it is applicable to parametric mixtures well beyond those whose component distributions are included in the **stats** package, making it more customizable than most packages for model-based clustering. 
 
-The packages **mixtools** [see @mixtools] and **flexmix** [see @flexmix1; @flexmix2; @flexmix3] should both be mentioned at this point: aside from **mixtools**'s focus on mixture-of-regressions and non-parametric mixtures which are less relevant to this package, it is widely used to fit (multivariate) normal, multinomial or gamma mixtures with the EM algorithm, also containing routines for selecting the number of components based on information criteria and parametric bootstrapping of the LRT statistic values. However, they are limited to multinomial and normal mixtures as well as mixtures-of-regressions. While **flexmix** was developed to deal with mixtures-of-regression, it stands out from other packages by its extensibility, a design principle that we aimed for when creating **mixComp**. Other packages dealing with mixture models are **mclust** [@mclust], which fits mixtures of Gaussians using the EM algorithm, **MixSim** [@mixsim], which allows for simulation from mixtures and comparing the performance of clustering algorithms, and **mixdist** [@mixdist], used for grouped conditional data. 
+The packages **mixtools** [@mixtools] and **flexmix** [@flexmix1; @flexmix2; @flexmix3] should both be mentioned at this point: aside from **mixtools**'s focus on mixture-of-regressions and non-parametric mixtures which are less relevant to this package, it is widely used to fit (multivariate) normal, multinomial or gamma mixtures with the EM algorithm, also containing routines for selecting the number of components based on information criteria and parametric bootstrapping of the LRT statistic values. However, they are limited to multinomial and normal mixtures as well as mixtures-of-regressions. While **flexmix** was developed to deal with mixtures-of-regression, it stands out from other packages by its extensibility, a design principle that we aimed for when creating **mixComp**. Other packages dealing with mixture models are **mclust** [@mclust], which fits mixtures of Gaussians using the EM algorithm, **MixSim** [@mixsim], which allows for simulation from mixtures and comparing the performance of clustering algorithms, and **mixdist** [@mixdist], used for grouped conditional data. 
 
-**mixComp** can be used on virtually any parametric mixture as long as functions generating random variates and evaluating the density are provided for the component distribution. It is applicable to parametric mixtures well beyond those whose component distributions are included in the **R** package **stats**, making it more customizable than most packages for model-based clustering. The estimation results can be printed and plotted for further analysis. The package is aimed at practitioners studying phenomena that can be effectively modelled using mixture distributions. In particular, it can be used to identify settings and conditions, under which a certain method provides more accurate estimates than the others.
-
+**mixComp** can be used on virtually any parametric mixture as long as functions generating random variates and evaluating the density are provided for the component distribution. The estimation results can be printed and plotted for further analysis. The package is aimed at practitioners studying phenomena that can be effectively modelled using mixture distributions. In particular, it can be used to identify settings and conditions, under which a certain method provides more accurate estimates than the others.
 
 # General Framework
 
@@ -64,7 +60,7 @@ $$\Theta_j = \{\theta_1 \dots \theta_j: \theta_i \in \Theta \subseteq \mathbb{R}
 and
 $$W_j = \{w_1, \dots, w_j: \sum_{i=1}^j w_i = 1, w_i \geq 0, \text{ for } i = 1,\dots,j\}.$$
 
-We assume that the family of the component densities $\{g(x; \theta):\theta \in \Theta\}$ is known, but the component parameters $\textbf{\theta}= (\theta_1, \dots, \theta_p) \in \Theta_p$, the component weights $\textbf{w} = (w_1, \dots, w_p) \in W_p$ and the mixture complexity $p \in \mathbb{N}$ are unknown. Suppose now that $F$ is a finite mixture distribution with density $f(x) = \sum_{i=1}^p w_i g(x; \theta_i)$ and $\textbf{X} = \{X_1, \dots, X_n\}$ is an i.i.d. sample of size $n$ from $F$. **mixComp** selects the smallest such $p$, either on its own or by simultaneously estimating the weights $w_i$ and the component parameters $\theta_i$, $i \in 1, \dots, p$.
+Assume that the family of the component densities $\{g(x; \theta):\theta \in \Theta\}$ is known, the component parameters $\textbf{\theta}= (\theta_1, \dots, \theta_p) \in \Theta_p$, weights $\textbf{w} = (w_1, \dots, w_p) \in W_p$ and the mixture complexity $p \in \mathbb{N}$ are unknown. Suppose that $F$ is a finite mixture distribution with density $f(x) = \sum_{i=1}^p w_i g(x; \theta_i)$ and $\textbf{X} = \{X_1, \dots, X_n\}$ is an i.i.d. sample of size $n$ from $F$. **mixComp** selects the smallest such $p$, either on its own or by simultaneously estimating the weights $w_i$ and the component parameters $\theta_i$, $i \in 1, \dots, p$.
 
 
 # 1. Functions using Hankel matrices
@@ -72,24 +68,24 @@ We assume that the family of the component densities $\{g(x; \theta):\theta \in 
 $p$ is characterized by the smallest integer $j$ such that the determinant of the $(j+1) \times (j+1)$ Hankel matrix of the first $2j$ moments of the mixing distribution equals 0. It can be shown that this determinant is 0 for all $j \geq p$. Formally, for any vector $\mathbf{c} = (c_0, \dots, c_{2k}) \in \mathbb{R}^{2k+1}$ with $c_0 = 1$, the Hankel matrix of $\mathbf{c}$ is defined as the $(k+1)\times(k+1)$ matrix:
 $$H(\mathbf{c})_{i,j} = c_{i+j-2}, \quad \quad 1 \leq i,j \leq k+1.$$
 
-Let $\textbf{c}^{2j+1} \in \mathbb{R}^{2j+1}$ be the vector containing the first $2j+1$ (raw) moments of the mixing distribution. For finite mixture models, this amounts to
+Let $\textbf{c}^{2j+1} \in \mathbb{R}^{2j+1}$ be the vector containing the first $2j+1$ (raw) moments of the mixing distribution. For finite mixture models, 
 $$c^{2j+1}_k = \sum_{i=1}^p w_i \theta^k_i, \quad \text{ for } k \in \{0,\dots, 2j\} \text{ and } \theta_i \in \mathbb{R}, i \in \{1,\dots,p\}.$$
 
 Then, for all $j \geq 1$, $H(\textbf{c}^{2j+1})$ is non-negative and
 $$ p = \min\{j \geq 1 : \det H(\textbf{c}^{2j+1}) = 0\}. $$
 
-Making use of this fact, the first approach to estimating $p$ implemented in **mixComp** relies on finding a consistent estimator $\hat{\textbf{c}}^{2j+1}$ of $\textbf{c}^{2j+1}$ based on $\textbf{X}$, then iteratively calculate the applicable Hankel matrix while increasing the assumed order $j$ until a sufficiently small value of $\det H(\hat{\textbf{c}}^{2j+1})$ is attained. Since $\det H(\hat{\textbf{c}}^{2j+1})$ should be close to 0 for all $j \geq p$, this would lead to choosing $\hat{p}$ rather larger than the true value. Therefore [@hankel] define the empirical penalized objective function
+The first approach to estimating $p$ implemented in **mixComp** relies on finding a consistent estimator $\hat{\textbf{c}}^{2j+1}$ of $\textbf{c}^{2j+1}$, then iteratively calculating the applicable Hankel matrix while increasing the assumed order $j$ until a sufficiently small value of $\det H(\hat{\textbf{c}}^{2j+1})$ is attained. Since $\det H(\hat{\textbf{c}}^{2j+1})$ should be close to 0 for all $j \geq p$, this might lead to choosing $\hat{p}$ larger than the true value. Therefore [@hankel] define the empirical penalized objective function
 $$J_n(j) := \lvert \det H(\hat{\textbf{c}}^{2j+1}) \rvert + A(j)l(n),$$
 with $l(n)$ being a positive function converging to $0$ as $n\to\infty$ and $A(j)$ being positive and strictly increasing. 
 
 $$\hat{p} := \text{argmin}_{j \in \mathbb{N}} J_n(j)$$
 is then a consistent estimator of $p$.
 
-With this general framework, the computation now hinges on calculating $\hat{\textbf{c}}^{2j+1}$. **mixComp** offers 3 methods (`explicit`, `translation` and `scale`) to do so. The method to use depends on the family of component densities $\{g(x;\theta):\theta \in \Theta \}$ and is linked to some function $f_j(\textbf{X})$ needed to estimate $\hat{\textbf{c}}^{2j+1}$. The calculation method and the relevant function are specified when creating the `datMix` object as arguments `Hankel.method` and `Hankel.function`. **mixComp** includes several extensions of the described approach.
+**mixComp** offers 3 methods (`explicit`, `translation` and `scale`) for calculating $\hat{\textbf{c}}^{2j+1}$ and also offers several extensions of the basic approach.
 
 # 2. Functions using distances
 
-To embed the subsequent algorithms in a more theoretical framework, consider the parametric family of mixture densities
+Consider the parametric family of mixture densities
 $$\mathcal{F}_j = \{ f_{j, \mathbf{w},\mathbf{\theta}} : (\mathbf{w}, \mbox{\boldmath$\theta$}) \in W_j \times \Theta_j \}.$$ 
 
 With $\{g(x;\theta): \theta \in \Theta \}$ set in advance, elements of $\mathcal{F}_j$ can be written as
