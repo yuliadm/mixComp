@@ -55,13 +55,13 @@ A distribution $F$ is called a *finite mixture* if its probability density/mass 
 \begin{equation}\label{eq:mix}
 f(x) = \sum_{i=1}^p w_i g_i(x),
 \end{equation}
-$p \in \mathbb{N}$ being the mixture complexity, $(w_1, \dots w_p : \sum_{i=1}^p w_i = 1$, $w_i \geq 0,$ for $i=1,\dots,p)$ - the component weights and $g_i(x)$ - the $i$-th component density. If the family of the component distributions is known, one can replace $g_i(x)$ by a parametric density/mass $g(x; \theta_i)$ indexed by $\theta_i \in \Theta \subseteq \mathbb{R}^d, d \in \mathbb{N}$, $d$ #dimensions.
+$p \in \mathbb{N}$ being the mixture complexity, $(w_1, \dots w_p : \sum_{i=1}^p w_i = 1$, $w_i \geq 0,$ for $i=1,\dots,p)$ - the component weights and $g_i(x)$ - the $i$-th component density. 
 
 Given some complexity $j$, the relevant parameter spaces are
-$$\Theta_j = \{\theta_1 \dots \theta_j: \theta_i \in \Theta \subseteq \mathbb{R}^d, \text{ for } i = 1,\dots,j\}, \text { and }$$
+$$\Theta_j = \{\theta_1 \dots \theta_j: \theta_i \in \Theta \subseteq \mathbb{R}^d, \quad d \in \mathbb{N}, \quad \text{ for } i = 1,\dots,j\}, \text { and }$$
 $$W_j = \{w_1, \dots, w_j: \sum_{i=1}^j w_i = 1, w_i \geq 0, \text{ for } i = 1,\dots,j\}.$$
 
-Assume the family of the component densities $\{g(x; \theta):\theta \in \Theta\}$ is known, $\textbf{\theta}= (\theta_1, \dots, \theta_p) \in \Theta_p$, $\textbf{w} = (w_1, \dots, w_p) \in W_p$ and $p \in \mathbb{N}$ are unknown. **mixComp** selects the smallest $p$ yielding the 'best' fit of \autoref{eq:mix} (in one of the discussed below senses) to $\textbf{X} = \{X_1, \dots, X_n\}$, an i.i.d. $n$-sample from $F$.
+Assume the family of the component densities $\{g(x; \theta):\theta \in \Theta\}$ is known, $\textbf{\theta}=(\theta_1, \dots, \theta_p) \in \Theta_p$, $\textbf{w} = (w_1, \dots, w_p) \in W_p$ and $p \in \mathbb{N}$ are unknown. **mixComp** selects the smallest $p$ yielding the 'best' fit of \autoref{eq:mix} (in one of the discussed below senses) to $\textbf{X} = \{X_1, \dots, X_n\}$, an i.i.d. $n$-sample from $F$.
 
 ### 1. Functions using Hankel matrices
 
