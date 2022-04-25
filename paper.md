@@ -64,5 +64,17 @@ $H(\mathbf{c_{2j+1}})$ - the Hankel matrix built on $\hat{\textbf{c}}_{2j+1}$, t
 
 **mixComp** offers several methods for calculating $\hat{\textbf{c}}^{2j+1}$ and provides extensions of the basic approach.
 
+### 2. Functions using distances
+
+Consider the parametric family $\mathcal{F}_j = \{ f_{j, \mathbf{w},\mathbf{\theta}} : (\mathbf{w}, \mbox{\boldmath$\theta$}) \in W_j \times \Theta_j \},$
+with $f_{j,\mathbf{w},\mathbf{\theta}}(x) = \sum_{i = 1}^j w_i g(x; \theta_i), \quad \{g(x;\theta): \theta \in \Theta \}.$ 
+Note: $\mathcal{F}_j \subseteq \mathcal{F}_{j+1}, \forall j = 1,2, \dots$.
+
+Find the 'best' (e.g. in the ML sense) estimate $(\hat{\mathbf{w}}^j, \hat{\mathbf{\theta}}^j) \in W_j \times \Theta_j$ for a given $j$ and thereby specified probability density/mass function $\hat{f}_j(x) = f_{j, \hat{\mathbf{w}}^j, \hat{\mathbf{\theta}}^j}(x),$
+and the non-parametric probability density/mass estimate $\tilde{f}_n(x)$.  
+$$\hat{p} = \min_j \big\{D(\hat{f}_j, \tilde{f}_n) - D(\hat{f}_{j+1}, \tilde{f}_n) \leq t(j,n) \big\},$$ 
+where $D$ denotes the distance between the distributions and $t(j,n)$ - the penalty term.
+
+**mixComp** offers several distance-based procedures described in [@l2; @hell; @hellcont]. 
 
 # References
