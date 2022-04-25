@@ -88,11 +88,11 @@ $$p_0 = \min\{j:f_0 \in \mathcal{F}_j\}.$$
 
 This suggests an estimation procedure based on initially finding the 'best' possible estimate (in a sense to be determined) $(\hat{\mathbf{w}}^j, \hat{\mathbf{\theta}}^j) \in W_j \times \Theta_j$ for a given value of $j$, in order to compare the thereby specified probability density/mass function 
 $$\hat{f}_j(x) = f_{j, \hat{\mathbf{w}}^j, \hat{\mathbf{\theta}}^j}(x),$$
-with a non-parametric density/probability mass estimate $\tilde{f}_n(x)$. As the classes $\mathcal{F}_j$ and $\mathcal{F}_{j+1}$ are nested, the distance $D$ between $\hat{f}_j$ and $\tilde{f}_n$ will only decrease with $j$. Thus, it makes sense to add some penalty term $t(j,n)$ (increasing in $j$) to $D(\hat{f}_j, \tilde{f}_n)$ and find the first value of $j$ where the penalized distance for $j$ is smaller than that for $j+1$. The algorithm starts at $j = 1$, if $j$ is the first integer satisfying
+with a non-parametric density/probability mass estimate $\tilde{f}_n(x)$. As the classes $\mathcal{F}_j$ and $\mathcal{F}_{j+1}$ are nested, the distance $D$ between $\hat{f}_j$ and $\tilde{f}_n$ will decrease with $j$, thus, a penalty term is needed. The algorithm starts at $j = 1$, if $j$ is the first integer satisfying
 \begin{equation}\label{eq:distances}
 D(\hat{f}_j, \tilde{f}_n) - D(\hat{f}_{j+1}, \tilde{f}_n) \leq t(j,n),
 \end{equation}
-$j$ is taken as the estimate $\hat{p}$, otherwise $j$ is increased by $1$ and the procedure is repeated. Consistency of these estimators has been shown in [@l2; @hell; @hellcont]. **mixComp** includes 3 procedures based on the foregoing methodology: `L2.disc`, `hellinger.disc` and `hellinger.cont`.
+$j$ is taken as the estimate $\hat{p}$, otherwise $j$ is increased by $1$ and the procedure is repeated. Consistency of these estimators has been shown in [@l2; @hell; @hellcont]. **mixComp** includes 3 procedures based on the aforementioned method: `L2.disc`, `hellinger.disc` and `hellinger.cont`.
 
 # 3. Functions using LRTS
 
@@ -106,7 +106,7 @@ Next, a parametric bootstrap is used to generate `B` $n$-samples from a $j$-comp
 
 # Examples
 
-The following example creates a `Mix` objects for a 3-component Poisson mixture and plots the mixture density with $\mathbf{w}=(0.45,0.45,0.1), \mathbf{\lambda}=(1,5,10)$ and generates a random sample. 
+The example creates a `Mix` objects for a 3-component Poisson mixture with $\mathbf{w}=(0.45,0.45,0.1), \mathbf{\lambda}=(1,5,10)$, generates the corresponding random sample, then plots the mixture density and the sample sample. 
 
 ``` r
 set.seed(0)
@@ -127,8 +127,6 @@ plot(poisRMix, main = "3-component poisson mixture", cex.main = 0.9)
 ```
 
 ![3-component poisson mixture](figures/poisRMix.png) 
-
-We now apply the Hankel matrix method to these simulated data.
 
 If $Y \sim Pois(\lambda)$, it is known that
 $$\lambda^j = \mathbb{E}[Y(Y-1)\dots(Y-j+1)].$$
@@ -196,6 +194,6 @@ plot(pois_sca_pen)
 ```
 ![Scaled Hankel determinants for a poisson mixture](figures/p_art_1.png)
 
-The reader is referred to consult the package documentation for more examples. 
+The reader is referred to consult the package documentation for more technical details and examples. 
 
 # References
