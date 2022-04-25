@@ -44,16 +44,14 @@ Aside from **mixtools**'s [@mixtools] focus on mixture-of-regressions and non-pa
 # Methods
 
 A distribution $F$ is called a *finite mixture* if its probability density/mass is of the form
-\begin{equation}\label{eq:mix}
-f(x) = \sum_{i=1}^p w_i g_i(x),
-\end{equation}
+$$f(x) = \sum_{i=1}^p w_i g_i(x),$$
 $p \in \mathbb{N}$ being the mixture complexity, $(w_1, \dots w_p : \sum_{i=1}^p w_i = 1$, $w_i \geq 0,$ for $i=1,\dots,p)$ - the component weights and $g_i(x)$ - the $i$-th component density. 
 
 Given some complexity $j$, the relevant parameter spaces are
 $$\Theta_j = \{\theta_1, \dots, \theta_j: \theta_i \in \Theta \subseteq \mathbb{R}^d, \quad d \in \mathbb{N}, \quad \text{ for } i = 1,\dots,j\}, \text { and }$$
 $$W_j = \{w_1, \dots, w_j: \sum_{i=1}^j w_i = 1, w_i \geq 0, \text{ for } i = 1,\dots,j\}.$$
 
-Assume the family of the component densities $\{g(x; \theta)$ is known, while $\textbf{\theta}=(\theta_1, \dots, \theta_p) \in \Theta_p$, $\textbf{w} = (w_1, \dots, w_p) \in W_p$ and $p \in \mathbb{N}$ are unknown. 
+Assume the family of the component densities $\{g(x; \theta)\}$ is known, while $\textbf{\theta}=(\theta_1, \dots, \theta_p) \in \Theta_p$, $\textbf{w} = (w_1, \dots, w_p) \in W_p$ and $p \in \mathbb{N}$ are unknown. 
 
 ### 1. Functions using Hankel matrices of moments of the mixing distribution
 
@@ -69,7 +67,7 @@ $H(\mathbf{c_{2j+1}})$ - the Hankel matrix built on $\hat{\textbf{c}}_{2j+1}$, t
 ### 2. Functions using distances
 
 Consider the parametric family $\mathcal{F}_j = \{ f_{j, \mathbf{w},\mathbf{\theta}} : (\mathbf{w}, \mbox{\boldmath$\theta$}) \in W_j \times \Theta_j \},$
-with $f_{j,\mathbf{w},\mathbf{\theta}}(x) = \sum_{i = 1}^j w_i g(x; \theta_i), \quad \{g(x;\theta): \theta \in \Theta \}.$$ 
+with $f_{j,\mathbf{w},\mathbf{\theta}}(x) = \sum_{i = 1}^j w_i g(x; \theta_i), \quad \{g(x;\theta): \theta \in \Theta \}.$ 
 Note: $\mathcal{F}_j \subseteq \mathcal{F}_{j+1}, \forall j = 1,2, \dots$.
 
 Find the 'best' (e.g. in the ML sense) estimate $(\hat{\mathbf{w}}^j, \hat{\mathbf{\theta}}^j) \in W_j \times \Theta_j$ for a given $j$ and thereby specified probability density/mass function $\hat{f}_j(x) = f_{j, \hat{\mathbf{w}}^j, \hat{\mathbf{\theta}}^j}(x),$
