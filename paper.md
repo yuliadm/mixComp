@@ -85,38 +85,7 @@ with $l(n)$ being a positive function converging to $0$ as $n\to\infty$ and $A(j
 $$\hat{p} := \text{argmin}_{j \in \mathbb{N}} J_n(j)$$
 is then a consistent estimator of $p$.
 
-As an extension to simply adding a penalty term to the determinant, a scaling approach was considered by [@lilian]. Let $\hat{d}_j = \det H(\hat{\textbf{c}}^{2j+1})$, $d_j = \det H(\textbf{c}^{2j+1})$ and $j_m \geq p, j_m \in \mathbb{N}$. Since the estimated moments $\hat{\textbf{c}}^{2j+1}$ are asymptotically normal, one can apply the delta method:
-$$
-\sqrt{n} \cdot
-  \big(
-    \hat{d}_1-d_1,
-    \dots,
-    \hat{d}_{p-1}-d_{p-1},
-    \hat{d}_p-0,
-    \dots,
-    \hat{d}_{j_m}-0
-  \big)^\top \quad \overset{\mathcal{D}}{\longrightarrow} \quad \mathcal{N}(0_{j_m \times 1}, \Sigma_ {j_m \times j_m}).
-$$
-
-Instead of inspecting the vector $(\hat{d}_1, \dots, \hat{d}_{j_m})$, one could base the complexity analysis on a vector of scaled determinants employing a nonparametric bootstrap procedure on $\textbf{X}$: let $\tilde{\Sigma} \in \mathbb{R}^{j_m \times j_m}$ denote the covariance matrix of the determinants $\hat{d}^{*b}_{j}$ calculated on the $b^{\text{th}}$ bootstrap sample for $b=1, \dots, B$ and $j = 1, \dots j_m$. Note: 
-$$\tilde{\Sigma} \approx \frac{\Sigma}{n} \quad \text{ as }B \to \infty, n \to \infty,$$
-write $\tilde{\Sigma}^{-1/2} = \sqrt{n} \cdot \hat{\Sigma}^{-1/2}$. Define the rescaled vector 
-\begin{equation} \label{eq:scaled}
-\big( y_1, \dots, y_p, \dots, y_{j_m} \big)^\top := \sqrt{n} \cdot {\hat{\Sigma}}^{-1/2} \big(
-   \hat{d}_1,
-    \dots,
-    \hat{d}_p,
-    \dots,
-    \hat{d}_{j_m}
-  \big)^\top.
-\end{equation}
-
-In the case of the scaled version, the minimization criterion becomes 
-$$
-{J_n(j)}_{scaled} := \vert y_j \vert + A(j)l(n) \cdot \sqrt{n}.
-$$
-
-With this general framework, the computation now hinges on calculating $\hat{\textbf{c}}^{2j+1}$. **mixComp** offers 3 methods (`explicit`, `translation` and `scale`) to do so. The method to use depends on the family of component densities $\{g(x;\theta):\theta \in \Theta \}$ and is linked to some function $f_j(\textbf{X})$ needed to estimate $\hat{\textbf{c}}^{2j+1}$. The calculation method and the relevant function are specified when creating the `datMix` object as arguments `Hankel.method` and `Hankel.function`.
+With this general framework, the computation now hinges on calculating $\hat{\textbf{c}}^{2j+1}$. **mixComp** offers 3 methods (`explicit`, `translation` and `scale`) to do so. The method to use depends on the family of component densities $\{g(x;\theta):\theta \in \Theta \}$ and is linked to some function $f_j(\textbf{X})$ needed to estimate $\hat{\textbf{c}}^{2j+1}$. The calculation method and the relevant function are specified when creating the `datMix` object as arguments `Hankel.method` and `Hankel.function`. **mixComp** includes several extensions of the described approach.
 
 # 2. Functions using distances
 
