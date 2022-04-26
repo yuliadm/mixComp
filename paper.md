@@ -94,54 +94,24 @@ Use a parametric bootstrap to generate `B` $n$-samples from a $j$-component mixt
 
 # Example
 
-`paramHankel.scaled` function applied to a Poisson mixture: $\mathbf{w}=(0.45,0.45,0.1), \textrm{ and } \mathbf{\lambda}=(1,5,10)$. 
+Hellinger distance method with bootstrap applied to the Shakespeare data (viewed as a mixture of geometric distributions). 
 
 ``` r
-# construct a Mix object:
-poisMix <- Mix("pois", discrete = TRUE, w = c(0.45, 0.45, 0.1), 
-		lambda = c(1, 5, 10))
-# plot the density:
-plot(poisMix, main = "3-component poisson mixture", cex.main = 0.9)
-```
-
-![3-component poisson mixture](figures/poisMix.png) 
-
-``` r
-# generate a random sample:
-poisRMix <- rMix(1000, obj = poisMix)
-# plot the histogram:
-plot(poisRMix, main = "3-component poisson mixture", cex.main = 0.9)
-```
-
-![3-component poisson mixture](figures/poisRMix.png) 
-
-Use that for $Y \sim Pois(\lambda)$,
-$$\lambda^j = \mathbb{E}[Y(Y-1)\dots(Y-j+1)] \quad \textrm{and}$$
-$$\hat{c}^{2j+1}_j = \frac{1}{n} \sum_{i=1}^n X_i(X_i-1)\dots(X_i-j+1).$$
-
-``` r
-# define the function for computing the moments:
-explicit.pois <- function(dat, j){
-  mat <- matrix(dat, nrow = length(dat), ncol = j) - 
-         matrix(0:(j-1), nrow = length(dat), ncol = j, byrow = TRUE)
-  return(mean(apply(mat, 1, prod)))
-}
+# shift the observations:
+shakespeare.obs <- unlist(shakespeare) - 1
 # define the MLE function:
-MLE.pois <- function(dat) mean(dat)
-# convert to datMix object:
-pois.dM <- RtoDat(poisRMix, theta.bound.list = list(lambda = c(0, Inf)), 
-                  MLE.function = MLE.pois, Hankel.method = "explicit",
-                  Hankel.function = explicit.pois)
-# define the penalty function:
-pen <- function(j, n){
-  j * log(n)
-}
-# apply the nonparamHankel function to the datMix objects:
-set.seed(1)
-pois_sca_pen <- paramHankel.scaled(pois.dM)
-# plot the results (estimated component densities & estimated mixture):
-plot(pois_sca_pen)
+MLE.geom <- function(dat) 1 / (mean(dat) + 1)
+# create the datMix object:
+Shakespeare.dM <- datMix(shakespeare.obs, dist = "geom", discrete = TRUE, 
+			 MLE.function = MLE.geom, theta.bound.list = list(prob = c(0, 1)))
+# estimate the mixture complexity:
+set.seed(0)
+(res <- hellinger.boot.disc(Shakespeare.dM, B = 50, ql = 0.025, qu = 0.975))
+> The estimated order is 3.
+# plot the results:
+plot(res, breaks = 100, xlim = c(0, 20))
 ```
-![Scaled Hankel determinants for a poisson mixture](figures/p_art_1.png)
+
+![Hellinger distance method with bootstrap for the Shakespeare data](figures/hell-boot-geom.pdf)
 
 # References
