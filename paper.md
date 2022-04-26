@@ -39,7 +39,8 @@ All methods come with theoretical guarantees for consistency.
 
 # Statement of need
 
-Two main features distinguish **mixComp** from other mixture-related **R** [@R] packages: 
+**mixComp** is aimed at practitioners studying phenomena that can be effectively modelled using mixture distributions. 
+Two main features distinguish it from other mixture-related **R** [@R] packages: 
 
 - while mixture component weights and parameters are often estimated as a by-product, **mixComp** methods are based on theory specifically developed to consistently estimate mixture complexity;
 
