@@ -25,7 +25,7 @@ bibliography: refs.bib
 
 # Summary
 
-Mixture models [see @LindsayI; @LindsayII; @McLachlan; @Teicher63; @Titterington] allow for modeling heterogeneous data. The number of mixture components could be known in advance, in which case the model parameters can be easily estimated (e.g. their maximum likelihood estimates (MLE) can be found via the EM-algorithm [@Dempster]). However, in many applications the number of components is unknown and has to be inferred from the data. 
+Mixture models [see @LindsayI; @LindsayII; @McLachlan; @Teicher63; @Titterington] allow for modeling heterogeneous data. The number of mixture components could be known in advance, in which case the model parameters can be easily estimated (e.g. their maximum likelihood estimates (MLE) can be found via the EM algorithm [@Dempster]). However, in many applications the number of components is unknown and has to be inferred from the data. 
 
 **mixComp** provides three categories of methods for estimating the unknown complexity of a (univariate) finite mixture:
 
@@ -45,9 +45,9 @@ Two main features distinguish **mixComp** from other mixture-related **R** [@R] 
 
 - **mixComp** is applicable to parametric mixtures beyond those whose component distributions are included in the **stats** package, making it more customizable than most packages for model-based clustering. 
 
-Aside from **mixtools**'s [@mixtools] focus on mixture-of-regressions and non-parametric mixtures, it is widely used to fit (multivariate) normal, multinomial or gamma mixtures with the EM algorithm, also containing routines for selecting the number of components based on information criteria and parametric bootstrapping of the LRT statistic values. However, they are limited to multinomial and normal mixtures and mixtures-of-regressions. While **flexmix** [@flexmix1; @flexmix2; @flexmix3] handles mixtures-of-regression, it stands out due to its extensibility, a design principle that we also aimed for. Other packages dealing with mixture models are **mclust** [@mclust], which fits mixtures of Gaussians using the EM algorithm, **MixSim** [@mixsim], which allows for simulation from mixtures and comparing the performance of clustering algorithms, and **mixdist** [@mixdist], used for grouped conditional data. 
+Aside from **mixtools**'s [@mixtools] focus on mixture-of-regressions and non-parametric mixtures, it is used to fit (multivariate) normal, multinomial or gamma mixtures with the EM algorithm, also containing routines for selecting the number of components based on information criteria and parametric bootstrapping of the LRT statistic values. However, they are limited to multinomial, normal mixtures and mixtures-of-regressions. While **flexmix** [@flexmix1; @flexmix2; @flexmix3] handles mixtures-of-regression, it stands out due to its extensibility, a design principle that we also aimed for. Other packages dealing with mixture models are **mclust** [@mclust], which fits Gaussian mixtures using the EM algorithm, **MixSim** [@mixsim], which allows for simulating from mixtures and comparing the performance of clustering algorithms, and **mixdist** [@mixdist], used for grouped conditional data. 
 
-**mixComp** can be used on virtually any parametric mixture as long as functions generating random variates and evaluating the density are provided for the component distributions. The package is aimed at practitioners studying phenomena that can be effectively modelled using mixture distributions. 
+**mixComp** can be used on virtually any parametric mixture as long as functions generating random variates and evaluating the density are provided for the component distributions nad is aimed at practitioners studying phenomena that can be effectively modelled using mixture distributions. 
 
 # Methods
 
@@ -76,10 +76,10 @@ Consider the parametric family $$\mathcal{F}_j = \{ f_{j, \mathbf{w},\mathbf{\th
 $f_{j,\mathbf{w},\mathbf{\theta}}(x) = \sum_{i = 1}^j w_i g(x; \theta_i), \quad \{g(x;\theta): \theta \in \Theta \}.$ 
 Note: $\mathcal{F}_j \subseteq \mathcal{F}_{j+1}, \forall j = 1,2, \dots$.
 
-Find the 'best' estimate (e.g. MLE) $(\hat{\mathbf{w}}^j, \hat{\mathbf{\theta}}^j) \in W_j \times \Theta_j$ for a given $j$ and thereby specified probability density/mass function $\hat{f}_j(x) = f_{j, \hat{\mathbf{w}}^j, \hat{\mathbf{\theta}}^j}(x),$
+Find the 'best' estimate (e.g. MLE) $(\hat{\mathbf{w}}^j, \hat{\mathbf{\theta}}^j) \in W_j \times \Theta_j$ for a given $j$ and thereby specified density/mass function $\hat{f}_j(x) = f_{j, \hat{\mathbf{w}}^j, \hat{\mathbf{\theta}}^j}(x),$
 and the non-parametric density/mass estimate $\tilde{f}_n(x)$. Then
 $$\hat{p} = \min_j \big\{D(\hat{f}_j, \tilde{f}_n) - D(\hat{f}_{j+1}, \tilde{f}_n) \leq t(j,n) \big\},$$ 
-where $D$ denotes the distance measure, $t(j,n)$ - the penalty term.
+where $D$ denotes the distance measure, $t(j,n)$ - a suitable penalty function.
 
 **mixComp** offers several distance-based procedures described in [@l2; @hell; @hellcont]. 
 
