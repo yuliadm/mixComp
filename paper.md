@@ -86,7 +86,7 @@ where $D$ denotes the distance between the distributions, $t(j,n)$ - the penalty
 ### 3. Functions using LRTS
 
 Find the MLE for the mixture density with $j$ and $j+1$ components ($j=1,2,\dots$), yielding $(\hat{\mathbf{w}}^{j}, \hat{\mathbf{\theta}}^{j}) \in W_j \times \Theta_j$ and $(\hat{\mathbf{w}}^{j+1}, \hat{\mathbf{\theta}}^{j+1}) \in W_{j+1} \times \Theta_{j+1}$,
-$$\text{LRTS}= -2\ln\left(\frac{L_{\textbf{X}}(\hat{\mathbf{w}}^{j}, \hat{\mathbf{\theta}}^{j})}{L_{\textbf{X}}(\hat{\mathbf{w}}^{j+1}, \hat{\mathbf{\theta}}^{j+1})}\right) \quad \text{, with}$$
+$$\text{LRTS}= -2\ln\left(\frac{L_{\textbf{X}}(\hat{\mathbf{w}}^{j}, \hat{\mathbf{\theta}}^{j})}{L_{\textbf{X}}(\hat{\mathbf{w}}^{j+1}, \hat{\mathbf{\theta}}^{j+1})}\right)\text{, with}$$
 
 $L_{\textbf{X}}$ being the likelihood function given ${\textbf{X}}$.
 
