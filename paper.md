@@ -47,7 +47,7 @@ Two main features distinguish **mixComp** from other mixture-related **R** [@R] 
 
 Aside from **mixtools**'s [@mixtools] focus on mixture-of-regressions and non-parametric mixtures, it is widely used to fit (multivariate) normal, multinomial or gamma mixtures with the EM algorithm, also containing routines for selecting the number of components based on information criteria and parametric bootstrapping of the LRT statistic values. However, they are limited to multinomial and normal mixtures as well as mixtures-of-regressions. While **flexmix** [@flexmix1; @flexmix2; @flexmix3] handles mixtures-of-regression, it stands out due to its extensibility, a design principle that we also aimed for. Other packages dealing with mixture models are **mclust** [@mclust], which fits mixtures of Gaussians using the EM algorithm, **MixSim** [@mixsim], which allows for simulation from mixtures and comparing the performance of clustering algorithms, and **mixdist** [@mixdist], used for grouped conditional data. 
 
-**mixComp** can be used on virtually any parametric mixture as long as functions generating random variates and evaluating the density are provided for the component distribution. The package is aimed at practitioners studying phenomena that can be effectively modelled using mixture distributions. 
+**mixComp** can be used on virtually any parametric mixture as long as functions generating random variates and evaluating the density are provided for the component distributions. The package is aimed at practitioners studying phenomena that can be effectively modelled using mixture distributions. 
 
 # Methods
 
@@ -63,7 +63,7 @@ Assume the family of the component densities $\{g(x; \theta)\}$ is known, while 
 
 ### 1. Functions using Hankel matrices
 
-The basic approach [@hankel] estimates (based on $\textbf{X} = \{X_1, \dots, X_n\}$, an i.i.d. $n$-sample from $F$)
+The basic Hankel approach [@hankel] estimates (based on $\textbf{X} = \{X_1, \dots, X_n\}$, an i.i.d. $n$-sample from $F$)
 $$\hat{p} := \text{argmin}_{j \in \mathbb{N}} \Big\{ \lvert \det H(\hat{\textbf{c}}_{2j+1}) \rvert + A(j)l(n) \Big\},$$
 with positive function $l(n) \to 0 \text{ as } n \to \infty$; positive, strictly increasing function $A(j)$; 
 $H(\hat{\textbf{c}}_{2j+1})$ - Hankel matrix built on $\hat{\textbf{c}}_{2j+1}$, the consistent estimator of the first $2j+1$ moments of the mixing distribution. 
@@ -77,7 +77,7 @@ $f_{j,\mathbf{w},\mathbf{\theta}}(x) = \sum_{i = 1}^j w_i g(x; \theta_i), \quad 
 Note: $\mathcal{F}_j \subseteq \mathcal{F}_{j+1}, \forall j = 1,2, \dots$.
 
 Find the 'best' estimate (e.g. MLE) $(\hat{\mathbf{w}}^j, \hat{\mathbf{\theta}}^j) \in W_j \times \Theta_j$ for a given $j$ and thereby specified probability density/mass function $\hat{f}_j(x) = f_{j, \hat{\mathbf{w}}^j, \hat{\mathbf{\theta}}^j}(x),$
-and the non-parametric density/mass estimate $\tilde{f}_n(x)$.  
+and the non-parametric density/mass estimate $\tilde{f}_n(x)$. Then
 $$\hat{p} = \min_j \big\{D(\hat{f}_j, \tilde{f}_n) - D(\hat{f}_{j+1}, \tilde{f}_n) \leq t(j,n) \big\},$$ 
 where $D$ denotes the distance measure, $t(j,n)$ - the penalty term.
 
@@ -85,30 +85,30 @@ where $D$ denotes the distance measure, $t(j,n)$ - the penalty term.
 
 ### 3. Functions using LRTS
 
-Find the MLE for the mixture density with $j$ and $j+1$ components ($j=1,2,\dots$), yielding $(\hat{\mathbf{w}}^{j}, \hat{\mathbf{\theta}}^{j}) \in W_j \times \Theta_j$ and $(\hat{\mathbf{w}}^{j+1}, \hat{\mathbf{\theta}}^{j+1}) \in W_{j+1} \times \Theta_{j+1}$,
+Find the MLE for the mixture density/mass with $j$ and $j+1$ components ($j=1,2,\dots$), yielding $(\hat{\mathbf{w}}^{j}, \hat{\mathbf{\theta}}^{j}) \in W_j \times \Theta_j$ and $(\hat{\mathbf{w}}^{j+1}, \hat{\mathbf{\theta}}^{j+1}) \in W_{j+1} \times \Theta_{j+1}$,
 $$\text{LRTS}= -2\ln\left(\frac{L_{\textbf{X}}(\hat{\mathbf{w}}^{j}, \hat{\mathbf{\theta}}^{j})}{L_{\textbf{X}}(\hat{\mathbf{w}}^{j+1}, \hat{\mathbf{\theta}}^{j+1})}\right)\text{, with}$$
 
 $L_{\textbf{X}}$ being the likelihood function given ${\textbf{X}}$.
 
-Use a parametric bootstrap to generate `B` $n$-samples from a $j$-component mixture given $(\hat{\mathbf{w}}^{j}, \hat{\mathbf{\theta}}^{j})$. For each bootstrap sample, compute the MLEs and LRTS corresponding to the mixture densities with $j$ and $j+1$ components. Reject $H_0: p = j$, set $j \leftarrow j+1$ if the LRTS is larger than the specified quantile of its bootstrapped counterparts; set $\hat{p} = j$ otherwise. 
+Use a parametric bootstrap to generate `B` $n$-samples from a $j$-component mixture given $(\hat{\mathbf{w}}^{j}, \hat{\mathbf{\theta}}^{j})$. For each bootstrap sample, compute the MLEs and LRTS corresponding to the mixture densities with $j$ and $j+1$ components. Reject $H_0: p = j$, setting $j \leftarrow j+1$ if the LRTS is larger than the specified quantile of its bootstrapped counterparts; otherwise set $\hat{p} = j$ [@karlis]. 
 
 # Example
 
-Hellinger distance method with bootstrap applied to the Shakespeare data (viewed as a mixture of geometric distributions). 
+Hellinger distance method with bootstrap applied to the Shakespeare data (viewed as a mixture of geometrics) [@sp68; @Efron1976; @CheeWang2016; @balabdkulagina]. 
 
 ``` r
-# shift the observations:
+# apply the shift:
 shakespeare.obs <- unlist(shakespeare) - 1
 # define the MLE function:
 MLE.geom <- function(dat) 1 / (mean(dat) + 1)
 # create the datMix object:
 Shakespeare.dM <- datMix(shakespeare.obs, dist = "geom", discrete = TRUE, 
 			 MLE.function = MLE.geom, theta.bound.list = list(prob = c(0, 1)))
-# estimate the mixture complexity:
+# estimate the complexity:
 set.seed(0)
 (res <- hellinger.boot.disc(Shakespeare.dM, B = 50, ql = 0.025, qu = 0.975))
 > The estimated order is 3.
-# plot the results:
+# plot:
 plot(res, breaks = 100, xlim = c(0, 20))
 ```
 
