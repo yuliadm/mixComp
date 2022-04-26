@@ -72,14 +72,14 @@ $H(\hat{\textbf{c}}_{2j+1})$ - Hankel matrix built on $\hat{\textbf{c}}_{2j+1}$,
 
 ### 2. Functions using distances
 
-Consider the parametric family $\mathcal{F}_j = \{ f_{j, \mathbf{w},\mathbf{\theta}} : (\mathbf{w}, \mathbf{\theta}) \in W_j \times \Theta_j \},$
-$f_{j,\mathbf{w},\mathbf{\theta}}(x) = \sum_{i = 1}^j w_i g(x; \theta_i), \quad \{g(x;\theta): \theta \in \Theta \},$ 
-$\mathcal{F}_j \subseteq \mathcal{F}_{j+1}, \forall j = 1,2, \dots$.
+Consider the parametric family $$\mathcal{F}_j = \{ f_{j, \mathbf{w},\mathbf{\theta}} : (\mathbf{w}, \mathbf{\theta}) \in W_j \times \Theta_j \},$$
+$f_{j,\mathbf{w},\mathbf{\theta}}(x) = \sum_{i = 1}^j w_i g(x; \theta_i), \quad \{g(x;\theta): \theta \in \Theta \}.$ 
+Note: $\mathcal{F}_j \subseteq \mathcal{F}_{j+1}, \forall j = 1,2, \dots$.
 
 Find the 'best' estimate (e.g. MLE) $(\hat{\mathbf{w}}^j, \hat{\mathbf{\theta}}^j) \in W_j \times \Theta_j$ for a given $j$ and thereby specified probability density/mass function $\hat{f}_j(x) = f_{j, \hat{\mathbf{w}}^j, \hat{\mathbf{\theta}}^j}(x),$
 and the non-parametric density/mass estimate $\tilde{f}_n(x)$.  
 $$\hat{p} = \min_j \big\{D(\hat{f}_j, \tilde{f}_n) - D(\hat{f}_{j+1}, \tilde{f}_n) \leq t(j,n) \big\},$$ 
-where $D$ denotes the distance between the distributions, $t(j,n)$ - the penalty term.
+where $D$ denotes the distance measure, $t(j,n)$ - the penalty term.
 
 **mixComp** offers several distance-based procedures described in [@l2; @hell; @hellcont]. 
 
