@@ -25,7 +25,7 @@ bibliography: refs.bib
 
 # Summary
 
-Mixture models [see @LindsayI; @LindsayII; @McLachlan; @Teicher63; @Titterington] are a popular statistical tool for modeling heterogeneous data. The number of mixture components could be known in advance, in which case they can be easily estimated ( e.g. the maximum likelihood estimates (MLE) of the unknown parameters can be estimated via the well-known expectation-maximization (EM) algorithm [@Dempster]). However, in many applications the number of components is unknown and has to be estimated from the data. 
+Mixture models [see @LindsayI; @LindsayII; @McLachlan; @Teicher63; @Titterington] allow for modeling heterogeneous data. The number of mixture components could be known in advance, in which case the model parameters can be easily estimated (e.g. their maximum likelihood estimates (MLE) can be found via the expectation-maximization (EM) algorithm [@Dempster]). However, in many applications the number of components is unknown and has to be estimated from the data. 
 
 **mixComp** provides three categories of methods for estimating the unknown complexity of a (univariate) finite mixture:
 
