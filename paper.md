@@ -97,7 +97,6 @@ Use a parametric bootstrap to generate `B` $n$-samples from a $j$-component mixt
 `paramHankel.scaled` function applied to a Poisson mixture: $\mathbf{w}=(0.45,0.45,0.1), \textrm{ and } \mathbf{\lambda}=(1,5,10)$. 
 
 ``` r
-set.seed(0)
 # construct a Mix object:
 poisMix <- Mix("pois", discrete = TRUE, w = c(0.45, 0.45, 0.1), 
 		lambda = c(1, 5, 10))
