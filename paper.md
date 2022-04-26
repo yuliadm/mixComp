@@ -25,7 +25,7 @@ bibliography: refs.bib
 
 # Summary
 
-Mixture models [see @Teicher63; @LindsayI; @LindsayII; @Titterington; @McLachlan] allow for modeling heterogeneous data. The (unknown) distribution is assumed to result from mixing over some latent parameter that is viewed as a random variable drawn from some unknown mixing distribution. The number of mixture components could be known in advance, in which case the well-known expectation-maximization (EM) algorithm [@Dempster] can be used for finding the maximum likelihood estimates (MLE) of the unknown parameters. However, in many applications the number of components is unknown and has to be estimated from the data. 
+Mixture models [see @LindsayI; @LindsayII; @McLachlan; @Teicher63; @Titterington] are a popular statistical tool for modeling heterogeneous data. The number of mixture components could be known in advance, in which case they can be easily estimated ( e.g. the maximum likelihood estimates (MLE) of the unknown parameters can be estimated via the well-known expectation-maximization (EM) algorithm [@Dempster]). However, in many applications the number of components is unknown and has to be estimated from the data. 
 
 **mixComp** provides three categories of methods for estimating the unknown complexity of a (univariate) finite mixture:
 
@@ -64,7 +64,7 @@ Assume the family of the component densities $\{g(x; \theta)\}$ is known, while 
 ### 1. Functions using Hankel matrices
 
 The basic approach [@hankel] estimates (based on $\textbf{X} = \{X_1, \dots, X_n\}$, an i.i.d. $n$-sample from $F$)
-$$\hat{p} := \text{argmin}_{j \in \mathbb{N}} J_n(j), \quad J_n(j) := \lvert \det H(\hat{\textbf{c}}_{2j+1}) \rvert + A(j)l(n),$$
+$$\hat{p} := \text{argmin}_{j \in \mathbb{N}} \Big\{ \lvert \det H(\hat{\textbf{c}}_{2j+1}) \rvert + A(j)l(n) \Big\},$$
 with positive function $l(n) \to 0 \text{ as } n \to \infty$; positive, strictly increasing function $A(j)$; 
 $H(\hat{\textbf{c}}_{2j+1})$ - Hankel matrix built on $\hat{\textbf{c}}_{2j+1}$, the consistent estimator of the first $2j+1$ moments of the mixing distribution. 
 
