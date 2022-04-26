@@ -25,7 +25,7 @@ bibliography: refs.bib
 
 # Summary
 
-Mixture models [see @LindsayI; @LindsayII; @McLachlan; @Teicher63; @Titterington] allow for modeling heterogeneous data. The number of mixture components could be known in advance, in which case the model parameters can be easily estimated (e.g. their maximum likelihood estimates (MLE) can be found via the expectation-maximization (EM) algorithm [@Dempster]). However, in many applications the number of components is unknown and has to be inferred from the data. 
+Mixture models [see @LindsayI; @LindsayII; @McLachlan; @Teicher63; @Titterington] allow for modeling heterogeneous data. The number of mixture components could be known in advance, in which case the model parameters can be easily estimated (e.g. their maximum likelihood estimates (MLE) can be found via the EM-algorithm [@Dempster]). However, in many applications the number of components is unknown and has to be inferred from the data. 
 
 **mixComp** provides three categories of methods for estimating the unknown complexity of a (univariate) finite mixture:
 
@@ -45,7 +45,7 @@ Two main features distinguish **mixComp** from other mixture-related **R** [@R] 
 
 - **mixComp** is applicable to parametric mixtures beyond those whose component distributions are included in the **stats** package, making it more customizable than most packages for model-based clustering. 
 
-Aside from **mixtools**'s [@mixtools] focus on mixture-of-regressions and non-parametric mixtures, it is widely used to fit (multivariate) normal, multinomial or gamma mixtures with the EM algorithm, also containing routines for selecting the number of components based on information criteria and parametric bootstrapping of the LRT statistic values. However, they are limited to multinomial and normal mixtures as well as mixtures-of-regressions. While **flexmix** [@flexmix1; @flexmix2; @flexmix3] handles mixtures-of-regression, it stands out due to its extensibility, a design principle that we also aimed for. Other packages dealing with mixture models are **mclust** [@mclust], which fits mixtures of Gaussians using the EM algorithm, **MixSim** [@mixsim], which allows for simulation from mixtures and comparing the performance of clustering algorithms, and **mixdist** [@mixdist], used for grouped conditional data. 
+Aside from **mixtools**'s [@mixtools] focus on mixture-of-regressions and non-parametric mixtures, it is widely used to fit (multivariate) normal, multinomial or gamma mixtures with the EM algorithm, also containing routines for selecting the number of components based on information criteria and parametric bootstrapping of the LRT statistic values. However, they are limited to multinomial and normal mixtures and mixtures-of-regressions. While **flexmix** [@flexmix1; @flexmix2; @flexmix3] handles mixtures-of-regression, it stands out due to its extensibility, a design principle that we also aimed for. Other packages dealing with mixture models are **mclust** [@mclust], which fits mixtures of Gaussians using the EM algorithm, **MixSim** [@mixsim], which allows for simulation from mixtures and comparing the performance of clustering algorithms, and **mixdist** [@mixdist], used for grouped conditional data. 
 
 **mixComp** can be used on virtually any parametric mixture as long as functions generating random variates and evaluating the density are provided for the component distributions. The package is aimed at practitioners studying phenomena that can be effectively modelled using mixture distributions. 
 
