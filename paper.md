@@ -25,7 +25,7 @@ bibliography: refs.bib
 
 # Summary
 
-Mixture models, studied extensively in [@Teicher63; @LindsayI; @LindsayII; @Titterington; @McLachlan] etc., allow for modeling heterogeneous data. The (unknown) distribution is assumed to result from mixing over some latent parameter that is viewed as a random variable drawn from some unknown mixing distribution. The number of mixture components could be known in advance, in which case the well-known expectation-maximization (EM) algorithm [@Dempster] can be used for finding the maximum likelihood estimates (MLE) of the unknown parameters. However, in many applications the number of components is unknown and has to be estimated from the data. 
+Mixture models [see @Teicher63; @LindsayI; @LindsayII; @Titterington; @McLachlan] allow for modeling heterogeneous data. The (unknown) distribution is assumed to result from mixing over some latent parameter that is viewed as a random variable drawn from some unknown mixing distribution. The number of mixture components could be known in advance, in which case the well-known expectation-maximization (EM) algorithm [@Dempster] can be used for finding the maximum likelihood estimates (MLE) of the unknown parameters. However, in many applications the number of components is unknown and has to be estimated from the data. 
 
 **mixComp** provides three categories of methods for estimating the unknown complexity of a (univariate) finite mixture:
 
@@ -52,8 +52,8 @@ Aside from **mixtools**'s [@mixtools] focus on mixture-of-regressions and non-pa
 # Methods
 
 A distribution $F$ is called a *finite mixture* if its probability density/mass is of the form
-$$f(x) = \sum_{i=1}^p w_i g_i(x),$$
-$p \in \mathbb{N}$ being the mixture complexity, $(w_1, \dots w_p : \sum_{i=1}^p w_i = 1$, $w_i \geq 0,$ for $i=1,\dots,p)$ - component weights and $g_i(x)$ - $i$-th component density. 
+$$f(x) = \sum_{i=1}^p w_i g_i(x, \theta_i),$$
+$p \in \mathbb{N}$ being the mixture complexity, $(w_1, \dots w_p : \sum_{i=1}^p w_i = 1$, $w_i \geq 0,$ for $i=1,\dots,p)$ - component weights and $g_i(x, \theta_i)$ - $i$-th component density. 
 
 Given some complexity $j$, the relevant parameter spaces are
 $$\Theta_j = \{\theta_1, \dots, \theta_j: \theta_i \in \Theta \subseteq \mathbb{R}^d, \quad d \in \mathbb{N}, \quad \text{ for } i = 1,\dots,j\}, \text { and }$$
