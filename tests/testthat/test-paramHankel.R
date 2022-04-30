@@ -1,0 +1,100 @@
+
+## tests for paramHankel function:    
+testthat::test_that("errors", {
+  
+  poisMix <- Mix("pois", discrete = TRUE, w = c(0.45, 0.45, 0.1), lambda = c(1, 5, 10))
+  ## create random data based on 'Mix' object (gives back 'rMix' object)
+  set.seed(1)
+  poisRMix <- rMix(1000, obj = poisMix)
+  # specify the list of parameter bounds:
+  poisList <- list("lambda" = c(0, Inf))
+  # define the MLE function:
+  MLE.pois <- function(dat){
+    mean(dat)
+  }
+  # define function for estimating the j^th moment of the mixing distribution:
+  explicit.pois <- function(dat, j){
+    res <- 1
+    for (i in 0:(j-1)){
+      res <- res*(dat-i)
+    }
+    return(mean(res))
+  }
+  # create a 'datMix' object:
+  pois.dM <- RtoDat(poisRMix, theta.bound.list = poisList, MLE.function = MLE.pois,
+                    Hankel.method = "explicit", Hankel.function = NULL)
+  set.seed(0)
+
+   ## missing mandatory argument in the input datMix object:  
+    testthat::expect_error(
+      paramHankel(pois.dM),
+        "'Hankel.function' has to be defined as a datMix object attribute!", fixed = TRUE) 
+    
+    # update the 'datMix' object:
+    pois.dM <- RtoDat(poisRMix, MLE.function = MLE.pois,
+                      Hankel.method = "explicit", Hankel.function = explicit.pois)
+    
+    set.seed(0)
+    ## missing mandatory argument in the input datMix object:  
+    testthat::expect_error(
+      paramHankel(pois.dM),
+      "'theta.bound.list' has to be specified as a datMix object attribute!", fixed = TRUE) 
+
+    set.seed(0)
+    ## missing mandatory argument in the input datMix object:  
+    testthat::expect_error(
+      paramHankel.scaled(pois.dM),
+      "'theta.bound.list' has to be specified as a datMix object attribute!", fixed = TRUE) 
+    
+        
+    # update the 'datMix' object:
+    pois.dM <- RtoDat(poisRMix, theta.bound.list = poisList, MLE.function = MLE.pois,
+                      Hankel.method = "explicit", Hankel.function = explicit.pois)
+    
+    set.seed(0)
+    ## input is not of class 'datMix':  
+    testthat::expect_error(
+      paramHankel(poisMix))     
+    
+})
+
+testthat::test_that("function checks", {
+    
+  poisMix <- Mix("pois", discrete = TRUE, w = c(0.45, 0.45, 0.1), lambda = c(1, 5, 10))
+  ## create random data based on 'Mix' object (gives back 'rMix' object)
+  set.seed(1)
+  poisRMix <- rMix(1000, obj = poisMix)
+  # specify the list of parameter bounds:
+  poisList <- list("lambda" = c(0, Inf))
+  # define the MLE function:
+  MLE.pois <- function(dat){
+    mean(dat)
+  }
+  # define function for estimating the j^th moment of the mixing distribution:
+  explicit.pois <- function(dat, j){
+    res <- 1
+    for (i in 0:(j-1)){
+      res <- res*(dat-i)
+    }
+    return(mean(res))
+  }
+  # create a 'datMix' object:
+  pois.dM <- RtoDat(poisRMix, theta.bound.list = poisList, MLE.function = MLE.pois,
+                    Hankel.method = "explicit", Hankel.function = explicit.pois)
+    set.seed(0)
+    ## check class of the output:  
+    testthat::expect_equal( 
+      class(paramHankel(pois.dM)), "paramEst")
+  
+    set.seed(0)    
+    ## check output:    
+    testthat::expect_equal(
+      paramHankel(pois.dM)[1], 3)
+    
+    set.seed(0)    
+    ## check output:    
+    testthat::expect_equal(
+    paramHankel.scaled(pois.dM, j.max = 5, B = 100, ql = 0.025, qu = 0.975)[1], 2)     
+})    
+    
+
