@@ -68,7 +68,7 @@ testthat::test_that("function checks", {
   # create a 'datMix' object:
   pois.dM <- RtoDat(poisRMix, theta.bound.list = poisList, MLE.function = MLE.pois,
                     Hankel.method = "explicit", Hankel.function = explicit.pois)
-  set.seed(0)
+  
   ## check class of the output:  
   testthat::expect_equal( 
     class(nonparamHankel(pois.dM, j.max = 5)), "hankDet")
@@ -79,9 +79,8 @@ testthat::test_that("function checks", {
   testthat::expect_equal(
     round(res[1],3), 12.638)
   
-  set.seed(0)    
   ## check output:    
   testthat::expect_equal(
-    round(res[2],3), 0.002)
+    round(res[4],3), 0.468)
 })    
 
