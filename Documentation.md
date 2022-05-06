@@ -125,8 +125,8 @@ plot(normLocMix, main = "3-component normal mixture", cex.main = 0.9)
 plot(poisMix, main = "3-component poisson mixture", cex.main = 0.9)
 ```
 <p float="left">
-  <img src="https://github.com/yuliadm/mixComp/blob/main/figures/normMix.png"  width="600" height="480"/>
-  <img src="https://github.com/yuliadm/mixComp/blob/main/figures/poisMix.png"  width="600" height="480"/>
+  <img src="https://github.com/yuliadm/mixComp/blob/main/figures/normMix.png"  width="480" height="360"/>
+  <img src="https://github.com/yuliadm/mixComp/blob/main/figures/poisMix.png"  width="480" height="360"/>
 </p>
 
 If required, random samples can be generated from these mixtures.
