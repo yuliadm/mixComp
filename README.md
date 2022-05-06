@@ -19,7 +19,7 @@ affiliations:
  - name: ETH Zurich, Switzerland
    index: 2
 date: 19 April 2022
-bibliography: refs.bib
+bibliography: paper/refs.bib
 ---
 
 # Installation
