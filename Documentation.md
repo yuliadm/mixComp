@@ -57,12 +57,19 @@ are studying phenomena that can be effectively modelled using mixture distributi
 Among other things it can be used to identify settings and conditions, under which a certain 
 method provides more accurate estimates than the others.
 
+
 # Installation
 
 To install from `CRAN`, use:
 ``` r
 install.packages("mixComp")
 ```
+For installing the development version from GitHub:
+``` r
+# install.packages("devtools")
+devtools::install_github("yuliadm/mixComp")
+```
+
 # Section 1. Introduction to finite mixture models and mixComp
 
 Mixture models have been used extensively in statistical applications and therefore have attracted a lot of attention from both theoretical and computational perspectives. Although the list of works on mixture models is too long to make an exhaustive inventory, we can refer to the following important papers and books: [[34]](#34), [[20]](#20),  [[21]](#21), [[36]](#36) and [[24]](#24).
