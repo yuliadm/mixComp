@@ -563,7 +563,7 @@ res <- hellinger.cont(faithful.dM, bandwidth = kdensity(faithful.obs)$bw,
                       sample.n = 5000, threshold = "AIC")
 plot(res)
 ```
-<img src="https://github.com/yuliadm/mixComp/blob/main/figures/hell-cont-norm.png">
+<img src="https://github.com/yuliadm/mixComp/blob/main/figures/hell_cont_norm.png">
 
 At this point, it is worth having a closer look at the thresholds. They each satisfy <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650049424.jpg"> as <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650019043.jpg">, the sole condition the authors require. Now, the consistency proofs for the estimators defined in this Section all rely on the fact that, as <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1650019043.jpg">,
 
@@ -607,7 +607,7 @@ res <- hellinger.boot.disc(Shakespeare.dM, B = 50, ql = 0.025, qu = 0.975)
 plot(res)
 ```
 
-<img src="https://github.com/yuliadm/mixComp/blob/main/figures/hell-boot-geom.png">
+<img src="https://github.com/yuliadm/mixComp/blob/main/figures/hell_boot_geom.png">
 
 `hellinger.boot.disc` estimates that the data comes from a 3-component geometric mixture (thus clustering the english words Shakespeare used into three categories).
 
@@ -640,7 +640,7 @@ set.seed(0)
 res <- mix.lrt(acidity.dM, B = 50, quantile = 0.95)
 plot(res)
 ```
-<img src="https://github.com/yuliadm/mixComp/blob/main/figures/lrt-norm.png">
+<img src="https://github.com/yuliadm/mixComp/blob/main/figures/lrt_norm.png">
 
 # Section 6. Non-standard mixtures
 
@@ -693,7 +693,7 @@ res <- mix.lrt(norm0.5.dM, B = 50, quantile = 0.95)
 print(res)
 plot(res)
 ```
-<img src="https://github.com/yuliadm/mixComp/blob/main/figures/est-norm0.5.png">
+<img src="https://github.com/yuliadm/mixComp/blob/main/figures/est_norm0.5.png">
 
 # Section 7. Computational nuance for mixComp functions using the solnp() solver
 
