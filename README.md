@@ -28,6 +28,12 @@ To install from `CRAN`, use:
 ``` r
 install.packages("mixComp")
 ```
+For installing the development version from GitHub:
+``` r
+# install.packages("devtools")
+devtools::install_github("yuliadm/mixComp")
+```
+
 # **mixComp** for mixture complexity estimation 
 
 Mixture models have been used extensively in statistical applications and therefore have attracted a lot of attention from both theoretical and computational perspectives. Although the list of works on mixture models is too long to make an exhaustive inventory, we can refer to the following important papers and books: [[21]](#21), [[12]](#12),  [[13]](#13), [[23]](#23) and [[15]](#15).
