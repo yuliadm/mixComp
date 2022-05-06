@@ -125,8 +125,8 @@ plot(normLocMix, main = "3-component normal mixture", cex.main = 0.9)
 plot(poisMix, main = "3-component poisson mixture", cex.main = 0.9)
 ```
 <p float="left">
-  <img src="https://github.com/yuliadm/mixComp/blob/main/images/normMix.png" />
-  <img src="https://github.com/yuliadm/mixComp/blob/main/images/poisMix.png" />
+  <img src="https://github.com/yuliadm/mixComp/blob/main/figures/normMix.png"  width="200" height="200"/>
+  <img src="https://github.com/yuliadm/mixComp/blob/main/figures/poisMix.png"  width="200" height="200"/>
 </p>
 
 If required, random samples can be generated from these mixtures.
@@ -140,8 +140,8 @@ plot(normLocRMix, main = "Three component normal mixture", cex.main = 0.9)
 plot(poisRMix, main = "Three component poisson mixture", cex.main = 0.9)
 ```
 <p float="left">
-<img src="https://github.com/yuliadm/mixComp/blob/main/images/normRMix.png" />
-<img src="https://github.com/yuliadm/mixComp/blob/main/images/poisRMix.png" />
+<img src="https://github.com/yuliadm/mixComp/blob/main/figures/normRMix.png" />
+<img src="https://github.com/yuliadm/mixComp/blob/main/figures/poisRMix.png" />
 </p>
   
 The third object class shown in Table 1, called `datMix`, represents the data vector <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649977791.jpg"> based on which the mixture complexity is supposed to be estimated. These objects are most central to the package, as every procedure estimating the order of a mixture takes a `datMix` object as input. Apart from <img src="https://github.com/yuliadm/mixComp/blob/main/misc/Tex2Img_1649977791.jpg">, it contains other "static" information needed for the estimation procedure (in contrast to "tuning parameters", which can be changed with every function call. An example of such a tuning parameter is the number of bootstrap replicates for a function employing a bootstrap procedure). A brief overview of which "static" attributes need to be supplied for each complexity estimation routine is given in Table 2. 
