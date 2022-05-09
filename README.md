@@ -295,7 +295,7 @@ res <- hellinger.cont(faithful.dM, bandwidth = kdensity(faithful.obs)$bw,
                       sample.n = 5000, threshold = "AIC")
 plot(res)
 ```
-<img src="https://github.com/yuliadm/mixComp/blob/main/figures/hell-cont-norm.png" width="500" height="400">
+<img src="https://github.com/yuliadm/mixComp/blob/main/figures/hell_cont_norm.png" width="500" height="400">
 
 ### The Children dataset
 
