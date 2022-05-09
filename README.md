@@ -36,7 +36,13 @@ devtools::install_github("yuliadm/mixComp")
 
 # Community Guidelines
 
-Please report any issues, bugs, or problems with the software here: https://github.com/yuliadm/mixComp/issues. For any contributions, feel free to fork the package repository on GitHub or submit pull requests. Any other contribution questions and requests for support can be directed to the package maintainer Yulia Kulagina (yulia.kulagina@stat.math.ethz.ch).
+Contributions in the form of feedback, comments, code, and bug reports are welcome. To contribute code or report a bug, please 
+
+  - fork the source code, modify, and issue a pull request or
+   
+  - file a Github issue: https://github.com/yuliadm/mixComp/issues.
+
+Any other contribution questions and requests for support can be directed to the package maintainer Yulia Kulagina (yulia.kulagina@stat.math.ethz.ch).
 
 # **mixComp** for mixture complexity estimation 
 
