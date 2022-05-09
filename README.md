@@ -34,6 +34,10 @@ For installing the development version from GitHub:
 devtools::install_github("yuliadm/mixComp")
 ```
 
+# Community Guidelines
+
+Please report any issues, bugs, or problems with the software here: https://github.com/yuliadm/mixComp/issues. For any contributions, feel free to fork the package repository on GitHub or submit pull requests. Any other contribution questions and requests for support can be directed to the package maintainer Yulia Kulagina (yulia.kulagina@stat.math.ethz.ch).
+
 # **mixComp** for mixture complexity estimation 
 
 Mixture models have been used extensively in statistical applications and therefore have attracted a lot of attention from both theoretical and computational perspectives. Although the list of works on mixture models is too long to make an exhaustive inventory, we can refer to the following important papers and books: [[21]](#21), [[12]](#12),  [[13]](#13), [[23]](#23) and [[15]](#15).
