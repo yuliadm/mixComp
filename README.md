@@ -115,8 +115,8 @@ plot(normLocMix, main = "3-component normal mixture", cex.main = 0.9)
 plot(poisMix, main = "3-component poisson mixture", cex.main = 0.9)
 ```
 <p float="left">
-  <img src="https://github.com/yuliadm/mixComp/blob/main/figures/normMix.png" />
-  <img src="https://github.com/yuliadm/mixComp/blob/main/figures/poisMix.png" />
+  <img src="https://github.com/yuliadm/mixComp/blob/main/figures/normMix.png" width="500" height="400"/>
+  <img src="https://github.com/yuliadm/mixComp/blob/main/figures/poisMix.png" width="500" height="400"/>
 </p>
 
 If required, random samples can be generated from these mixtures.
@@ -129,8 +129,8 @@ plot(normLocRMix, main = "Three component normal mixture", cex.main = 0.9)
 plot(poisRMix, main = "Three component poisson mixture", cex.main = 0.9)
 ```
 <p float="left">
-<img src="https://github.com/yuliadm/mixComp/blob/main/figures/normRMix.png" />
-<img src="https://github.com/yuliadm/mixComp/blob/main/figures/poisRMix.png" />
+<img src="https://github.com/yuliadm/mixComp/blob/main/figures/normRMix.png" width="500" height="400"/>
+<img src="https://github.com/yuliadm/mixComp/blob/main/figures/poisRMix.png" width="500" height="400"/>
 </p>
 
 We now define the functions computing the moments (for the Gaussian and Poisson mixtures respectively):
@@ -194,8 +194,8 @@ plot(normdets_sca_pen, main = "3-component Normal mixture", cex.main = 0.9)
 ```
 
 <p float="left">
-<img src="https://github.com/yuliadm/mixComp/blob/main/figures/np_art_1.png" />
-<img src="https://github.com/yuliadm/mixComp/blob/main/figures/np_art_2.png" />
+<img src="https://github.com/yuliadm/mixComp/blob/main/figures/np_art_1.png" width="500" height="400"/>
+<img src="https://github.com/yuliadm/mixComp/blob/main/figures/np_art_2.png" width="500" height="400"/>
 </p>
 
 Having created the data ourselves, we know that it comes from a 3-component Poisson mixture and a 3-component Gaussian mixture respectively. The resulting plots indicate that while theoretically sound, the scaled version of the Hankel method can struggle to correctly identify the number of components in practice.
@@ -214,8 +214,8 @@ plot(norm_sca_pen)
 ```
 
 <p float="left">
-<img src="https://github.com/yuliadm/mixComp/blob/main/figures/p_art_1.png" />
-<img src="https://github.com/yuliadm/mixComp/blob/main/figures/p_art_2.png" />
+<img src="https://github.com/yuliadm/mixComp/blob/main/figures/p_art_1.png" width="500" height="400"/>
+<img src="https://github.com/yuliadm/mixComp/blob/main/figures/p_art_2.png" width="500" height="400"/>
 </p>
 
 
@@ -232,8 +232,8 @@ plot(h_cont_norm)
 ```
 
 <p float="left">
-<img src="https://github.com/yuliadm/mixComp/blob/main/figures/dist_art_1.png" />
-<img src="https://github.com/yuliadm/mixComp/blob/main/figures/dist_art_2.png" />
+<img src="https://github.com/yuliadm/mixComp/blob/main/figures/dist_art_1.png" width="500" height="400"/>
+<img src="https://github.com/yuliadm/mixComp/blob/main/figures/dist_art_2.png" width="500" height="400"/>
 </p>
 
 
@@ -295,7 +295,7 @@ res <- hellinger.cont(faithful.dM, bandwidth = kdensity(faithful.obs)$bw,
                       sample.n = 5000, threshold = "AIC")
 plot(res)
 ```
-<img src="https://github.com/yuliadm/mixComp/blob/main/figures/hell-cont-norm.png">
+<img src="https://github.com/yuliadm/mixComp/blob/main/figures/hell-cont-norm.png" width="500" height="400">
 
 ### The Children dataset
 
@@ -368,8 +368,8 @@ plot(param_sca, breaks = 8, ylim = c(0, 0.8))
 ```
 
 <p float="left">
-<img src="https://github.com/yuliadm/mixComp/blob/main/figures/np_real.png" />
-<img src="https://github.com/yuliadm/mixComp/blob/main/figures/p_real.png" />
+<img src="https://github.com/yuliadm/mixComp/blob/main/figures/np_real.png" width="500" height="400"/>
+<img src="https://github.com/yuliadm/mixComp/blob/main/figures/p_real.png" width="500" height="400"/>
 </p>
 
 # Computational nuance for mixComp functions using the solnp() solver
