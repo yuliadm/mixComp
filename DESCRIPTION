@@ -22,7 +22,7 @@ Authors@R: c(person(given = "Anja", family = "Weigel", role = "aut", email = "an
              person(given = "Martin", family = "Maechler", role = "ctb", comment = c("package 'nor1mix' as model", ORCID = "0000-0002-8685-9910"))     
             )
 Depends: R (>= 3.5.0)
-Imports: cluster, boot, expm, matrixcalc, Rsolnp, kdensity
+Imports: cluster, boot, expm, matrixcalc, Rsolnp, kdensity, svMisc
 Suggests: knitr, rmarkdown
 License: GPL-3
 VignetteBuilder: knitr
