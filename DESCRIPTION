@@ -18,8 +18,7 @@ Description: Methods for estimating the order of a mixture model. The approaches
 Authors@R: c(person(given = "Anja", family = "Weigel", role = "aut", email = "anja.weigel@yahoo.de"),
              person(given = "Yulia", family = "Kulagina", role = c("aut", "cre"), email = "yulia.kulagina@stat.math.ethz.ch"),
              person(given = "Fadoua", family = "Balabdaoui", role = c("aut", "ths"), email = "fadoua.balabdaoui@stat.math.ethz.ch"),   
-             person(given = "Lilian", family = "Mueller", role = "ctb", email = "lilian.mueller@gmail.com"),   
-             person(given = "Martin", family = "Maechler", role = "ctb", comment = c("package 'nor1mix' as model", ORCID = "0000-0002-8685-9910"))     
+             person(given = "Lilian", family = "Mueller", role = "ctb", email = "lilian.mueller@gmail.com")     
             )
 Depends: R (>= 3.5.0)
 Imports: cluster, boot, expm, matrixcalc, Rsolnp, kdensity, svMisc
@@ -34,6 +33,5 @@ NeedsCompilation: no
 Author: Anja Weigel [aut], 
 		Yulia Kulagina [aut, cre], 
 		Fadoua Balabdaoui [aut, ths],  
-		Lilian Mueller [ctb], 
-		Martin Maechler [ctb] (package 'nor1mix' as model, <https://orcid.org/0000-0002-8685-9910>)
+		Lilian Mueller [ctb]
 Maintainer: Yulia Kulagina <yulia.kulagina@stat.math.ethz.ch>
