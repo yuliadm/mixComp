@@ -136,6 +136,6 @@ acidity.dM <- datMix(acidity.obs, dist = "norm", discrete = FALSE,
 set.seed(0)
 res <- mix.lrt(acidity.dM, B = 100, quantile = 0.95)
 ```
-![LRT method for the Acidity data](figures/mix-lrt-norm.pdf)
+![LRT method for the Acidity data](figures/lrt-norm.pdf)
 
 # References
