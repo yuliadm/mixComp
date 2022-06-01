@@ -93,7 +93,7 @@ $$\text{LRTS}= -2\ln\left(\frac{L_{\textbf{X}}(\hat{\mathbf{w}}^{j}, \hat{\mathb
 
 $L_{\textbf{X}}$ being the likelihood function given ${\textbf{X}}$.
 
-Use a parametric bootstrap to generate `B` $n$-samples from a $j$-component mixture given $(\hat{\mathbf{w}}^{j}, \hat{\mathbf{\theta}}^{j})$. For each bootstrap sample, compute the MLEs and LRTS corresponding to the mixture densities with $j$ and $j+1$ components. Reject $H_0: p = j$, setting $j \leftarrow j+1$ if the LRTS is larger than the specified quantile of its bootstrapped counterparts; otherwise set $\hat{p} = j$ [@karlis]. 
+Use a parametric bootstrap to generate `B` $n$-samples from a $j$-component mixture given $(\hat{\mathbf{w}}^{j}, \hat{\mathbf{\theta}}^{j})$. For each bootstrap sample, compute the MLEs and LRTS corresponding to the mixture densities with $j$ and $j+1$ components. Reject $H_0: p = j$, setting $j \leftarrow j+1$ if the LRTS is larger than the specified quantile of its bootstrapped counterparts; otherwise set $\hat{p} = j$ [@lrt]. 
 
 # Example
 
