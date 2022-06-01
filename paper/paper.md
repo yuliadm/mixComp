@@ -49,7 +49,6 @@ Two main features distinguish it from other mixture-related **R** [@R] packages:
 Other packages dealing with mixture models are **mclust** [@mclust], which fits Gaussian mixtures using the EM algorithm, **MixSim** [@mixsim], which allows for simulating from mixtures and comparing the performance of clustering algorithms, and **mixdist** [@mixdist], used for grouped conditional data. Aside from **mixtools**'s [@mixtools] focus on mixture-of-regressions and non-parametric mixtures, it is used to fit (multivariate) normal, multinomial or gamma mixtures with the EM algorithm, also containing routines for selecting the number of components based on information criteria and parametric bootstrapping of the LRT statistic values. However, they are limited to multinomial, normal mixtures and mixtures-of-regressions. **flexmix** [@flexmix1; @flexmix2; @flexmix3] handles mixtures-of-regression and stands out due to its extensibility, a design principle that we also aimed for.
 **rebmix**[@rebmix], dealing with univariate and multivariate finite mixture model for generation, estimation, clustering, classification purposes, offers a wide variety of well-recognized methods for mixture model estimation for both discrete and continuous variables. The approaches suggested in **mixComp** are however not among those used in **rebmix**, thus complementing it rather than providing competition. 
 
-
 **mixComp** can be used on virtually any parametric mixture as long as functions generating random variates and evaluating the density are provided for the component distributions.
 
 # Methods
@@ -62,7 +61,7 @@ Given some complexity $j$, the relevant parameter spaces are
 $$\Theta_j = \{\theta_1, \dots, \theta_j: \theta_i \in \Theta \subseteq \mathbb{R}^d, \quad d \in \mathbb{N}, \quad \text{ for } i = 1,\dots,j\}, \text { and }$$
 $$W_j = \{w_1, \dots, w_j: \sum_{i=1}^j w_i = 1, w_i \geq 0, \text{ for } i = 1,\dots,j\}.$$
 
-Assume the family of the component densities $\{g(x; \theta)\}$ is known, while $\textbf{\theta} = (\theta_1, \dots, \theta_p) \in \Theta_p$, $\textbf{w} = (w_1, \dots, w_p) \in W_p$ and $p \in \mathbb{N}$ are unknown. 
+Assume the family of the component densities $\{g(x; \theta)\}$ is known, $\textbf{\theta} = (\theta_1, \dots, \theta_p) \in \Theta_p$, $\textbf{w} = (w_1, \dots, w_p) \in W_p$ and $p \in \mathbb{N}$ are unknown. 
 
 ### 1. Functions using Hankel matrices
 
