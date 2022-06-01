@@ -114,4 +114,28 @@ plot(res, breaks = 100, xlim = c(0, 20))
 
 ![Hellinger distance method with bootstrap for the Shakespeare data](figures/hell-boot-geom.pdf)
 
+LRT method applied to the Acidity data [@acidity1; @acidity2; @acidity3].
+
+``` r
+# 
+# define the MLE functions:
+MLE.norm.mean <- function(dat) mean(dat)
+MLE.norm.sd <- function(dat){
+  sqrt((length(dat) - 1) / length(dat)) * sd(dat)
+}
+MLE.norm.list <- list("MLE.norm.mean" = MLE.norm.mean,
+                      "MLE.norm.sd" = MLE.norm.sd) 
+# define parameter bounds:		      
+norm.bound.list <- list("mean" = c(-Inf, Inf), "sd" = c(0, Inf))
+
+acidity.obs <- unlist(acidity)
+# create the datMix object:
+acidity.dM <- datMix(acidity.obs, dist = "norm", discrete = FALSE,
+                     MLE.function = MLE.norm.list, theta.bound.list = norm.bound.list)
+# estimate the complexity:		     
+set.seed(0)
+res <- mix.lrt(acidity.dM, B = 100, quantile = 0.95)
+```
+![LRT method for the Acidity data](figures/mix-lrt-norm.pdf)
+
 # References
