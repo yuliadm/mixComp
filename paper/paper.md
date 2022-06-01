@@ -92,7 +92,7 @@ $L_{\textbf{X}}$ being the likelihood function given ${\textbf{X}}$.
 
 Use a parametric bootstrap to generate `B` $n$-samples from a $j$-component mixture given $(\hat{\mathbf{w}}^{j}, \hat{\mathbf{\theta}}^{j})$. For each bootstrap sample, compute the MLEs and LRTS corresponding to the mixture densities with $j$ and $j+1$ components. Reject $H_0: p = j$, setting $j \leftarrow j+1$ if the LRTS is larger than the specified quantile of its bootstrapped counterparts; otherwise set $\hat{p} = j$ [@lrt]. 
 
-# Example
+# Examples
 
 Hellinger distance method with bootstrap applied to the Shakespeare data (viewed as a mixture of geometrics) [@sp68; @Efron1976; @CheeWang2016; @balabdkulagina]. 
 
