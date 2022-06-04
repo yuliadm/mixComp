@@ -724,6 +724,10 @@ hellinger.boot.disc <- function(obj, j.max = 10, B = 100, ql = 0.025, qu = 0.975
     j0 <- j0 + 1 # current complexity estimate
     j1 <- j0 + 1
 
+    #####################################
+    message(paste("Testing for ", j0, " components.\n", sep = ""))
+    #####################################
+    
     f.n.sqrt <- .get.f.n.sqrt(dat, n.max, N)
 
     if(j0 > 1){ # if j1 was calculated in the last interation, pass it over to j0...
@@ -806,9 +810,13 @@ hellinger.boot.disc <- function(obj, j.max = 10, B = 100, ql = 0.025, qu = 0.975
 
         # don't include first iteration as this just uses the original data
         # to calculate t0
-        message(paste("Running bootstrap iteration ", bs_iter, " testing for ", j0,
-                  " components.\n", sep = ""))
-
+        # message(paste("Running bootstrap iteration ", bs_iter, " testing for ", j0, " components.\n", sep = ""))
+        
+        Sys.sleep(0.05)
+        progress(bs_iter)
+        Sys.sleep(0.05)
+        if (bs_iter==B) message(paste("Done! \n"))
+        
       } else message(paste("\n"))
 
       f.n.sqrt.boot <- .get.f.n.sqrt(dat, n.max, N)
