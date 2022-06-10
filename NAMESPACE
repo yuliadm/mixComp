@@ -23,7 +23,7 @@ importFrom("Rsolnp", solnp)
 
 importFrom("kdensity", kdensity)
 
-
+importFrom("svMisc", progress)
 
 ### This package exports ---------------------------------
 
