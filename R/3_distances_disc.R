@@ -365,7 +365,7 @@ L2.boot.disc <- function(obj, j.max = 10, n.inf = 1000, B = 100, ql = 0.025, qu 
     bs_iter <- -1
 
     stat <- function(dat){
-      message(paste("\n"))
+      message(paste("\n", "\n",sep = ""))
       assign("bs_iter", bs_iter + 1, inherits = TRUE)
       if(bs_iter != 0){
 
