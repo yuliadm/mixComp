@@ -189,8 +189,7 @@ mix.lrt <- function(obj, j.max = 10, B = 100, quantile = 0.95, control = c(trace
         #message(paste("Running bootstrap iteration ", bs_iter, " testing for ", j0, " components.\n", sep = ""))
         Sys.sleep(0.05)
         progress(bs_iter)
-        Sys.sleep(0.05)
-        if (bs_iter==B) message(paste("Done! \n"))
+        #if (bs_iter==B) message(paste("Done! \n"))
         
       } else message(paste("\n"))
 
