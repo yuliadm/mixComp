@@ -621,10 +621,10 @@ hellinger.boot.cont <- function(obj, bandwidth, j.max = 10, B = 100, ql = 0.025,
 
         # don't include first iteration as this just uses the original data
         # to calculate t0
-        #message(paste("Running bootstrap iteration ", bs_iter, " testing for ", j0, " components.\n", sep = ""))
-        Sys.sleep(0.5)
-        progress(bs_iter)
-        #if (bs_iter==B) message(paste("Done! \n"))
+        # message(paste("Running bootstrap iteration ", bs_iter, " testing for ", j0, " components.\n", sep = ""))
+        progress(bs_iter, progress.bar = TRUE)
+        Sys.sleep(0.01)
+        if (bs_iter==B) message(paste("\n Done! \n"))
 
       } else message(paste("\n"))
 
