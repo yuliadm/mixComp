@@ -778,9 +778,9 @@ print.paramEst <- function(x, ...){
     printCoefmat(cmat, ...)
 
     if(conv == TRUE){
-      message(paste( "Converged in ", niter, " iterations.\n", sep = ""))
+      message(paste( "Converged in ", niter, " iterations.\n", "\n", sep = ""))
     }
-    else message("Optimization algorithm did not converge.\n", sep = "")
+    else message("Optimization algorithm did not converge.\n", "\n", sep = "")
   }
   message(paste("\nThe estimated order is ", j, ".", sep = ""))
 
