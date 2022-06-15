@@ -21,7 +21,7 @@ Authors@R: c(person(given = "Anja", family = "Weigel", role = "aut", email = "an
              person(given = "Lilian", family = "Mueller", role = "ctb", email = "lilian.mueller@gmail.com")     
             )
 Depends: R (>= 3.5.0)
-Imports: cluster, boot, expm, matrixcalc, Rsolnp, kdensity, svMisc
+Imports: cluster, boot, expm, matrixcalc, Rsolnp, kdensity, progress
 Suggests: knitr, rmarkdown
 License: GPL-3
 VignetteBuilder: knitr
