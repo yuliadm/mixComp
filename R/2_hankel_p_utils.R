@@ -281,9 +281,9 @@
   printCoefmat(cmat)
 
   if(conv == TRUE){
-    message(paste( "Converged in ", niter, " iterations.\n", strrep("-", 70), sep = ""))
+    message(paste( "Converged in ", niter, " iterations.\n", strrep("-", 70), "\n", sep = ""))
   }
-  else message("Optimization algorithm did not converge.\n", strrep("-", 70), sep = "")
+  else message("Optimization algorithm did not converge.\n", strrep("-", 70), "\n", sep = "")
 }
 
 
@@ -304,7 +304,7 @@
             format(funv, digits = 4, scientific = 5, nsmall = 4, zero.print = TRUE),
             "\n", "\n", sep = ""))
   printCoefmat(cmat)
-  message("Optimization via user entered MLE-function.\n", strrep("-", 70), sep = "")
+  message("Optimization via user entered MLE-function.\n", strrep("-", 70), "\n", sep = "")
 
 }
 
