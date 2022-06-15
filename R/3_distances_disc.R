@@ -371,6 +371,7 @@ L2.boot.disc <- function(obj, j.max = 10, n.inf = 1000, B = 100, ql = 0.025, qu 
         # don't include first iteration as this just uses the original data
         # to calculate t0
         # message(paste("Running bootstrap iteration ", bs_iter, " testing for ", j0, " components.\n", sep = ""))
+        if (bs_iter==1) message(paste("\n"))
         progress(bs_iter, B)
         Sys.sleep(0.05)
         if (bs_iter==B) message(paste("Done! \n"))
