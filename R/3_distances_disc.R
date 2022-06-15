@@ -372,8 +372,9 @@ L2.boot.disc <- function(obj, j.max = 10, n.inf = 1000, B = 100, ql = 0.025, qu 
         # to calculate t0
         # message(paste("Running bootstrap iteration ", bs_iter, " testing for ", j0, " components.\n", sep = ""))
         if (bs_iter==1) message(paste("\n"))
+        Sys.sleep(0.1)
         progress(bs_iter, B)
-        Sys.sleep(0.05)
+        Sys.sleep(0.1)
         if (bs_iter==B) message(paste("Done! \n"))
         
         } else message(paste("\n"))
@@ -811,8 +812,9 @@ hellinger.boot.disc <- function(obj, j.max = 10, B = 100, ql = 0.025, qu = 0.975
         # to calculate t0
         # message(paste("Running bootstrap iteration ", bs_iter, " testing for ", j0, " components.\n", sep = ""))
         if (bs_iter==1) message(paste("\n"))
+        Sys.sleep(0.1)
         progress(bs_iter, B)
-        Sys.sleep(0.05)
+        Sys.sleep(0.1)
         if (bs_iter==B) message(paste("Done! \n"))
                 
       } else message(paste("\n"))
