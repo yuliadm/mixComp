@@ -186,10 +186,10 @@ mix.lrt <- function(obj, j.max = 10, B = 100, quantile = 0.95, control = c(trace
 
         # don't include first iteration as this just uses the original data
         # to calculate t0
-        #message(paste("Running bootstrap iteration ", bs_iter, " testing for ", j0, " components.\n", sep = ""))
-        Sys.sleep(0.05)
-        progress(bs_iter)
-        #if (bs_iter==B) message(paste("Done! \n"))
+        # message(paste("Running bootstrap iteration ", bs_iter, " testing for ", j0, " components.\n", sep = ""))
+        progress(bs_iter, progress.bar = TRUE)
+        Sys.sleep(0.01)
+        if (bs_iter==B) message(paste("Done! \n"))
         
       } else message(paste("\n"))
 
