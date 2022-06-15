@@ -624,8 +624,8 @@ hellinger.boot.cont <- function(obj, bandwidth, j.max = 10, B = 100, ql = 0.025,
         # message(paste("Running bootstrap iteration ", bs_iter, " testing for ", j0, " components.\n", sep = ""))
         progress(bs_iter, progress.bar = TRUE)
         Sys.sleep(0.01)
-        if (bs_iter==B) message(paste("\n Done! \n"))
-
+        if (bs_iter==B) message(paste("Done! \n"))
+        
       } else message(paste("\n"))
 
       # calculate optimal parameters for j0
