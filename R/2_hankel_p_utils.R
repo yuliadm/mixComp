@@ -749,7 +749,7 @@ print.paramEst <- function(x, ...){
               format(funv, digits = 4, scientific = 5, nsmall = 4, zero.print = TRUE),
               "\n", "\n", sep = ""))
     printCoefmat(cmat, ...)
-    message("Optimization via user entered MLE-function.\n", strrep("-", 70), sep = "")
+    message("Optimization via user entered MLE-function.\n", strrep("-", 70), "\n", sep = "")
 
   } else { # parameters estimated numerically
 
