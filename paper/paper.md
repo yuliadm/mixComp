@@ -25,7 +25,7 @@ bibliography: refs.bib
 
 # Summary
 
-Mixture models [see @LindsayI; @LindsayII; @McLachlan; @Teicher63; @Titterington] allow for modeling heterogeneous data. The number of mixture components may be known in advance, in which case the model parameters can be easily estimated (e.g. their maximum likelihood estimates (MLE) can be found via the EM algorithm [@Dempster]). However, in many applications the number of components is unknown and has to be inferred from the data. 
+Mixture models [see @LindsayI; @LindsayII; @McLachlan; @Teicher63; @Titterington] allow for modeling heterogeneous data. The number of mixture components may be known in advance, in which case the model parameters can be easily estimated (e.g. their maximum likelihood estimates (MLE) can be computed using the EM (Expectation-Maximization) algorithm [@Dempster]). However, in many applications the number of components is unknown and has to be inferred from the data. 
 
 **mixComp** provides three categories of methods for estimating the unknown complexity of a (univariate) finite mixture:
 
@@ -68,7 +68,7 @@ $$\hat{p} := \text{argmin}_{j \in \mathbb{N}} \Big\{ \lvert \det H(\hat{\textbf{
 with positive function $l(n) \to 0 \text{ as } n \to \infty$; positive, strictly increasing function $A(j)$; 
 $H(\hat{\textbf{c}}_{2j+1})$ - Hankel matrix built on $\hat{\textbf{c}}_{2j+1}$, the consistent estimator of the first $2j+1$ moments of the mixing distribution. 
 
-**mixComp** offers several methods for calculating $\hat{\textbf{c}}^{2j+1}$ and provides extensions of the basic approach.
+**mixComp** offers several methods for calculating $\hat{\textbf{c}}_{2j+1}$ and provides extensions of the basic approach.
 
 ### 2. Functions using distances
 
@@ -76,7 +76,7 @@ Consider the parametric family $$\mathcal{F}_j = \{ f_{j, \mathbf{w},\mathbf{\th
 $f_{j,\mathbf{w},\mathbf{\theta}}(x) = \sum_{i = 1}^j w_i g(x; \theta_i), \quad \{g(x;\theta): \theta \in \Theta \}.$ 
 Note: $\mathcal{F}_j \subseteq \mathcal{F}_{j+1}, \forall j = 1,2, \dots$.
 
-Find the 'best' estimate (e.g. MLE) $(\hat{\mathbf{w}}^j, \hat{\mathbf{\theta}}^j) \in W_j \times \Theta_j$ for a given $j$ and thereby specified density/mass function $\hat{f}_j(x) = f_{j, \hat{\mathbf{w}}^j, \hat{\mathbf{\theta}}^j}(x),$
+These methods search for the 'best' estimate (e.g. MLE) $(\hat{\mathbf{w}}^j, \hat{\mathbf{\theta}}^j) \in W_j \times \Theta_j$ for a given $j$ and thereby specified density/mass function $\hat{f}_j(x) = f_{j, \hat{\mathbf{w}}^j, \hat{\mathbf{\theta}}^j}(x),$
 and the non-parametric density/mass estimate $\tilde{f}_n(x)$. Then
 $$\hat{p} = \min_j \big\{D(\hat{f}_j, \tilde{f}_n) - D(\hat{f}_{j+1}, \tilde{f}_n) \leq t(j,n) \big\},$$ 
 where $D$ denotes the distance measure, $t(j,n)$ - a suitable penalty function.
@@ -85,12 +85,12 @@ where $D$ denotes the distance measure, $t(j,n)$ - a suitable penalty function.
 
 ### 3. Functions using LRTS
 
-Find the MLE for the mixture density/mass with $j$ and $j+1$ components ($j=1,2,\dots$), yielding $(\hat{\mathbf{w}}^{j}, \hat{\mathbf{\theta}}^{j}) \in W_j \times \Theta_j$ and $(\hat{\mathbf{w}}^{j+1}, \hat{\mathbf{\theta}}^{j+1}) \in W_{j+1} \times \Theta_{j+1}$,
+These methods obtain the MLE for the mixture density/mass with $j$ and $j+1$ components ($j=1,2,\dots$), yielding $(\hat{\mathbf{w}}^{j}, \hat{\mathbf{\theta}}^{j}) \in W_j \times \Theta_j$ and $(\hat{\mathbf{w}}^{j+1}, \hat{\mathbf{\theta}}^{j+1}) \in W_{j+1} \times \Theta_{j+1}$,
 $$\text{LRTS}= -2\ln\left(\frac{L_{\textbf{X}}(\hat{\mathbf{w}}^{j}, \hat{\mathbf{\theta}}^{j})}{L_{\textbf{X}}(\hat{\mathbf{w}}^{j+1}, \hat{\mathbf{\theta}}^{j+1})}\right)\text{, with}$$
 
 $L_{\textbf{X}}$ being the likelihood function given ${\textbf{X}}$.
 
-Use a parametric bootstrap to generate `B` $n$-samples from a $j$-component mixture given $(\hat{\mathbf{w}}^{j}, \hat{\mathbf{\theta}}^{j})$. For each bootstrap sample, compute the MLEs and LRTS corresponding to the mixture densities with $j$ and $j+1$ components. Reject $H_0: p = j$, setting $j \leftarrow j+1$ if the LRTS is larger than the specified quantile of its bootstrapped counterparts; otherwise set $\hat{p} = j$ [@lrt]. 
+A parametric bootstrap sampling is applied to generate `B` $n$-samples from a $j$-component mixture given $(\hat{\mathbf{w}}^{j}, \hat{\mathbf{\theta}}^{j})$. For each bootstrap sample, the method computes the MLEs and the LRTS (Likelihood Ratio Test Statistic) corresponding to the mixture densities with $j$ and $j+1$ components. The decision is to reject $H_0: p = j$, setting $j \leftarrow j+1$ if the LRTS is larger than the specified quantile of its bootstrapped counterparts; otherwise $\hat{p}$ is set to $j$ [@lrt]. 
 
 # Examples
 
