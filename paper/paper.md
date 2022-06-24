@@ -8,8 +8,10 @@ authors:
   - name: Anja Weigel^[Co-first author] # note this makes a footnote saying 'Co-first author'
     affiliation: 2 # (Multiple affiliations must be quoted)
   - name: Fadoua Balabdaoui^[Co-first author] 
+    orcid: 0000-0002-7624-5560
     affiliation: 1
   - name: Yulia Kulagina^[Corresponding author] 
+    orcid: 0000-0002-9066-7129
     affiliation: 1
   - name: Lilian Mueller^[Contributor]
     affiliation: 2
