@@ -5,12 +5,15 @@ tags:
   - mixture distribution
   - complexity
 authors:
-  - name: Anja Weigel^[Co-first author] # note this makes a footnote saying 'Co-first author'
+  - name: Anja Weigel
+    equal-contrib: true
     affiliation: 2 # (Multiple affiliations must be quoted)
-  - name: Fadoua Balabdaoui^[Co-first author] 
+  - name: Fadoua Balabdaoui
+    equal-contrib: true
     orcid: 0000-0002-7624-5560
     affiliation: 1
-  - name: Yulia Kulagina^[Corresponding author] 
+  - name: Yulia Kulagina
+    corresponding: true
     orcid: 0000-0002-9066-7129
     affiliation: 1
   - name: Lilian Mueller^[Contributor]
@@ -27,7 +30,7 @@ bibliography: refs.bib
 
 # Summary
 
-Mixture models [see @LindsayI; @LindsayII; @McLachlan; @Teicher63; @Titterington] allow for modeling heterogeneous data. The number of mixture components may be known in advance, in which case the model parameters can be easily estimated (e.g. their maximum likelihood estimates (MLE) can be computed using the EM (Expectation-Maximization) algorithm [@Dempster]). However, in many applications the number of components is unknown and has to be inferred from the data. 
+Mixture models [see @LindsayI; @LindsayII; @McLachlan; @Teicher63; @Titterington] allow for modeling heterogeneous data. The number of mixture components may be known in advance, in which case the model parameters can be easily estimated (e.g., their maximum likelihood estimates (MLE) can be computed using the EM (Expectation-Maximization) algorithm [@Dempster]). However, in many applications the number of components is unknown and has to be inferred from the data. 
 
 **mixComp** provides three categories of methods for estimating the unknown complexity of a (univariate) finite mixture:
 
