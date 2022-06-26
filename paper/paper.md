@@ -16,7 +16,8 @@ authors:
     corresponding: true
     orcid: 0000-0002-9066-7129
     affiliation: 1
-  - name: Lilian Mueller^[Contributor]
+  - name: Lilian Mueller
+    equal-contrib: true
     affiliation: 2
 affiliations:
  - name: ETH Zurich, Seminar for Statistics, Switzerland
